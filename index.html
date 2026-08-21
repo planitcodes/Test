@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Award Desk</title>
+<meta name="description" content="A one-stop shop for points, miles and mistake fares — the system, a live deal room, and a human who plans and books the trip with you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* ── tokens ─────────────────────────────────────────────── */
+:root{
+  --paper:#E9EEE7; --coupon:#F6F9F3; --coupon-2:#FDFEFB;
+  --ink:#14201A; --ink-2:#4A5A52; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#9FB09E;
+  --stamp:#C33A12; --stamp-ink:#FFF7F3; --stamp-wash:rgba(195,58,18,.10);
+  --good:#1E6F4C;
+  --shadow:0 1px 0 rgba(20,32,26,.05), 0 18px 40px -26px rgba(20,32,26,.45);
+  --display:"Archivo","Archivo Black",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --wrap:1180px; --r:3px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1411; --coupon:#151E19; --coupon-2:#1B2620;
+    --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+    --rule:#28352E; --rule-2:#3C4C43;
+    --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.13);
+    --good:#4FD196;
+    --shadow:0 1px 0 rgba(0,0,0,.4), 0 18px 40px -26px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1411; --coupon:#151E19; --coupon-2:#1B2620;
+  --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43;
+  --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.13);
+  --good:#4FD196;
+  --shadow:0 1px 0 rgba(0,0,0,.4), 0 18px 40px -26px rgba(0,0,0,.9);
+}
+
+/* ── base ───────────────────────────────────────────────── */
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--display); text-wrap:balance; margin:0; line-height:1.02; letter-spacing:-.015em}
+h1{font-size:clamp(2.5rem,5vw,4rem); font-weight:800; font-stretch:118%}
+h2{font-size:clamp(1.75rem,3vw,2.45rem); font-weight:800; font-stretch:114%}
+h3{font-size:1.18rem; font-weight:700; font-stretch:108%; line-height:1.2}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--stamp); outline-offset:3px; border-radius:2px}
+
+.wrap{width:min(100% - 2.6rem,var(--wrap)); margin-inline:auto}
+section[id],header[id]{scroll-margin-top:5.5rem}
+.section{padding-block:clamp(4rem,8vw,7rem)}
+.stack{display:flex; flex-direction:column}
+.g-8{gap:.5rem} .g-12{gap:.75rem} .g-16{gap:1rem} .g-24{gap:1.5rem}
+.g-32{gap:2rem} .g-48{gap:3rem} .g-64{gap:4rem}
+
+/* mono field label — the machine-printed ticket vernacular */
+.field{
+  font-family:var(--mono); font-size:.66rem; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+}
+.field-b{color:var(--stamp)}
+.lede{font-size:clamp(1.05rem,1.6vw,1.22rem); color:var(--ink-2); max-width:62ch}
+.measure{max-width:64ch}
+.num{font-variant-numeric:tabular-nums}
+
+/* perforation */
+.perf{
+  height:2px; width:100%;
+  background:repeating-linear-gradient(90deg,var(--rule-2) 0 4px,transparent 4px 11px);
+}
+
+/* coupon surface */
+.coupon{
+  background:var(--coupon); border:1px solid var(--rule);
+  border-radius:var(--r); box-shadow:var(--shadow);
+}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.55rem;
+  font-family:var(--mono); font-size:.76rem; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; text-decoration:none;
+  padding:.95rem 1.5rem; border-radius:var(--r); border:1px solid transparent;
+  cursor:pointer; transition:transform .16s ease, background .16s ease, border-color .16s ease;
+}
+.btn-primary{background:var(--stamp); color:var(--stamp-ink); border-color:var(--stamp)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent; color:var(--ink); border-color:var(--rule-2)}
+.btn-ghost:hover{border-color:var(--ink); transform:translateY(-2px)}
+.btn[disabled],.btn[aria-disabled="true"]{opacity:.4; cursor:not-allowed; transform:none; pointer-events:none}
+
+/* ── nav ────────────────────────────────────────────────── */
+.nav{
+  position:sticky; top:0; z-index:40;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--rule);
+}
+.nav-in{display:flex; align-items:center; gap:1.6rem; padding-block:.9rem}
+.brand{display:flex; align-items:baseline; gap:.5rem; text-decoration:none; margin-right:auto}
+.brand-mark{
+  font-family:var(--display); font-weight:900; font-stretch:122%;
+  font-size:1.06rem; letter-spacing:-.01em; text-transform:uppercase;
+}
+.brand-code{
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.18em;
+  color:var(--stamp-ink); background:var(--stamp); padding:.16rem .38rem; border-radius:2px;
+}
+.nav-links{display:flex; gap:1.5rem}
+.nav-links a{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.13em;
+  text-transform:uppercase; text-decoration:none; color:var(--ink-2);
+}
+.nav-links a:hover{color:var(--stamp)}
+.theme-btn{
+  background:none; border:1px solid var(--rule-2); color:var(--ink-2);
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase;
+  padding:.45rem .6rem; border-radius:2px; cursor:pointer;
+}
+.theme-btn:hover{color:var(--ink); border-color:var(--ink)}
+@media (max-width:900px){.nav-links{display:none}}
+
+/* ── hero ───────────────────────────────────────────────── */
+.hero{display:grid; grid-template-columns:1.02fr .98fr; gap:clamp(2rem,4.5vw,4rem); align-items:start}
+@media (max-width:960px){.hero{grid-template-columns:1fr}}
+.hero h1 em{font-style:normal; color:var(--stamp)}
+.hero-cta{display:flex; flex-wrap:wrap; gap:.8rem}
+.trust{display:flex; flex-wrap:wrap; gap:1.4rem; padding-top:.4rem}
+.trust span{font-family:var(--mono); font-size:.68rem; letter-spacing:.1em; color:var(--ink-3); text-transform:uppercase}
+
+/* receipt */
+.receipt{position:relative; overflow:hidden}
+.receipt-head{display:flex; justify-content:space-between; align-items:center; padding:1rem 1.3rem}
+.receipt-body{padding:1.3rem}
+.rgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem .6rem}
+.rgrid > div{display:flex; flex-direction:column; gap:.28rem; min-width:0}
+.rgrid strong{
+  font-family:var(--mono); font-size:.98rem; font-weight:600;
+  letter-spacing:.01em; overflow-wrap:anywhere;
+}
+.fare-rows{display:flex; flex-direction:column; gap:0}
+.fare-row{
+  display:flex; justify-content:space-between; align-items:baseline; gap:1rem;
+  padding:.62rem 0; border-bottom:1px dotted var(--rule-2);
+  opacity:0; transform:translateY(6px);
+}
+.fare-row.on{opacity:1; transform:none; transition:opacity .42s ease,transform .42s ease}
+.fare-row .k{font-family:var(--mono); font-size:.73rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-2)}
+.fare-row .v{font-family:var(--mono); font-size:1rem; font-weight:600; font-variant-numeric:tabular-nums}
+.struck{position:relative; color:var(--ink-3)}
+.struck::after{
+  content:""; position:absolute; left:-2px; right:-2px; top:52%; height:2px;
+  background:var(--stamp); transform:scaleX(0); transform-origin:left;
+}
+.struck.on::after{transform:scaleX(1); transition:transform .5s cubic-bezier(.7,0,.3,1)}
+.total-row{display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; padding-top:1.1rem}
+.total-row .v{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:clamp(2rem,4.6vw,2.9rem); line-height:.9; font-variant-numeric:tabular-nums}
+.stamp-badge{
+  align-self:flex-end; transform:rotate(-7deg) scale(.6); opacity:0;
+  border:2px solid var(--stamp); color:var(--stamp);
+  font-family:var(--mono); font-size:.72rem; font-weight:600; letter-spacing:.1em;
+  padding:.4rem .7rem; border-radius:2px; text-transform:uppercase; white-space:nowrap;
+}
+.stamp-badge.on{opacity:1; transform:rotate(-7deg) scale(1); transition:opacity .3s ease,transform .45s cubic-bezier(.34,1.7,.5,1)}
+.receipt-foot{padding:.85rem 1.3rem; display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+
+/* ── generic blocks ─────────────────────────────────────── */
+.head-block{display:flex; flex-direction:column; gap:.9rem; max-width:66ch}
+.rule-top{border-top:1px solid var(--rule)}
+
+.why{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule); border-block:1px solid var(--rule)}
+@media (max-width:820px){.why{grid-template-columns:1fr}}
+.why-cell{background:var(--paper); padding:2rem 1.6rem; display:flex; flex-direction:column; gap:.7rem}
+.why-cell .field{color:var(--stamp)}
+
+.steps{display:flex; flex-direction:column}
+.step{
+  display:grid; grid-template-columns:5.5rem 1fr 1.1fr; gap:1.5rem;
+  padding:1.6rem 0; border-top:1px solid var(--rule); align-items:start;
+}
+.step:last-child{border-bottom:1px solid var(--rule)}
+@media (max-width:820px){.step{grid-template-columns:3.4rem 1fr; gap:1rem}.step-note{grid-column:2}}
+.step-n{
+  font-family:var(--display); font-weight:900; font-stretch:120%;
+  font-size:2.1rem; line-height:.85; color:var(--stamp); font-variant-numeric:tabular-nums;
+}
+.step-note{color:var(--ink-2); font-size:.95rem}
+
+.engines{display:grid; grid-template-columns:1fr 1fr; gap:1.5rem}
+@media (max-width:820px){.engines{grid-template-columns:1fr}}
+.engine{padding:1.7rem; display:flex; flex-direction:column; gap:1rem}
+.engine ul{margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:.5rem; color:var(--ink-2); font-size:.95rem}
+.engine li::marker{color:var(--stamp)}
+
+/* ── estimator ──────────────────────────────────────────── */
+.est{display:grid; grid-template-columns:1fr 1fr; gap:0}
+@media (max-width:880px){.est{grid-template-columns:1fr}}
+.est-in{padding:1.9rem; display:flex; flex-direction:column; gap:1.4rem; border-right:1px solid var(--rule)}
+@media (max-width:880px){.est-in{border-right:0; border-bottom:1px solid var(--rule)}}
+.est-out{padding:1.9rem; display:flex; flex-direction:column; gap:1.2rem; background:var(--coupon-2)}
+.ctrl{display:flex; flex-direction:column; gap:.5rem}
+.ctrl-head{display:flex; justify-content:space-between; align-items:baseline; gap:1rem}
+.ctrl-val{font-family:var(--mono); font-size:.8rem; font-weight:600; color:var(--ink)}
+input[type="text"],input[type="email"],select,textarea{
+  width:100%; font-family:var(--mono); font-size:.9rem; color:var(--ink);
+  background:var(--coupon-2); border:1px solid var(--rule-2); border-radius:var(--r);
+  padding:.72rem .8rem;
+}
+textarea{font-family:var(--body); resize:vertical; min-height:5.5rem}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+input[type="range"]{width:100%; accent-color:var(--stamp); background:transparent}
+.seg{display:flex; gap:.4rem; flex-wrap:wrap}
+.seg button{
+  flex:1 1 auto; font-family:var(--mono); font-size:.7rem; letter-spacing:.09em; text-transform:uppercase;
+  padding:.6rem .5rem; border:1px solid var(--rule-2); background:transparent; color:var(--ink-2);
+  border-radius:var(--r); cursor:pointer; transition:.15s ease;
+}
+.seg button:hover{border-color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--stamp); border-color:var(--stamp); color:var(--stamp-ink)}
+.out-row{display:flex; justify-content:space-between; align-items:baseline; gap:1rem; padding:.55rem 0; border-bottom:1px dotted var(--rule-2)}
+.out-row .k{font-family:var(--mono); font-size:.71rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-2)}
+.out-row .v{font-family:var(--mono); font-size:.98rem; font-weight:600; font-variant-numeric:tabular-nums}
+.out-big{display:flex; flex-direction:column; gap:.3rem; padding-top:.4rem}
+.out-big .v{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:clamp(2.2rem,5vw,3.2rem); line-height:.9; color:var(--good); font-variant-numeric:tabular-nums}
+.note{font-size:.82rem; color:var(--ink-3); line-height:1.5}
+.flag{
+  display:flex; gap:.6rem; padding:.8rem .9rem; border-radius:var(--r);
+  background:var(--stamp-wash); border:1px solid var(--stamp); font-size:.84rem; color:var(--ink);
+}
+
+/* ── ledger ─────────────────────────────────────────────── */
+.scroll-x{overflow-x:auto; border:1px solid var(--rule); border-radius:var(--r); background:var(--coupon)}
+table{border-collapse:collapse; width:100%; min-width:660px}
+th,td{text-align:right; padding:.85rem 1rem; border-bottom:1px dotted var(--rule-2); white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{
+  font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:500; border-bottom:1px solid var(--rule-2);
+}
+tbody td{font-family:var(--mono); font-size:.88rem; font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:0}
+.route{font-weight:600}
+.cash{color:var(--ink-3); text-decoration:line-through}
+.saved{color:var(--good); font-weight:600}
+
+.quotes{display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem}
+@media (max-width:880px){.quotes{grid-template-columns:1fr}}
+.quote{padding:1.5rem; display:flex; flex-direction:column; gap:1rem; border-style:dashed}
+.quote p{color:var(--ink-2); font-size:.96rem}
+.slot{
+  font-family:var(--mono); font-size:.6rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--stamp); border:1px dashed var(--stamp); padding:.18rem .4rem; border-radius:2px; align-self:flex-start;
+}
+
+/* ── tiers ──────────────────────────────────────────────── */
+.tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; align-items:start}
+@media (max-width:960px){.tiers{grid-template-columns:1fr}}
+.tier{padding:1.7rem; display:flex; flex-direction:column; gap:1.1rem; height:100%}
+.tier-featured{border-color:var(--stamp); border-width:2px}
+.tier-top{display:flex; justify-content:space-between; align-items:flex-start; gap:.8rem}
+.price{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:2rem; line-height:.9; font-variant-numeric:tabular-nums}
+.price small{font-family:var(--mono); font-size:.68rem; font-weight:500; letter-spacing:.1em; color:var(--ink-3); display:block; margin-top:.4rem; text-transform:uppercase}
+.tier ul{margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:.5rem; font-size:.93rem; color:var(--ink-2); flex:1}
+.tier li::marker{color:var(--stamp)}
+.tier .btn{width:100%}
+
+/* ── booking flow ───────────────────────────────────────── */
+.flow{display:flex; flex-direction:column; gap:1.2rem}
+.gate{padding:1.7rem; display:flex; flex-direction:column; gap:1.2rem}
+.gate-head{display:flex; align-items:center; gap:1rem; flex-wrap:wrap}
+.gate-n{
+  font-family:var(--mono); font-size:.68rem; font-weight:600; letter-spacing:.1em;
+  width:1.9rem; height:1.9rem; display:grid; place-items:center; flex:none;
+  border:1px solid var(--rule-2); border-radius:50%; color:var(--ink-2);
+}
+.gate.done .gate-n{background:var(--good); border-color:var(--good); color:var(--paper)}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
+@media (max-width:720px){.form-grid{grid-template-columns:1fr}}
+.span-2{grid-column:1/-1}
+label{display:flex; flex-direction:column; gap:.4rem}
+.msg{font-family:var(--mono); font-size:.75rem; letter-spacing:.05em; color:var(--good)}
+.msg-err{color:var(--stamp)}
+.summary{display:flex; flex-wrap:wrap; gap:.5rem}
+.gate .btn{align-self:flex-start}
+.chip{
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
+  border:1px solid var(--rule-2); border-radius:2px; padding:.3rem .55rem; color:var(--ink-2);
+}
+.hidden{display:none}
+
+/* ── faq ────────────────────────────────────────────────── */
+.faq details{border-top:1px solid var(--rule)}
+.faq details:last-of-type{border-bottom:1px solid var(--rule)}
+.faq summary{
+  cursor:pointer; list-style:none; padding:1.15rem 0; display:flex;
+  justify-content:space-between; align-items:center; gap:1.5rem;
+  font-family:var(--display); font-weight:700; font-stretch:108%; font-size:1.06rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+"; font-family:var(--mono); color:var(--stamp); font-size:1.3rem; flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq .ans{padding-bottom:1.2rem; color:var(--ink-2); max-width:72ch; font-size:.97rem}
+
+/* ── footer ─────────────────────────────────────────────── */
+.foot{border-top:1px solid var(--rule); padding-block:2.6rem; background:var(--coupon)}
+.foot-in{display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap}
+.disclose{max-width:58ch; font-size:.8rem; color:var(--ink-3); line-height:1.6}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::after{transition:none !important; animation:none !important}
+  .fare-row{opacity:1; transform:none}
+  .struck::after{transform:scaleX(1)}
+  .stamp-badge{opacity:1; transform:rotate(-7deg)}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark">Award Desk</span>
+      <span class="brand-code">AWD</span>
+    </a>
+    <div class="nav-links">
+      <a href="#system">The system</a>
+      <a href="#estimator">What you'd save</a>
+      <a href="#proof">Proof</a>
+      <a href="#work">Work with me</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+    <a class="btn btn-primary" href="#book">Book a call</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<header id="top" class="section wrap">
+  <div class="hero">
+    <div class="stack g-24">
+      <span class="field field-b">Points &middot; Miles &middot; Mistake fares</span>
+      <h1>Business class isn't expensive. It's just <em>priced for people who pay cash.</em></h1>
+      <p class="lede">Award Desk is the one-stop shop for flying long-haul for a fraction of retail &mdash; or for nothing but the taxes. You get the full system, a live room where fares get called the hour they break, and a human who will sit down and plan the actual trip with you.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#book">Start a flight plan</a>
+        <a class="btn btn-ghost" href="#estimator">See what you'd save</a>
+      </div>
+      <div class="trust">
+        <span>No prior points required</span>
+        <span>Works from any home airport</span>
+        <span>Free first step</span>
+      </div>
+    </div>
+
+    <!-- fare receipt -->
+    <div class="coupon receipt" id="receipt">
+      <div class="receipt-head">
+        <span class="field">Passenger coupon &mdash; sample</span>
+        <span class="field field-b">Not valid for travel</span>
+      </div>
+      <div class="perf"></div>
+      <div class="receipt-body stack g-24">
+        <div class="rgrid">
+          <div><span class="field">From</span><strong>JFK</strong></div>
+          <div><span class="field">To</span><strong>HND</strong></div>
+          <div><span class="field">Cabin</span><strong>Business</strong></div>
+          <div><span class="field">Pax</span><strong>2</strong></div>
+        </div>
+        <div class="fare-rows">
+          <div class="fare-row" data-step="0">
+            <span class="k">Retail fare, 2 pax</span>
+            <span class="v struck" id="struck">$6,842.00</span>
+          </div>
+          <div class="fare-row" data-step="1">
+            <span class="k">Points applied</span>
+            <span class="v">240,000</span>
+          </div>
+          <div class="fare-row" data-step="2">
+            <span class="k">Taxes &amp; carrier fees</span>
+            <span class="v">$87.40</span>
+          </div>
+        </div>
+        <div class="total-row">
+          <div class="stack g-8">
+            <span class="field">Cash out of pocket</span>
+            <span class="v" id="paid">$87.40</span>
+          </div>
+          <span class="stamp-badge" id="stamp">Saved <span id="savedPct">0</span>%</span>
+        </div>
+      </div>
+      <div class="perf"></div>
+      <div class="receipt-foot">
+        <span class="field">Cost per point &mdash; 2.81&cent;</span>
+        <span class="field">Booked 41 days out</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ WHY ══ -->
+<section class="section" style="padding-block:0">
+  <div class="why">
+    <div class="why-cell">
+      <span class="field">Reason one</span>
+      <h3>You earn points on the wrong things</h3>
+      <p class="note">Most people put every dollar on one card at one point per dollar. The same spend, routed through the right categories and the right two or three products, earns three to five times as much &mdash; without spending an extra cent.</p>
+    </div>
+    <div class="why-cell">
+      <span class="field">Reason two</span>
+      <h3>You spend them at the worst rate</h3>
+      <p class="note">Booking through a bank's travel portal locks your points at roughly a cent each. Transferred to the right airline partner and redeemed on the right route, the same balance is routinely worth four to eight times that.</p>
+    </div>
+    <div class="why-cell">
+      <span class="field">Reason three</span>
+      <h3>You search after you've decided</h3>
+      <p class="note">Picking dates first and then shopping is how you pay retail. The system inverts it: watch the whole market continuously, and let the fare decide the week you travel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SYSTEM ══ -->
+<section id="system" class="section wrap stack g-48">
+  <div class="head-block">
+    <span class="field field-b">The operating order</span>
+    <h2>Five steps, run in this order. Skipping one is what costs people the trip.</h2>
+    <p class="lede">This is a sequence, not a menu &mdash; each step depends on the one above it. Card applications before an audit burn approvals you'll want later; hunting fares before you hold transferable points means finding the seat and not being able to take it.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-n num">01</span>
+      <div class="stack g-8">
+        <h3>Audit what you already hold</h3>
+        <p class="note">Balances, cards, credit profile, home airports, passports.</p>
+      </div>
+      <p class="step-note">Almost everyone is holding more usable value than they think &mdash; and at least one balance that's quietly about to expire or devalue. This is the first thing we look at on a call.</p>
+    </div>
+    <div class="step">
+      <span class="step-n num">02</span>
+      <div class="stack g-8">
+        <h3>Build the earn stack</h3>
+        <p class="note">Match products to the spend you already have.</p>
+      </div>
+      <p class="step-note">Groceries, rent, business expenses, tuition, insurance. We build around real, existing outflow. Manufactured spend is not part of this system and you won't be asked to do it.</p>
+    </div>
+    <div class="step">
+      <span class="step-n num">03</span>
+      <div class="stack g-8">
+        <h3>Position for the redemption</h3>
+        <p class="note">Application order, transfer partners, timing windows.</p>
+      </div>
+      <p class="step-note">Transfers are one-way and mostly instant-but-irreversible. Knowing which partner to hold for, and moving points only once a seat is confirmed, is where most of the value is won or lost.</p>
+    </div>
+    <div class="step">
+      <span class="step-n num">04</span>
+      <div class="stack g-8">
+        <h3>Hunt continuously</h3>
+        <p class="note">Award space alerts plus fare errors, monitored daily.</p>
+      </div>
+      <p class="step-note">Two separate engines run here: award seats releasing at schedule-open and at the T-14 unlock, and pricing mistakes that surface without warning and close within hours.</p>
+    </div>
+    <div class="step">
+      <span class="step-n num">05</span>
+      <div class="stack g-8">
+        <h3>Ticket and protect it</h3>
+        <p class="note">Hold, ticket, then defend the reservation.</p>
+      </div>
+      <p class="step-note">Booking is the start, not the end &mdash; schedule changes are the single best free upgrade lever in the business, and knowing your re-accommodation rights turns a cancelled flight into a better cabin.</p>
+    </div>
+  </div>
+
+  <div class="engines">
+    <div class="coupon engine">
+      <span class="field field-b">Engine A</span>
+      <h3>Points &amp; miles</h3>
+      <p class="note">The reliable engine. Slower to build, but it produces a trip on demand, in the cabin you asked for, on a date you chose.</p>
+      <ul>
+        <li>Card strategy sequenced around approval rules and bonus eligibility</li>
+        <li>Transferable currencies vs. airline-locked miles &mdash; and when to hold which</li>
+        <li>Sweet-spot award charts: the routes still priced like it's 2015</li>
+        <li>Finding and holding premium award space, including phone-only partners</li>
+        <li>Two-player household strategy for couples and families</li>
+      </ul>
+    </div>
+    <div class="coupon engine">
+      <span class="field field-b">Engine B</span>
+      <h3>Fare intelligence</h3>
+      <p class="note">The opportunistic engine. You can't schedule it, but when it fires the number is absurd &mdash; and you need to be ready to move that day.</p>
+      <ul>
+        <li>Mistake and distressed-inventory fares, called as they break</li>
+        <li>Positioning flights: why the cheap fare is often from a city you don't live in</li>
+        <li>Reading fare rules before you buy so the ticket actually sticks</li>
+        <li>The 24-hour hold window and how to use it as a free option</li>
+        <li>What to do when an airline tries to cancel a mistake fare</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ESTIMATOR ══ -->
+<section id="estimator" class="section wrap stack g-32">
+  <div class="head-block">
+    <span class="field field-b">Gauge it first</span>
+    <h2>Before you pay me anything, see roughly what this is worth to you.</h2>
+    <p class="lede">Set your normal travel year. The estimate uses typical long-haul retail pricing against typical award taxes &mdash; it's a range-finder to tell you whether this is worth a conversation, not a quote.</p>
+  </div>
+
+  <div class="coupon est">
+    <div class="est-in">
+      <div class="ctrl">
+        <span class="field">Home airport</span>
+        <input type="text" id="apt" maxlength="4" placeholder="JFK" value="JFK" autocomplete="off" aria-label="Home airport code">
+      </div>
+      <div class="ctrl">
+        <span class="field">Cabin you'd actually want</span>
+        <div class="seg" id="cabinSeg" role="group" aria-label="Cabin">
+          <button type="button" data-cabin="economy" aria-pressed="false">Economy</button>
+          <button type="button" data-cabin="premium" aria-pressed="false">Premium</button>
+          <button type="button" data-cabin="business" aria-pressed="true">Business</button>
+          <button type="button" data-cabin="first" aria-pressed="false">First</button>
+        </div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-head">
+          <span class="field">Long-haul trips per year</span>
+          <span class="ctrl-val num" id="tripsVal">2</span>
+        </div>
+        <input type="range" id="trips" min="1" max="6" step="1" value="2" aria-label="Long-haul trips per year">
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-head">
+          <span class="field">Travelling as</span>
+          <span class="ctrl-val num" id="paxVal">2</span>
+        </div>
+        <input type="range" id="pax" min="1" max="5" step="1" value="2" aria-label="Number of travellers">
+      </div>
+      <p class="note">Estimates assume round-trip long-haul international travel. Domestic and short-haul savings are real but smaller, so this runs conservative on purpose.</p>
+    </div>
+
+    <div class="est-out">
+      <span class="field field-b">Your year, two ways</span>
+      <div>
+        <div class="out-row"><span class="k">Retail, paying cash</span><span class="v" id="oRetail">$0</span></div>
+        <div class="out-row"><span class="k">Booked on awards</span><span class="v" id="oAward">$0</span></div>
+        <div class="out-row"><span class="k">Points you'd need</span><span class="v" id="oPoints">0</span></div>
+        <div class="out-row"><span class="k">Realistic build time</span><span class="v" id="oTime">&mdash;</span></div>
+      </div>
+      <div class="out-big">
+        <span class="field">Estimated annual saving</span>
+        <span class="v" id="oSaved">$0</span>
+        <span class="note" id="oPct">&mdash;</span>
+      </div>
+      <div class="flag hidden" id="oFlag"><span></span></div>
+      <a class="btn btn-primary" href="#book" id="estCta">Take this to a flight plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROOF ══ -->
+<section id="proof" class="section wrap stack g-32">
+  <div class="head-block">
+    <span class="field field-b">The ledger</span>
+    <h2>Redemptions, priced against what the same seat cost in cash that day.</h2>
+  </div>
+
+  <div class="scroll-x">
+    <table>
+      <thead>
+        <tr>
+          <th>Route</th><th>Cabin</th><th>Retail</th><th>Points</th><th>Paid</th><th>Saved</th><th>Cents / pt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="route">JFK &rarr; HND</td><td>Business</td><td class="cash">$3,421</td><td>120,000</td><td>$43.70</td><td class="saved">$3,377</td><td>2.81&cent;</td></tr>
+        <tr><td class="route">ORD &rarr; DOH &rarr; CPT</td><td>Business</td><td class="cash">$5,190</td><td>142,000</td><td>$118.20</td><td class="saved">$5,072</td><td>3.57&cent;</td></tr>
+        <tr><td class="route">LAX &rarr; SYD</td><td>Premium</td><td class="cash">$2,040</td><td>78,000</td><td>$96.10</td><td class="saved">$1,944</td><td>2.49&cent;</td></tr>
+        <tr><td class="route">BOS &rarr; LIS (error fare)</td><td>Business</td><td class="cash">$2,860</td><td>&mdash;</td><td>$412.00</td><td class="saved">$2,448</td><td>&mdash;</td></tr>
+        <tr><td class="route">SFO &rarr; ZRH</td><td>First</td><td class="cash">$8,975</td><td>176,000</td><td>$5.60</td><td class="saved">$8,969</td><td>5.10&cent;</td></tr>
+        <tr><td class="route">MIA &rarr; GRU</td><td>Economy</td><td class="cash">$780</td><td>30,000</td><td>$71.30</td><td class="saved">$709</td><td>2.36&cent;</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Illustrative examples showing how the ledger reads. Replace every row with your own confirmed bookings before publishing &mdash; screenshots of the confirmation emails, with names redacted, convert far better than a table.</p>
+
+  <div class="quotes">
+    <div class="coupon quote">
+      <span class="slot">Testimonial slot 01</span>
+      <p>Drop a real client quote here. The ones that convert are specific: the route, the cabin, what it would have cost, and the one thing they'd been getting wrong before the call.</p>
+      <span class="field">&mdash; Client name, route flown</span>
+    </div>
+    <div class="coupon quote">
+      <span class="slot">Testimonial slot 02</span>
+      <p>Ask for these at the moment the trip ends, not at the moment they book &mdash; that's when the number feels real to them and the words come out unprompted.</p>
+      <span class="field">&mdash; Client name, route flown</span>
+    </div>
+    <div class="coupon quote">
+      <span class="slot">Testimonial slot 03</span>
+      <p>One of the three should come from a sceptic: someone who thought they had no points, no time, or the wrong credit profile to make this work.</p>
+      <span class="field">&mdash; Client name, route flown</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TIERS ══ -->
+<section id="work" class="section wrap stack g-32">
+  <div class="head-block">
+    <span class="field field-b">Ways to work together</span>
+    <h2>Start with one call. Stay for the deal room. Hand the whole thing over when it matters.</h2>
+  </div>
+
+  <div class="tiers">
+    <div class="coupon tier">
+      <div class="tier-top">
+        <div class="stack g-8"><span class="field">Tier 01</span><h3>Flight Plan</h3></div>
+        <div class="price">$249<small>One call</small></div>
+      </div>
+      <p class="note">A 75-minute working session, recorded, plus a written plan you keep.</p>
+      <ul>
+        <li>Full audit of balances, cards and credit profile</li>
+        <li>A route and cabin strategy for the trip you actually want</li>
+        <li>Application order and timing, written out step by step</li>
+        <li>Transfer-partner map for your specific balances</li>
+        <li>Recording, plan document, and two weeks of follow-up questions</li>
+      </ul>
+      <a class="btn btn-ghost" href="#book">Book a flight plan</a>
+    </div>
+
+    <div class="coupon tier tier-featured">
+      <div class="tier-top">
+        <div class="stack g-8"><span class="field field-b">Tier 02 &middot; Most popular</span><h3>The Desk</h3></div>
+        <div class="price">$29<small>Per month</small></div>
+      </div>
+      <p class="note">The live room. Deals get called here first and they don't last.</p>
+      <ul>
+        <li>Mistake and error fares from your home region, pushed in real time</li>
+        <li>Premium award space alerts on the routes you're watching</li>
+        <li>Private community &mdash; ask before you burn points, not after</li>
+        <li>Monthly live Q&amp;A and a devaluation early-warning brief</li>
+        <li>The full playbook library, kept current</li>
+      </ul>
+      <a class="btn btn-primary" href="#book">Join the desk</a>
+    </div>
+
+    <div class="coupon tier">
+      <div class="tier-top">
+        <div class="stack g-8"><span class="field">Tier 03</span><h3>Booked For You</h3></div>
+        <div class="price">15%<small>Of verified savings</small></div>
+      </div>
+      <p class="note">For the trip you can't afford to get wrong. I do the searching and the ticketing.</p>
+      <ul>
+        <li>I hunt the space, including phone-only and partner inventory</li>
+        <li>Positioning flights and multi-city routing built for you</li>
+        <li>You approve, I ticket &mdash; points never leave your control unadvised</li>
+        <li>Schedule-change monitoring through to departure</li>
+        <li>Fee billed against savings actually delivered, or it's nothing</li>
+      </ul>
+      <a class="btn btn-ghost" href="#book">Check availability</a>
+    </div>
+  </div>
+  <p class="note">Prices above are placeholders &mdash; set your own before launch. If you're new, price Tier 01 low for the first ten clients and raise it once the testimonial slots are filled.</p>
+</section>
+
+<!-- ══ BOOKING FLOW ══ -->
+<section id="book" class="section wrap stack g-32">
+  <div class="head-block">
+    <span class="field field-b">How to start</span>
+    <h2>Three steps. The first one is free and takes about a minute.</h2>
+  </div>
+
+  <div class="flow">
+    <!-- step 1 -->
+    <div class="coupon gate" id="gate1">
+      <div class="gate-head">
+        <span class="gate-n num">01</span>
+        <div class="stack g-8">
+          <h3>Take the playbook</h3>
+          <p class="note">The First 100,000 Points playbook plus the error-fare starter kit. No call required.</p>
+        </div>
+      </div>
+      <form class="form-grid" id="leadForm" novalidate>
+        <label class="span-2">
+          <span class="field">Email</span>
+          <input type="email" id="leadEmail" placeholder="you@example.com" required autocomplete="email">
+        </label>
+        <div class="span-2 stack g-12">
+          <button class="btn btn-primary" type="submit">Send me the playbook</button>
+          <span class="msg hidden" id="leadMsg"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- step 2 -->
+    <div class="coupon gate" id="gate2">
+      <div class="gate-head">
+        <span class="gate-n num">02</span>
+        <div class="stack g-8">
+          <h3>Tell me where you're trying to go</h3>
+          <p class="note">This is what makes the call useful. I read every one of these before we speak.</p>
+        </div>
+      </div>
+      <form class="form-grid" id="qualForm" novalidate>
+        <label>
+          <span class="field">Name</span>
+          <input type="text" id="qName" placeholder="First and last" required autocomplete="name">
+        </label>
+        <label>
+          <span class="field">Email</span>
+          <input type="email" id="qEmail" placeholder="you@example.com" required autocomplete="email">
+        </label>
+        <label>
+          <span class="field">Home airport</span>
+          <input type="text" id="qFrom" maxlength="4" placeholder="JFK" required autocomplete="off">
+        </label>
+        <label>
+          <span class="field">Where you want to go</span>
+          <input type="text" id="qTo" placeholder="Tokyo, or &ldquo;anywhere warm&rdquo;" required autocomplete="off">
+        </label>
+        <label>
+          <span class="field">When</span>
+          <select id="qWhen">
+            <option>Next 3 months</option>
+            <option selected>3&ndash;9 months out</option>
+            <option>Next year</option>
+            <option>Dates are flexible &mdash; chasing the fare</option>
+          </select>
+        </label>
+        <label>
+          <span class="field">Points you hold today</span>
+          <select id="qPoints">
+            <option>None yet</option>
+            <option>Under 50,000</option>
+            <option selected>50,000 &ndash; 150,000</option>
+            <option>150,000 &ndash; 400,000</option>
+            <option>Over 400,000</option>
+          </select>
+        </label>
+        <label class="span-2">
+          <span class="field">Anything I should know</span>
+          <textarea id="qNotes" placeholder="Credit situation, must-have dates, who's travelling, what you've already tried."></textarea>
+        </label>
+        <div class="span-2 stack g-12">
+          <button class="btn btn-primary" type="submit">Send and pick a time</button>
+          <span class="msg hidden" id="qualMsg"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- step 3 -->
+    <div class="coupon gate" id="gate3">
+      <div class="gate-head">
+        <span class="gate-n num">03</span>
+        <div class="stack g-8">
+          <h3>Pick a time</h3>
+          <p class="note" id="bookNote">Complete step 02 and your booking link opens here, prefilled.</p>
+        </div>
+      </div>
+      <div class="summary hidden" id="qSummary"></div>
+      <a class="btn btn-primary" id="bookBtn" href="#book" aria-disabled="true">Open the calendar</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section id="faq" class="section wrap stack g-32">
+  <div class="head-block">
+    <span class="field field-b">Straight answers</span>
+    <h2>The six things everyone asks before they book.</h2>
+  </div>
+  <div class="faq">
+    <details>
+      <summary>Will opening cards wreck my credit score?</summary>
+      <div class="ans">Applications cause a small, temporary dip that typically recovers within a few months, and the added available credit usually helps utilisation over time. The real risks are missed payments and carrying a balance &mdash; interest at these rates destroys any points value instantly. If you don't pay in full every month, this system is not for you yet, and I'll tell you that on the call rather than sell you something.</div>
+    </details>
+    <details>
+      <summary>Do I need to spend a lot for this to work?</summary>
+      <div class="ans">No. The majority of the points in the ledger above came from signup bonuses, not from everyday spend. What matters is meeting a minimum spend on bills you already pay, in the right order and timing. Nobody is asked to buy things they don't need or to do manufactured spend.</div>
+    </details>
+    <details>
+      <summary>Are mistake fares actually honoured?</summary>
+      <div class="ans">Often, but not always, and honouring varies by carrier and by jurisdiction. That's why the rule is: never book non-refundable hotels or connecting tickets until the fare has ticketed and settled. I flag the risk level with every fare that gets called in the deal room, and there's a written process for what to do if an airline tries to cancel one.</div>
+    </details>
+    <details>
+      <summary>I have zero points today. Is a trip in four months realistic?</summary>
+      <div class="ans">In economy, usually yes. In business, sometimes &mdash; it depends on your approval odds and how flexible the dates are. Four months is tight but it's the most common situation people bring to a first call, and there's a specific plan for it that leans on transferable currencies and near-term award space rather than long slow accrual.</div>
+    </details>
+    <details>
+      <summary>Does this work outside the United States?</summary>
+      <div class="ans">The fare-hunting engine works everywhere. The card side is country-specific: the US has the deepest market, Canada, the UK, Australia and Singapore all have workable ecosystems, and several countries have almost nothing. Tell me your country in the form and I'll say plainly whether Engine A is viable for you before you pay for anything.</div>
+    </details>
+    <details>
+      <summary>What if I've already booked the trip?</summary>
+      <div class="ans">Bring it anyway. Fares and award space move constantly, many tickets can be rebooked or repriced, and schedule changes open doors that weren't there when you booked. Worst case we leave it alone and spend the call setting you up so the next one costs a fraction of this one.</div>
+    </details>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div class="stack g-12">
+      <a class="brand" href="#top">
+        <span class="brand-mark">Award Desk</span>
+        <span class="brand-code">AWD</span>
+      </a>
+      <span class="field">The fare desk for people who refuse to pay retail</span>
+    </div>
+    <p class="disclose">
+      <strong>Disclosure.</strong> Some card links on this site may be affiliate links, and a commission may be earned when a card is approved. Recommendations on a call are made on the merits of your situation and are never contingent on that. Nothing here is financial, credit or tax advice. Award availability, transfer ratios and fare rules change without notice, and no specific redemption or saving is guaranteed.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ── theme: only take over if the host hasn't stamped a choice ── */
+  var root = document.documentElement;
+  try{
+    if(!root.getAttribute("data-theme")){
+      var saved = localStorage.getItem("awd-theme");
+      if(saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
+    }
+  }catch(e){}
+  var themeBtn = document.getElementById("themeBtn");
+  if(themeBtn){
+    themeBtn.addEventListener("click", function(){
+      var cur = root.getAttribute("data-theme");
+      if(!cur){
+        var sysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        cur = sysDark ? "dark" : "light";
+      }
+      var next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try{ localStorage.setItem("awd-theme", next); }catch(e){}
+    });
+  }
+
+  /* ── hero receipt prints on load ── */
+  var rows = document.querySelectorAll(".fare-row");
+  var struck = document.getElementById("struck");
+  var stamp = document.getElementById("stamp");
+  var pctEl = document.getElementById("savedPct");
+  var TARGET_PCT = 98.7;
+
+  function countUp(el, to, ms){
+    if(reduce){ el.textContent = to.toFixed(1); return; }
+    var t0 = null;
+    function frame(t){
+      if(t0 === null) t0 = t;
+      var p = Math.min((t - t0) / ms, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = (to * eased).toFixed(1);
+      if(p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function printReceipt(){
+    if(reduce){
+      rows.forEach(function(r){ r.classList.add("on"); });
+      struck.classList.add("on"); stamp.classList.add("on");
+      pctEl.textContent = TARGET_PCT.toFixed(1);
+      return;
+    }
+    rows.forEach(function(r){
+      setTimeout(function(){ r.classList.add("on"); }, 260 + Number(r.dataset.step) * 260);
+    });
+    setTimeout(function(){ struck.classList.add("on"); }, 900);
+    setTimeout(function(){ stamp.classList.add("on"); countUp(pctEl, TARGET_PCT, 700); }, 1350);
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", printReceipt);
+  } else { printReceipt(); }
+
+  /* ── savings estimator ── */
+  var MODEL = {
+    economy:  { retail: 950,   fees: 85,  points: 60000  },
+    premium:  { retail: 2100,  fees: 120, points: 90000  },
+    business: { retail: 5400,  fees: 180, points: 140000 },
+    first:    { retail: 11000, fees: 260, points: 220000 }
+  };
+  var cabin = "business";
+  var apt      = document.getElementById("apt");
+  var trips    = document.getElementById("trips");
+  var pax      = document.getElementById("pax");
+  var tripsVal = document.getElementById("tripsVal");
+  var paxVal   = document.getElementById("paxVal");
+  var seg      = document.getElementById("cabinSeg");
+
+  var usd0 = new Intl.NumberFormat("en-US", { style:"currency", currency:"USD", maximumFractionDigits:0 });
+  var int0 = new Intl.NumberFormat("en-US");
+
+  function buildTime(pts){
+    if(pts <= 120000)  return "3–6 months";
+    if(pts <= 280000)  return "6–12 months";
+    if(pts <= 500000)  return "12–18 months";
+    return "18–24 months";
+  }
+
+  function estimate(){
+    var m = MODEL[cabin];
+    var t = Number(trips.value), p = Number(pax.value);
+    var retail = m.retail * t * p;
+    var award  = m.fees   * t * p;
+    var pts    = m.points * t * p;
+    var saved  = retail - award;
+    var pct    = retail > 0 ? (saved / retail) * 100 : 0;
+
+    document.getElementById("oRetail").textContent = usd0.format(retail);
+    document.getElementById("oAward").textContent  = usd0.format(award);
+    document.getElementById("oPoints").textContent = int0.format(pts);
+    document.getElementById("oTime").textContent   = buildTime(pts);
+    document.getElementById("oSaved").textContent  = usd0.format(saved);
+    document.getElementById("oPct").textContent    =
+      pct.toFixed(1) + "% off retail, flying from " + (apt.value.toUpperCase() || "your home airport") + ".";
+
+    var flag = document.getElementById("oFlag");
+    var msg = "";
+    if(pts > 400000) msg = "That is a two-player household target. One person can't earn it alone in a year — the plan for this is built around a partner or a business earning alongside you.";
+    else if(pts > 240000) msg = "Reachable in a year, but only with the application order sequenced properly. This is exactly what step 03 exists for.";
+    if(msg){
+      flag.firstElementChild.textContent = msg;
+      flag.classList.remove("hidden");
+    } else {
+      flag.classList.add("hidden");
+    }
+  }
+
+  seg.addEventListener("click", function(e){
+    var b = e.target.closest("button[data-cabin]");
+    if(!b) return;
+    cabin = b.dataset.cabin;
+    seg.querySelectorAll("button").forEach(function(x){
+      x.setAttribute("aria-pressed", String(x === b));
+    });
+    estimate();
+  });
+  trips.addEventListener("input", function(){ tripsVal.textContent = trips.value; estimate(); });
+  pax.addEventListener("input",   function(){ paxVal.textContent   = pax.value;   estimate(); });
+  apt.addEventListener("input", estimate);
+  apt.addEventListener("blur", function(){ apt.value = apt.value.toUpperCase(); });
+  estimate();
+
+  /* carry the estimator answers into the qualifier */
+  document.getElementById("estCta").addEventListener("click", function(){
+    var f = document.getElementById("qFrom");
+    if(!f.value) f.value = apt.value.toUpperCase();
+  });
+
+  /* ── booking flow ── */
+  /* SWAP THESE TWO before launch. */
+  var BOOKING_URL = "https://calendly.com/your-handle/flight-plan";
+  var FORM_ENDPOINT = "";   /* e.g. a Formspree / Netlify Forms / your own POST URL */
+
+  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
+  function show(el, text, isErr){
+    el.textContent = text;
+    el.classList.remove("hidden");
+    el.classList.toggle("msg-err", !!isErr);
+  }
+
+  function post(payload){
+    if(!FORM_ENDPOINT) return Promise.resolve(false);
+    return fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.ok; }).catch(function(){ return false; });
+  }
+
+  var leadForm = document.getElementById("leadForm");
+  var leadMsg  = document.getElementById("leadMsg");
+  leadForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var email = document.getElementById("leadEmail").value;
+    if(!isEmail(email)){ show(leadMsg, "That email doesn't look right — check it and try again.", true); return; }
+    document.getElementById("gate1").classList.add("done");
+    show(leadMsg, "On its way. Check your inbox, and your spam folder once.", false);
+    document.getElementById("qEmail").value = email;
+    post({ type:"lead", email:email });
+  });
+
+  var qualForm = document.getElementById("qualForm");
+  var qualMsg  = document.getElementById("qualMsg");
+  var bookBtn  = document.getElementById("bookBtn");
+  var bookNote = document.getElementById("bookNote");
+  var qSummary = document.getElementById("qSummary");
+
+  qualForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var d = {
+      name:   document.getElementById("qName").value.trim(),
+      email:  document.getElementById("qEmail").value.trim(),
+      from:   document.getElementById("qFrom").value.trim().toUpperCase(),
+      to:     document.getElementById("qTo").value.trim(),
+      when:   document.getElementById("qWhen").value,
+      points: document.getElementById("qPoints").value,
+      notes:  document.getElementById("qNotes").value.trim()
+    };
+    if(!d.name){ show(qualMsg, "Add your name so I know who I'm meeting.", true); return; }
+    if(!isEmail(d.email)){ show(qualMsg, "That email doesn't look right — check it and try again.", true); return; }
+    if(!d.from){ show(qualMsg, "Add a home airport — it changes everything about the plan.", true); return; }
+    if(!d.to){ show(qualMsg, "Tell me roughly where you want to go. “Anywhere warm” is a valid answer.", true); return; }
+
+    document.getElementById("gate2").classList.add("done");
+    show(qualMsg, "Got it. Your booking link is open below.", false);
+    post({ type:"qualifier", data:d });
+
+    qSummary.innerHTML = "";
+    [d.from + " → " + d.to, d.when, d.points + " points", d.name].forEach(function(txt){
+      var s = document.createElement("span");
+      s.className = "chip";
+      s.textContent = txt;
+      qSummary.appendChild(s);
+    });
+    qSummary.classList.remove("hidden");
+
+    var url = BOOKING_URL
+      + "?name="  + encodeURIComponent(d.name)
+      + "&email=" + encodeURIComponent(d.email)
+      + "&a1="    + encodeURIComponent(d.from + " to " + d.to + " / " + d.when + " / " + d.points + " points"
+                                       + (d.notes ? " / " + d.notes : ""));
+    bookBtn.setAttribute("href", url);
+    bookBtn.setAttribute("target", "_blank");
+    bookBtn.setAttribute("rel", "noopener");
+    bookBtn.removeAttribute("aria-disabled");
+    bookNote.textContent = "Prefilled with your answers — pick any slot that works.";
+    document.getElementById("gate3").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  });
+})();
+</script>
+</body>
+</html>
