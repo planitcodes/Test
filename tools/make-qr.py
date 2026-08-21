@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Regenerate the QR code embedded in teaser.html.
 
-Usage:  python3 tools/make-qr.py https://your-real-booking-url
+Usage:  python3 tools/make-qr.py https://your-real-site-url
 
 Rewrites whatever sits between the <!--QR--> markers in teaser.html, so run
-this again any time the booking URL changes.
+this again any time that URL changes.
 """
 import re
 import sys
@@ -12,7 +12,7 @@ import pathlib
 
 import segno
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "https://calendly.com/your-handle/flight-plan"
+URL = sys.argv[1] if len(sys.argv) > 1 else "https://savvyaviator.com"
 TEASER = pathlib.Path(__file__).resolve().parent.parent / "teaser.html"
 
 qr = segno.make(URL, error="m")

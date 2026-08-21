@@ -211,13 +211,12 @@ section[id],header[id]{scroll-margin-top:5.5rem}
 .ctrl{display:flex; flex-direction:column; gap:.5rem}
 .ctrl-head{display:flex; justify-content:space-between; align-items:baseline; gap:1rem}
 .ctrl-val{font-family:var(--mono); font-size:.8rem; font-weight:600; color:var(--ink)}
-input[type="text"],input[type="email"],select,textarea{
+input[type="text"]{
   width:100%; font-family:var(--mono); font-size:.9rem; color:var(--ink);
   background:var(--coupon-2); border:1px solid var(--rule-2); border-radius:var(--r);
   padding:.72rem .8rem;
 }
-textarea{font-family:var(--body); resize:vertical; min-height:5.5rem}
-input::placeholder,textarea::placeholder{color:var(--ink-3)}
+input::placeholder{color:var(--ink-3)}
 input[type="range"]{width:100%; accent-color:var(--stamp); background:transparent}
 .seg{display:flex; gap:.4rem; flex-wrap:wrap}
 .seg button{
@@ -281,25 +280,14 @@ tfoot td{
 /* ── booking flow ───────────────────────────────────────── */
 .flow{display:flex; flex-direction:column; gap:1.2rem}
 .gate{padding:1.7rem; display:flex; flex-direction:column; gap:1.2rem}
-.gate-head{display:flex; align-items:center; gap:1rem; flex-wrap:wrap}
+.gate-head{display:flex; align-items:flex-start; gap:1rem}
+.gate-head .stack{flex:1; min-width:0}
 .gate-n{
   font-family:var(--mono); font-size:.68rem; font-weight:600; letter-spacing:.1em;
   width:1.9rem; height:1.9rem; display:grid; place-items:center; flex:none;
   border:1px solid var(--rule-2); border-radius:50%; color:var(--ink-2);
 }
-.gate.done .gate-n{background:var(--good); border-color:var(--good); color:var(--paper)}
-.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
-@media (max-width:720px){.form-grid{grid-template-columns:1fr}}
-.span-2{grid-column:1/-1}
-label{display:flex; flex-direction:column; gap:.4rem}
-.msg{font-family:var(--mono); font-size:.75rem; letter-spacing:.05em; color:var(--good)}
-.msg-err{color:var(--stamp)}
-.summary{display:flex; flex-wrap:wrap; gap:.5rem}
 .gate .btn{align-self:flex-start}
-.chip{
-  font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
-  border:1px solid var(--rule-2); border-radius:2px; padding:.3rem .55rem; color:var(--ink-2);
-}
 .hidden{display:none}
 
 /* ── faq ────────────────────────────────────────────────── */
@@ -691,94 +679,37 @@ label{display:flex; flex-direction:column; gap:.4rem}
   </div>
 
   <div class="flow">
-    <!-- step 1 -->
-    <div class="coupon gate" id="gate1">
+    <div class="coupon gate">
       <div class="gate-head">
         <span class="gate-n num">01</span>
         <div class="stack g-8">
           <h3>Take the playbook</h3>
-          <p class="note">The First 100,000 Points playbook plus the error-fare starter kit. No call required.</p>
+          <p class="note">The First 100,000 Points playbook plus the error-fare starter kit. Leave an email and it comes straight back to you &mdash; no call, no obligation.</p>
         </div>
       </div>
-      <form class="form-grid" id="leadForm" novalidate>
-        <label class="span-2">
-          <span class="field">Email</span>
-          <input type="email" id="leadEmail" placeholder="you@example.com" required autocomplete="email">
-        </label>
-        <div class="span-2 stack g-12">
-          <button class="btn btn-primary" type="submit">Send me the playbook</button>
-          <span class="msg hidden" id="leadMsg"></span>
-        </div>
-      </form>
+      <a class="btn btn-primary" id="playbookBtn" href="#book" target="_blank" rel="noopener">Send me the playbook</a>
     </div>
 
-    <!-- step 2 -->
-    <div class="coupon gate" id="gate2">
+    <div class="coupon gate">
       <div class="gate-head">
         <span class="gate-n num">02</span>
         <div class="stack g-8">
           <h3>Tell me where you're trying to go</h3>
-          <p class="note">This is what makes the call useful. I read every one of these before we speak.</p>
+          <p class="note">Six questions, about a minute: home airport, where you want to go, when, and what you're holding today. I read every one of these before we speak &mdash; it's the difference between a chat and a plan.</p>
         </div>
       </div>
-      <form class="form-grid" id="qualForm" novalidate>
-        <label>
-          <span class="field">Name</span>
-          <input type="text" id="qName" placeholder="First and last" required autocomplete="name">
-        </label>
-        <label>
-          <span class="field">Email</span>
-          <input type="email" id="qEmail" placeholder="you@example.com" required autocomplete="email">
-        </label>
-        <label>
-          <span class="field">Home airport</span>
-          <input type="text" id="qFrom" maxlength="4" placeholder="JFK" required autocomplete="off">
-        </label>
-        <label>
-          <span class="field">Where you want to go</span>
-          <input type="text" id="qTo" placeholder="Tokyo, or &ldquo;anywhere warm&rdquo;" required autocomplete="off">
-        </label>
-        <label>
-          <span class="field">When</span>
-          <select id="qWhen">
-            <option>Next 3 months</option>
-            <option selected>3&ndash;9 months out</option>
-            <option>Next year</option>
-            <option>Dates are flexible &mdash; chasing the fare</option>
-          </select>
-        </label>
-        <label>
-          <span class="field">Points you hold today</span>
-          <select id="qPoints">
-            <option>None yet</option>
-            <option>Under 50,000</option>
-            <option selected>50,000 &ndash; 150,000</option>
-            <option>150,000 &ndash; 400,000</option>
-            <option>Over 400,000</option>
-          </select>
-        </label>
-        <label class="span-2">
-          <span class="field">Anything I should know</span>
-          <textarea id="qNotes" placeholder="Credit situation, must-have dates, who's travelling, what you've already tried."></textarea>
-        </label>
-        <div class="span-2 stack g-12">
-          <button class="btn btn-primary" type="submit">Send and pick a time</button>
-          <span class="msg hidden" id="qualMsg"></span>
-        </div>
-      </form>
+      <a class="btn btn-primary" id="qualifierBtn" href="#book" target="_blank" rel="noopener">Open the questionnaire</a>
     </div>
 
-    <!-- step 3 -->
-    <div class="coupon gate" id="gate3">
+    <div class="coupon gate">
       <div class="gate-head">
         <span class="gate-n num">03</span>
         <div class="stack g-8">
           <h3>Pick a time</h3>
-          <p class="note" id="bookNote">Complete step 02 and your booking link opens here, prefilled.</p>
+          <p class="note">Any slot that works for you. Do step 02 first if you can &mdash; I'll have read it by the time we're on the call.</p>
         </div>
       </div>
-      <div class="summary hidden" id="qSummary"></div>
-      <a class="btn btn-primary" id="bookBtn" href="#book" aria-disabled="true">Open the calendar</a>
+      <a class="btn btn-primary" id="bookBtn" href="#book" target="_blank" rel="noopener">Open the calendar</a>
     </div>
   </div>
 </section>
@@ -966,92 +897,69 @@ label{display:flex; flex-direction:column; gap:.4rem}
   apt.addEventListener("blur", function(){ apt.value = apt.value.toUpperCase(); });
   estimate();
 
-  /* carry the estimator answers into the qualifier */
-  document.getElementById("estCta").addEventListener("click", function(){
-    var f = document.getElementById("qFrom");
-    if(!f.value) f.value = apt.value.toUpperCase();
-  });
+  /* ═══════════════════════════════════════════════════════════════
+     SWAP THESE BEFORE LAUNCH
 
-  /* ── booking flow ── */
-  /* SWAP THESE TWO before launch. */
-  var BOOKING_URL = "https://calendly.com/your-handle/flight-plan";
-  var FORM_ENDPOINT = "";   /* e.g. a Formspree / Netlify Forms / your own POST URL */
+     1. PLAYBOOK_FORM  — a Google Form asking only for an email.
+     2. QUALIFIER_FORM — the Google Form with the six questions.
+     3. BOOKING_URL    — your Cal.com booking link.
 
-  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
-  function show(el, text, isErr){
-    el.textContent = text;
-    el.classList.remove("hidden");
-    el.classList.toggle("msg-err", !!isErr);
+     Use each form's "Send" button, copy the link, paste it here.
+     Until they're swapped, the three buttons stay visibly disabled
+     rather than sending anyone to a dead page.
+     ═══════════════════════════════════════════════════════════════ */
+  var PLAYBOOK_FORM  = "";
+  var QUALIFIER_FORM = "";
+  var BOOKING_URL    = "";
+
+  /* Optional — carries the estimator answers into the questionnaire so
+     people don't retype them. In your Google Form, click the three-dot
+     menu > "Get pre-filled link", fill in dummy answers, hit "Get link",
+     and read the entry.NNNNN ids out of the URL it gives you.
+     Leave these as-is and the form simply opens blank. */
+  var PREFILL = {
+    airport: "",   /* e.g. "entry.1234567890" */
+    cabin:   "",
+    trips:   ""
+  };
+
+  function wire(el, url){
+    if(!el) return;
+    if(!url){
+      el.setAttribute("aria-disabled", "true");
+      el.removeAttribute("target");
+      return;
+    }
+    el.setAttribute("href", url);
+    el.removeAttribute("aria-disabled");
   }
 
-  function post(payload){
-    if(!FORM_ENDPOINT) return Promise.resolve(false);
-    return fetch(FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(payload)
-    }).then(function(r){ return r.ok; }).catch(function(){ return false; });
+  wire(document.getElementById("playbookBtn"), PLAYBOOK_FORM);
+  wire(document.getElementById("bookBtn"),     BOOKING_URL);
+
+  /* the questionnaire link is rebuilt whenever the estimator changes */
+  var qualifierBtn = document.getElementById("qualifierBtn");
+  function qualifierUrl(){
+    if(!QUALIFIER_FORM) return "";
+    var params = [];
+    if(PREFILL.airport) params.push(PREFILL.airport + "=" + encodeURIComponent(apt.value.toUpperCase()));
+    if(PREFILL.cabin)   params.push(PREFILL.cabin   + "=" + encodeURIComponent(cabin));
+    if(PREFILL.trips)   params.push(PREFILL.trips   + "=" + encodeURIComponent(trips.value));
+    if(!params.length) return QUALIFIER_FORM;
+    return QUALIFIER_FORM
+         + (QUALIFIER_FORM.indexOf("?") === -1 ? "?" : "&")
+         + "usp=pp_url&" + params.join("&");
   }
+  function refreshQualifier(){ wire(qualifierBtn, qualifierUrl()); }
+  refreshQualifier();
 
-  var leadForm = document.getElementById("leadForm");
-  var leadMsg  = document.getElementById("leadMsg");
-  leadForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    var email = document.getElementById("leadEmail").value;
-    if(!isEmail(email)){ show(leadMsg, "That email doesn't look right — check it and try again.", true); return; }
-    document.getElementById("gate1").classList.add("done");
-    show(leadMsg, "On its way. Check your inbox, and your spam folder once.", false);
-    document.getElementById("qEmail").value = email;
-    post({ type:"lead", email:email });
+  /* estimator inputs feed the prefill */
+  [apt, trips, pax].forEach(function(el){
+    el.addEventListener("input", refreshQualifier);
   });
+  seg.addEventListener("click", refreshQualifier);
 
-  var qualForm = document.getElementById("qualForm");
-  var qualMsg  = document.getElementById("qualMsg");
-  var bookBtn  = document.getElementById("bookBtn");
-  var bookNote = document.getElementById("bookNote");
-  var qSummary = document.getElementById("qSummary");
-
-  qualForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    var d = {
-      name:   document.getElementById("qName").value.trim(),
-      email:  document.getElementById("qEmail").value.trim(),
-      from:   document.getElementById("qFrom").value.trim().toUpperCase(),
-      to:     document.getElementById("qTo").value.trim(),
-      when:   document.getElementById("qWhen").value,
-      points: document.getElementById("qPoints").value,
-      notes:  document.getElementById("qNotes").value.trim()
-    };
-    if(!d.name){ show(qualMsg, "Add your name so I know who I'm meeting.", true); return; }
-    if(!isEmail(d.email)){ show(qualMsg, "That email doesn't look right — check it and try again.", true); return; }
-    if(!d.from){ show(qualMsg, "Add a home airport — it changes everything about the plan.", true); return; }
-    if(!d.to){ show(qualMsg, "Tell me roughly where you want to go. “Anywhere warm” is a valid answer.", true); return; }
-
-    document.getElementById("gate2").classList.add("done");
-    show(qualMsg, "Got it. Your booking link is open below.", false);
-    post({ type:"qualifier", data:d });
-
-    qSummary.innerHTML = "";
-    [d.from + " → " + d.to, d.when, d.points + " points", d.name].forEach(function(txt){
-      var s = document.createElement("span");
-      s.className = "chip";
-      s.textContent = txt;
-      qSummary.appendChild(s);
-    });
-    qSummary.classList.remove("hidden");
-
-    var url = BOOKING_URL
-      + "?name="  + encodeURIComponent(d.name)
-      + "&email=" + encodeURIComponent(d.email)
-      + "&a1="    + encodeURIComponent(d.from + " to " + d.to + " / " + d.when + " / " + d.points + " points"
-                                       + (d.notes ? " / " + d.notes : ""));
-    bookBtn.setAttribute("href", url);
-    bookBtn.setAttribute("target", "_blank");
-    bookBtn.setAttribute("rel", "noopener");
-    bookBtn.removeAttribute("aria-disabled");
-    bookNote.textContent = "Prefilled with your answers — pick any slot that works.";
-    document.getElementById("gate3").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
-  });
+  document.getElementById("estCta").addEventListener("click", refreshQualifier);
 })();
 </script>
 </body>

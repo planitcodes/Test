@@ -9,38 +9,48 @@ host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).
 
 | What | Where |
 | --- | --- |
-| Booking URL | `BOOKING_URL` in the script, near the bottom |
-| Form endpoint | `FORM_ENDPOINT` in the script (empty = forms validate but don't send) |
+| Playbook form | `PLAYBOOK_FORM` in the script (a Google Form asking only for an email) |
+| Questionnaire form | `QUALIFIER_FORM` in the script (the six-question Google Form) |
+| Booking link | `BOOKING_URL` in the script (your Cal.com link) |
 | Prices — $249 / $29 / 15% | `#work` section |
 | Domain | `savvyaviator.com` in the teaser CTA band — confirm you own it |
 | Testimonials | `#proof` — three slots marked with a dashed `PLACEHOLDER` chip |
 | Affiliate disclosure | footer — edit to match your actual arrangements |
 
-## Wiring up the forms
+## Wiring up the three steps
 
-`FORM_ENDPOINT` takes any URL that accepts a JSON `POST`. Formspree, Netlify
-Forms, Basin, or your own handler all work:
+The booking section is three link-outs, configured at the top of the script:
 
 ```js
-var FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx";
+var PLAYBOOK_FORM  = "https://forms.gle/...";                    // step 01
+var QUALIFIER_FORM = "https://docs.google.com/forms/d/e/.../viewform";  // step 02
+var BOOKING_URL    = "https://cal.com/your-handle/flight-plan";  // step 03
 ```
 
-Two payload shapes are sent:
+Any left empty renders its button visibly disabled, so nobody is ever sent to a
+dead link. Fill them in and the buttons activate on their own.
 
-```jsonc
-{ "type": "lead",      "email": "..." }                 // step 01
-{ "type": "qualifier", "data": { "name": "...", ... } } // step 02
+Why link out rather than post from the page: Google Forms sends no CORS headers,
+so an in-page submission fails silently — you would never know a lead vanished.
+A new tab always works.
+
+### Carrying the estimator into the questionnaire
+
+Optionally, the estimator's answers can prefill the Google Form so people don't
+retype them. In your form, open the three-dot menu → **Get pre-filled link**,
+fill in dummy answers, click **Get link**, and read the `entry.NNNNN` ids out of
+the URL it produces:
+
+```js
+var PREFILL = {
+  airport: "entry.1234567890",
+  cabin:   "entry.0987654321",
+  trips:   "entry.1122334455"
+};
 ```
 
-Leave it empty and the forms still validate, still advance, and still build the
-prefilled booking link — nothing is transmitted.
-
-## The booking prefill
-
-On submitting step 02, the qualifier answers are appended to `BOOKING_URL` as
-`name`, `email`, and `a1` — the parameter names Calendly uses for prefill. Cal.com
-uses the same convention. If your scheduler differs, edit the `url` builder in
-the qualifier submit handler.
+Leave them empty and the form just opens blank. The questionnaire link rebuilds
+itself whenever someone moves an estimator control.
 
 ## The ledger
 
@@ -98,13 +108,14 @@ chrome --headless --print-to-pdf=savvyaviator-teaser.pdf \
 
 ## The QR code
 
-The QR in the call-to-action band encodes the booking URL. It's inline SVG —
+The QR in the call-to-action band encodes your site URL, so a scan lands on
+the full page and the reader picks a step from there. It's inline SVG —
 no external assets, prints crisp at any size. Regenerate it whenever that URL
 changes:
 
 ```sh
 pip install segno
-python3 tools/make-qr.py https://your-real-booking-url
+python3 tools/make-qr.py https://your-real-site-url
 ```
 
 The script rewrites whatever sits between the `<!--QR-->` markers in
