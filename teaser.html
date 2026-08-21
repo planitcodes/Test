@@ -107,6 +107,7 @@ thead th{
 }
 tbody td{font-family:var(--mono); font-size:8pt; font-variant-numeric:tabular-nums}
 tbody tr:last-child td{border-bottom:0}
+tfoot td{font-family:var(--mono); font-size:8pt; font-weight:600; font-variant-numeric:tabular-nums; border-top:1px solid var(--rule-2); border-bottom:0}
 .route{font-weight:600}
 .cash{color:var(--ink-3); text-decoration:line-through}
 .saved{color:var(--good); font-weight:600}
@@ -201,50 +202,53 @@ tbody tr:last-child td{border-bottom:0}
     <div class="receipt">
       <div class="receipt-head">
         <span class="field">Passenger coupon</span>
-        <span class="field field-b">Not valid for travel</span>
+        <span class="field field-b">LX 22 &middot; Aeroplan</span>
       </div>
       <div class="perf"></div>
       <div class="receipt-body">
         <div class="rgrid">
-          <div><span class="field">From</span><strong>JFK</strong></div>
-          <div><span class="field">To</span><strong>HND</strong></div>
+          <div><span class="field">From</span><strong>GVA</strong></div>
+          <div><span class="field">To</span><strong>JFK</strong></div>
           <div><span class="field">Cabin</span><strong>Business</strong></div>
-          <div><span class="field">Pax</span><strong>2</strong></div>
+          <div><span class="field">Carrier</span><strong>Swiss</strong></div>
         </div>
         <div>
-          <div class="frow"><span class="k">Retail fare, 2 pax</span><span class="v struck">$6,842.00</span></div>
-          <div class="frow"><span class="k">Points applied</span><span class="v">240,000</span></div>
-          <div class="frow"><span class="k">Taxes &amp; carrier fees</span><span class="v">$87.40</span></div>
+          <div class="frow"><span class="k">Retail fare, one way</span><span class="v struck">$6,244.00</span></div>
+          <div class="frow"><span class="k">Aeroplan points</span><span class="v">60,000</span></div>
+          <div class="frow"><span class="k">Taxes &amp; carrier fees</span><span class="v">$5.00</span></div>
         </div>
         <div class="total">
           <div>
             <span class="field">Cash out of pocket</span>
-            <div class="v" style="margin-top:1.4mm">$87.40</div>
+            <div class="v" style="margin-top:1.4mm">$5.00</div>
           </div>
-          <span class="badge">Saved 98.7%</span>
+          <span class="badge">Saved 99.9%</span>
         </div>
       </div>
       <div class="perf"></div>
       <div class="receipt-foot">
-        <span class="field">Cost per point &mdash; 2.81&cent;</span>
-        <span class="field">Booked 41 days out</span>
+        <span class="field">Value per point &mdash; 10.40&cent;</span>
+        <span class="field">Flown 7 Aug 2026</span>
       </div>
     </div>
   </section>
 
   <section class="block">
-    <span class="field field-b">The ledger &mdash; priced against what the same seat cost in cash that day</span>
+    <span class="field field-b">The ledger &mdash; four confirmed bookings, every one in business class</span>
     <div class="table-scroll">
     <table>
       <thead>
-        <tr><th style="width:27%">Route</th><th style="width:13%">Cabin</th><th style="width:14%">Retail</th><th style="width:16%">Points</th><th style="width:14%">Paid</th><th style="width:16%">Saved</th></tr>
+        <tr><th style="width:22%">Route</th><th style="width:22%">Program</th><th style="width:13%">Retail</th><th style="width:15%">Points</th><th style="width:13%">Paid</th><th style="width:15%">Saved</th></tr>
       </thead>
       <tbody>
-        <tr><td class="route">JFK &rarr; HND</td><td>Business</td><td class="cash">$3,421</td><td>120,000</td><td>$43.70</td><td class="saved">$3,377</td></tr>
-        <tr><td class="route">ORD &rarr; DOH &rarr; CPT</td><td>Business</td><td class="cash">$5,190</td><td>142,000</td><td>$118.20</td><td class="saved">$5,072</td></tr>
-        <tr><td class="route">SFO &rarr; ZRH</td><td>First</td><td class="cash">$8,975</td><td>176,000</td><td>$5.60</td><td class="saved">$8,969</td></tr>
-        <tr><td class="route">BOS &rarr; LIS &mdash; error fare</td><td>Business</td><td class="cash">$2,860</td><td>&mdash;</td><td>$412.00</td><td class="saved">$2,448</td></tr>
+        <tr><td class="route">JFK &rarr; BCN</td><td>Alaska &rarr; AA</td><td class="cash">$8,844</td><td>55,000</td><td>$50.00</td><td class="saved">$8,794</td></tr>
+        <tr><td class="route">GVA &rarr; JFK</td><td>Aeroplan &rarr; Swiss</td><td class="cash">$6,244</td><td>60,000</td><td>$5.00</td><td class="saved">$6,239</td></tr>
+        <tr><td class="route">HND &rarr; SFO</td><td>AAdvantage &rarr; JAL</td><td class="cash">$4,800</td><td>60,000</td><td>$45.00</td><td class="saved">$4,755</td></tr>
+        <tr><td class="route">DOH &rarr; SFO</td><td>Qatar Avios &rarr; QR</td><td class="cash">$4,113</td><td>53,846</td><td>$93.41</td><td class="saved">$4,020</td></tr>
       </tbody>
+      <tfoot>
+        <tr><td class="route">Four bookings</td><td>&mdash;</td><td class="cash">$24,001</td><td>228,846</td><td>$193.41</td><td class="saved">$23,808</td></tr>
+      </tfoot>
     </table>
     </div>
   </section>
