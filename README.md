@@ -56,3 +56,53 @@ what you can deliver.
   nav's **Theme** button overrides it (persisted to `localStorage`).
 - Fonts load from Google Fonts. Self-host them if you need the page to work offline.
 - Animation is skipped entirely under `prefers-reduced-motion`.
+
+---
+
+# Teaser one-pager
+
+`teaser.html` is a single-page leave-behind for prospective clients — same
+visual identity, condensed to one A4 sheet. `award-desk-teaser.pdf` is the
+rendered output, ready to attach to an email.
+
+Send it two ways: attach the PDF, or link the page and let them hit
+**Save as PDF** themselves.
+
+## Regenerating the PDF
+
+Open `teaser.html` in a browser and use the **Save as PDF** button (bottom
+right — screen only, never printed). Set margins to *None*; the page carries
+its own. Or headlessly, with Chrome:
+
+```sh
+chrome --headless --print-to-pdf=award-desk-teaser.pdf \
+       --no-pdf-header-footer teaser.html
+```
+
+## The QR code
+
+The QR in the call-to-action band encodes the booking URL. It's inline SVG —
+no external assets, prints crisp at any size. Regenerate it whenever that URL
+changes:
+
+```sh
+pip install segno
+python3 tools/make-qr.py https://your-real-booking-url
+```
+
+The script rewrites whatever sits between the `<!--QR-->` markers in
+`teaser.html`. Re-export the PDF afterwards.
+
+## Swap before sending
+
+Same list as the landing page — brand name, prices, ledger rows — plus the
+`awarddesk.com` display URL in the CTA band. The teaser deliberately carries
+**no testimonials**: it goes out before you have any. Add a fourth column of
+quotes once the slots on the landing page are filled.
+
+## Design note
+
+The teaser commits to the light ticket-stock palette in both themes, on
+purpose — it is a printed object, and a dark-mode variant would waste toner and
+look wrong on paper. Only the backdrop behind the sheet follows the viewer's
+theme.

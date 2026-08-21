@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Award Desk Teaser</title>
+<meta name="description" content="A one-page introduction to Award Desk — what it costs to fly long-haul on points and mistake fares, and the three ways to work together.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   A one-page leave-behind. This is a printed object, so it
+   commits to the ticket-stock look in both themes on purpose —
+   every colour is painted explicitly, nothing is inherited.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --paper:#EFF2EC; --coupon:#F8FAF5; --coupon-2:#FDFEFB;
+  --ink:#14201A; --ink-2:#47564F; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#A2B2A1;
+  --stamp:#C33A12; --stamp-ink:#FFF7F3; --stamp-wash:rgba(195,58,18,.09);
+  --good:#1B6244;
+  --backdrop:#D8DED6;
+  --display:"Archivo","Archivo Black",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --backdrop:#171C19; } }
+:root[data-theme="dark"]{ --backdrop:#171C19; }
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--backdrop); color:var(--ink);
+  font-family:var(--body); -webkit-font-smoothing:antialiased;
+  display:flex; justify-content:center; padding:24px 16px;
+}
+
+/* the sheet — exact A4 so print and screen agree */
+.sheet{
+  width:210mm; height:297mm; padding:11mm 12mm 9mm;
+  background:var(--paper);
+  display:flex; flex-direction:column; gap:6mm;
+  box-shadow:0 24px 60px -28px rgba(0,0,0,.6);
+}
+@media (max-width:230mm){
+  body{padding:12px 0}
+  .sheet{width:100%; height:auto; padding:8mm 6mm; box-shadow:none; overflow:visible}
+}
+
+h1,h2,h3{font-family:var(--display); margin:0; line-height:1.02; text-wrap:balance; letter-spacing:-.015em}
+p{margin:0}
+.field{
+  font-family:var(--mono); font-size:6.2pt; font-weight:500;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--ink-3);
+}
+.field-b{color:var(--stamp)}
+.num{font-variant-numeric:tabular-nums}
+.perf{height:1.6px; background:repeating-linear-gradient(90deg,var(--rule-2) 0 3.5px,transparent 3.5px 9px)}
+
+/* ── letterhead ── */
+.head{display:flex; justify-content:space-between; align-items:flex-end; gap:8mm}
+.brand{display:flex; align-items:baseline; gap:2mm}
+.brand-mark{font-family:var(--display); font-weight:900; font-stretch:122%; font-size:13pt; text-transform:uppercase}
+.brand-code{
+  font-family:var(--mono); font-size:6pt; letter-spacing:.18em;
+  background:var(--stamp); color:var(--stamp-ink); padding:.7mm 1.4mm; border-radius:1px;
+}
+
+/* ── hero ── */
+.hero{display:grid; grid-template-columns:1.06fr .94fr; gap:7mm; align-items:start}
+.hero h1{font-size:22.5pt; font-weight:800; font-stretch:116%}
+.hero h1 em{font-style:normal; color:var(--stamp)}
+.lede{font-size:9pt; line-height:1.45; color:var(--ink-2); margin-top:3mm}
+.ticks{display:flex; flex-direction:column; gap:1.3mm; margin-top:3.2mm}
+.tick{display:flex; gap:2.2mm; font-size:8.8pt; line-height:1.35; color:var(--ink)}
+.tick::before{content:"→"; color:var(--stamp); font-family:var(--mono); font-size:8pt; flex:none}
+
+/* receipt */
+.receipt{background:var(--coupon); border:1px solid var(--rule); border-radius:2px}
+.receipt-head{display:flex; justify-content:space-between; align-items:center; gap:4mm; padding:2.6mm 3.4mm}
+.receipt-body{padding:3.4mm; display:flex; flex-direction:column; gap:3.4mm}
+.rgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:2.6mm 1.5mm}
+.rgrid > div{display:flex; flex-direction:column; gap:.7mm; min-width:0}
+.rgrid strong{font-family:var(--mono); font-size:8.6pt; font-weight:600; overflow-wrap:anywhere}
+.frow{display:flex; justify-content:space-between; align-items:baseline; gap:3mm; padding:1.5mm 0; border-bottom:1px dotted var(--rule-2)}
+.frow .k{font-family:var(--mono); font-size:6.4pt; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2)}
+.frow .v{font-family:var(--mono); font-size:8.6pt; font-weight:600; font-variant-numeric:tabular-nums}
+.struck{color:var(--ink-3); text-decoration:line-through; text-decoration-color:var(--stamp); text-decoration-thickness:1.4px}
+.total{display:flex; justify-content:space-between; align-items:flex-end; gap:3mm; padding-top:1.5mm}
+.total .v{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:21pt; line-height:.88; font-variant-numeric:tabular-nums}
+.badge{
+  border:1.4px solid var(--stamp); color:var(--stamp); transform:rotate(-6deg);
+  font-family:var(--mono); font-size:6.6pt; font-weight:600; letter-spacing:.09em;
+  padding:1mm 1.8mm; border-radius:1px; text-transform:uppercase; white-space:nowrap;
+}
+.receipt-foot{padding:2.2mm 3.4mm; display:flex; justify-content:space-between; gap:4mm}
+
+/* ── ledger ── */
+.block{display:flex; flex-direction:column; gap:2.6mm; min-width:0}
+table{border-collapse:collapse; width:100%; table-layout:fixed}
+th,td{text-align:right; padding:1.35mm 2mm; border-bottom:1px dotted var(--rule-2); white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{
+  font-family:var(--mono); font-size:6pt; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:500; border-bottom:1px solid var(--rule-2);
+}
+tbody td{font-family:var(--mono); font-size:8pt; font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:0}
+.route{font-weight:600}
+.cash{color:var(--ink-3); text-decoration:line-through}
+.saved{color:var(--good); font-weight:600}
+
+/* ── tiers ── */
+.tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:3mm}
+.tier{
+  background:var(--coupon); border:1px solid var(--rule); border-radius:2px;
+  padding:3mm; display:flex; flex-direction:column; gap:2.2mm;
+}
+.tier-feat{border:1.6px solid var(--stamp)}
+.tier h3{font-size:10.5pt; font-weight:800; font-stretch:110%}
+.price{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:15pt; line-height:.9; font-variant-numeric:tabular-nums}
+.price span{font-family:var(--mono); font-size:6pt; font-weight:500; letter-spacing:.1em; color:var(--ink-3); display:block; margin-top:1.2mm; text-transform:uppercase}
+.tier p{font-size:8.2pt; line-height:1.4; color:var(--ink-2)}
+
+/* ── cta ── */
+.cta{
+  margin-top:auto; background:var(--ink); color:var(--paper); border-radius:2px;
+  padding:4.2mm 5mm; display:grid; grid-template-columns:1fr auto; gap:6mm; align-items:center;
+}
+.cta h2{font-size:14pt; font-weight:800; font-stretch:114%; color:var(--paper)}
+.cta p{font-size:8.6pt; line-height:1.45; color:#B9C6BC; margin-top:2mm; max-width:105mm}
+.cta-url{
+  font-family:var(--mono); font-size:8.4pt; font-weight:600; color:var(--paper);
+  margin-top:3mm; display:inline-block; border-bottom:1.4px solid var(--stamp); padding-bottom:.8mm;
+}
+.qr-wrap{display:flex; flex-direction:column; align-items:center; gap:1.8mm}
+.qr{width:23mm; height:23mm; display:block; background:var(--paper); padding:1.4mm; border-radius:1px}
+.qr-cap{font-family:var(--mono); font-size:5.6pt; letter-spacing:.14em; text-transform:uppercase; color:#B9C6BC}
+
+.foot{display:flex; justify-content:space-between; gap:6mm; align-items:flex-start}
+.foot p{font-size:6.4pt; line-height:1.5; color:var(--ink-3); max-width:135mm}
+
+/* screen-only helper bar — never printed */
+.toolbar{
+  position:fixed; right:16px; bottom:16px; display:flex; gap:8px; z-index:5;
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+}
+.toolbar button{
+  font:inherit; cursor:pointer; padding:9px 13px; border-radius:2px;
+  background:var(--ink); color:var(--paper); border:1px solid var(--ink);
+}
+.toolbar button:hover{background:var(--stamp); border-color:var(--stamp)}
+:focus-visible{outline:2px solid var(--stamp); outline-offset:3px}
+
+@media (max-width:760px){
+  .hero,.tiers,.cta{grid-template-columns:1fr}
+  .cta{gap:5mm}
+  .qr-wrap{align-items:flex-start}
+  .table-scroll{overflow-x:auto; min-width:0}
+  .cta p{max-width:none}
+  table{min-width:150mm}
+  .foot{flex-direction:column; gap:3mm}
+  .foot p{max-width:none}
+}
+
+@page{ size:A4; margin:0 }
+@media print{
+  body{background:#fff; padding:0; display:block}
+  .sheet{width:auto; height:296mm; box-shadow:none; padding:11mm 12mm 9mm; overflow:hidden}
+  .toolbar{display:none}
+  .cta{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<article class="sheet">
+
+  <header class="head">
+    <div class="brand">
+      <span class="brand-mark">Award Desk</span>
+      <span class="brand-code">AWD</span>
+    </div>
+    <span class="field">The fare desk for people who refuse to pay retail</span>
+  </header>
+  <div class="perf"></div>
+
+  <section class="hero">
+    <div>
+      <span class="field field-b">Points &middot; Miles &middot; Mistake fares</span>
+      <h1 style="margin-top:3mm">Business class isn't expensive. It's just <em>priced for people who pay cash.</em></h1>
+      <p class="lede">Two engines run side by side. Points and miles build the trip you plan on taking &mdash; the cabin you asked for, on dates you chose. Fare intelligence catches the pricing mistakes that surface without warning and close within hours. Most people run neither. Almost nobody runs both.</p>
+      <div class="ticks">
+        <span class="tick">No prior points required &mdash; the majority of a first trip comes from bonuses, not spend</span>
+        <span class="tick">Works from any home airport, and positioning is part of the plan</span>
+        <span class="tick">You keep control of your points; nothing transfers until a seat is confirmed</span>
+      </div>
+    </div>
+
+    <div class="receipt">
+      <div class="receipt-head">
+        <span class="field">Passenger coupon</span>
+        <span class="field field-b">Not valid for travel</span>
+      </div>
+      <div class="perf"></div>
+      <div class="receipt-body">
+        <div class="rgrid">
+          <div><span class="field">From</span><strong>JFK</strong></div>
+          <div><span class="field">To</span><strong>HND</strong></div>
+          <div><span class="field">Cabin</span><strong>Business</strong></div>
+          <div><span class="field">Pax</span><strong>2</strong></div>
+        </div>
+        <div>
+          <div class="frow"><span class="k">Retail fare, 2 pax</span><span class="v struck">$6,842.00</span></div>
+          <div class="frow"><span class="k">Points applied</span><span class="v">240,000</span></div>
+          <div class="frow"><span class="k">Taxes &amp; carrier fees</span><span class="v">$87.40</span></div>
+        </div>
+        <div class="total">
+          <div>
+            <span class="field">Cash out of pocket</span>
+            <div class="v" style="margin-top:1.4mm">$87.40</div>
+          </div>
+          <span class="badge">Saved 98.7%</span>
+        </div>
+      </div>
+      <div class="perf"></div>
+      <div class="receipt-foot">
+        <span class="field">Cost per point &mdash; 2.81&cent;</span>
+        <span class="field">Booked 41 days out</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <span class="field field-b">The ledger &mdash; priced against what the same seat cost in cash that day</span>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th style="width:27%">Route</th><th style="width:13%">Cabin</th><th style="width:14%">Retail</th><th style="width:16%">Points</th><th style="width:14%">Paid</th><th style="width:16%">Saved</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="route">JFK &rarr; HND</td><td>Business</td><td class="cash">$3,421</td><td>120,000</td><td>$43.70</td><td class="saved">$3,377</td></tr>
+        <tr><td class="route">ORD &rarr; DOH &rarr; CPT</td><td>Business</td><td class="cash">$5,190</td><td>142,000</td><td>$118.20</td><td class="saved">$5,072</td></tr>
+        <tr><td class="route">SFO &rarr; ZRH</td><td>First</td><td class="cash">$8,975</td><td>176,000</td><td>$5.60</td><td class="saved">$8,969</td></tr>
+        <tr><td class="route">BOS &rarr; LIS &mdash; error fare</td><td>Business</td><td class="cash">$2,860</td><td>&mdash;</td><td>$412.00</td><td class="saved">$2,448</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <span class="field field-b">Three ways to work together</span>
+    <div class="tiers">
+      <div class="tier">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:2mm">
+          <div><span class="field">Tier 01</span><h3 style="margin-top:1.4mm">Flight Plan</h3></div>
+          <div class="price">$249<span>One call</span></div>
+        </div>
+        <p>A 75-minute working session. Full audit of your balances, cards and credit profile, then a route and cabin strategy for the trip you actually want &mdash; written up, recorded, yours to keep.</p>
+      </div>
+      <div class="tier tier-feat">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:2mm">
+          <div><span class="field field-b">Tier 02 &middot; Popular</span><h3 style="margin-top:1.4mm">The Desk</h3></div>
+          <div class="price">$29<span>Per month</span></div>
+        </div>
+        <p>The live room. Mistake fares and premium award space called the hour they break, a private community to ask before you burn points, and a monthly devaluation brief.</p>
+      </div>
+      <div class="tier">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:2mm">
+          <div><span class="field">Tier 03</span><h3 style="margin-top:1.4mm">Booked For You</h3></div>
+          <div class="price">15%<span>Of savings</span></div>
+        </div>
+        <p>For the trip you can't afford to get wrong. I hunt the space, build the routing, you approve and I ticket. Billed against savings actually delivered &mdash; or it's nothing.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div>
+      <h2>Start with the free step.</h2>
+      <p>Take the First 100,000 Points playbook, tell me where you're trying to go, and pick a time. It takes about a minute and costs nothing to find out whether this works for your situation.</p>
+      <span class="cta-url">awarddesk.com</span>
+    </div>
+    <div class="qr-wrap">
+      <!--QR--><svg class="qr" viewBox="0 0 33 33" role="img" aria-label="Scan to book a call" shape-rendering="crispEdges"><rect width="33" height="33" fill="var(--paper)"/><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM14 0h1v1h-1zM15 0h1v1h-1zM16 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM21 0h1v1h-1zM23 0h1v1h-1zM26 0h1v1h-1zM27 0h1v1h-1zM28 0h1v1h-1zM29 0h1v1h-1zM30 0h1v1h-1zM31 0h1v1h-1zM32 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM14 1h1v1h-1zM15 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM24 1h1v1h-1zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM18 2h1v1h-1zM19 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM23 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM18 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM23 3h1v1h-1zM24 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM29 3h1v1h-1zM30 3h1v1h-1zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM15 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM21 4h1v1h-1zM23 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM29 4h1v1h-1zM30 4h1v1h-1zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM15 5h1v1h-1zM18 5h1v1h-1zM21 5h1v1h-1zM22 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM29 6h1v1h-1zM30 6h1v1h-1zM31 6h1v1h-1zM32 6h1v1h-1zM9 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM21 7h1v1h-1zM24 7h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM22 8h1v1h-1zM23 8h1v1h-1zM24 8h1v1h-1zM27 8h1v1h-1zM28 8h1v1h-1zM32 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM7 9h1v1h-1zM9 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM23 9h1v1h-1zM26 9h1v1h-1zM27 9h1v1h-1zM29 9h1v1h-1zM30 9h1v1h-1zM32 9h1v1h-1zM1 10h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM12 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM17 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM25 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM12 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM28 11h1v1h-1zM29 11h1v1h-1zM30 11h1v1h-1zM32 11h1v1h-1zM0 12h1v1h-1zM2 12h1v1h-1zM4 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM12 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM19 12h1v1h-1zM22 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM27 12h1v1h-1zM28 12h1v1h-1zM29 12h1v1h-1zM2 13h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM8 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM17 13h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM26 13h1v1h-1zM29 13h1v1h-1zM31 13h1v1h-1zM32 13h1v1h-1zM1 14h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM20 14h1v1h-1zM21 14h1v1h-1zM22 14h1v1h-1zM24 14h1v1h-1zM25 14h1v1h-1zM26 14h1v1h-1zM27 14h1v1h-1zM29 14h1v1h-1zM30 14h1v1h-1zM31 14h1v1h-1zM2 15h1v1h-1zM3 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM14 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM21 15h1v1h-1zM25 15h1v1h-1zM26 15h1v1h-1zM29 15h1v1h-1zM30 15h1v1h-1zM0 16h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM11 16h1v1h-1zM16 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM25 16h1v1h-1zM27 16h1v1h-1zM28 16h1v1h-1zM32 16h1v1h-1zM0 17h1v1h-1zM1 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM19 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM22 17h1v1h-1zM23 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM29 17h1v1h-1zM30 17h1v1h-1zM31 17h1v1h-1zM32 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM11 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM21 18h1v1h-1zM22 18h1v1h-1zM24 18h1v1h-1zM25 18h1v1h-1zM27 18h1v1h-1zM28 18h1v1h-1zM30 18h1v1h-1zM31 18h1v1h-1zM0 19h1v1h-1zM3 19h1v1h-1zM5 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1zM17 19h1v1h-1zM19 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM29 19h1v1h-1zM30 19h1v1h-1zM31 19h1v1h-1zM1 20h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM10 20h1v1h-1zM11 20h1v1h-1zM13 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM27 20h1v1h-1zM28 20h1v1h-1zM29 20h1v1h-1zM31 20h1v1h-1zM0 21h1v1h-1zM1 21h1v1h-1zM3 21h1v1h-1zM4 21h1v1h-1zM5 21h1v1h-1zM7 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM23 21h1v1h-1zM26 21h1v1h-1zM32 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM4 22h1v1h-1zM5 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM12 22h1v1h-1zM14 22h1v1h-1zM16 22h1v1h-1zM18 22h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM30 22h1v1h-1zM31 22h1v1h-1zM0 23h1v1h-1zM2 23h1v1h-1zM5 23h1v1h-1zM7 23h1v1h-1zM10 23h1v1h-1zM13 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM21 23h1v1h-1zM22 23h1v1h-1zM23 23h1v1h-1zM25 23h1v1h-1zM26 23h1v1h-1zM28 23h1v1h-1zM29 23h1v1h-1zM30 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM7 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM14 24h1v1h-1zM15 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM24 24h1v1h-1zM25 24h1v1h-1zM26 24h1v1h-1zM27 24h1v1h-1zM28 24h1v1h-1zM31 24h1v1h-1zM32 24h1v1h-1zM8 25h1v1h-1zM9 25h1v1h-1zM11 25h1v1h-1zM12 25h1v1h-1zM13 25h1v1h-1zM14 25h1v1h-1zM15 25h1v1h-1zM19 25h1v1h-1zM20 25h1v1h-1zM24 25h1v1h-1zM28 25h1v1h-1zM30 25h1v1h-1zM31 25h1v1h-1zM32 25h1v1h-1zM0 26h1v1h-1zM1 26h1v1h-1zM2 26h1v1h-1zM3 26h1v1h-1zM4 26h1v1h-1zM5 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM11 26h1v1h-1zM14 26h1v1h-1zM17 26h1v1h-1zM20 26h1v1h-1zM21 26h1v1h-1zM22 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM30 26h1v1h-1zM31 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM9 27h1v1h-1zM12 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM21 27h1v1h-1zM22 27h1v1h-1zM23 27h1v1h-1zM24 27h1v1h-1zM28 27h1v1h-1zM29 27h1v1h-1zM30 27h1v1h-1zM31 27h1v1h-1zM32 27h1v1h-1zM0 28h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h1v1h-1zM14 28h1v1h-1zM16 28h1v1h-1zM17 28h1v1h-1zM18 28h1v1h-1zM22 28h1v1h-1zM24 28h1v1h-1zM25 28h1v1h-1zM26 28h1v1h-1zM27 28h1v1h-1zM28 28h1v1h-1zM29 28h1v1h-1zM31 28h1v1h-1zM32 28h1v1h-1zM0 29h1v1h-1zM2 29h1v1h-1zM3 29h1v1h-1zM4 29h1v1h-1zM6 29h1v1h-1zM8 29h1v1h-1zM9 29h1v1h-1zM11 29h1v1h-1zM13 29h1v1h-1zM14 29h1v1h-1zM17 29h1v1h-1zM18 29h1v1h-1zM19 29h1v1h-1zM20 29h1v1h-1zM22 29h1v1h-1zM23 29h1v1h-1zM24 29h1v1h-1zM25 29h1v1h-1zM28 29h1v1h-1zM30 29h1v1h-1zM32 29h1v1h-1zM0 30h1v1h-1zM2 30h1v1h-1zM3 30h1v1h-1zM4 30h1v1h-1zM6 30h1v1h-1zM8 30h1v1h-1zM10 30h1v1h-1zM11 30h1v1h-1zM13 30h1v1h-1zM16 30h1v1h-1zM18 30h1v1h-1zM22 30h1v1h-1zM24 30h1v1h-1zM26 30h1v1h-1zM27 30h1v1h-1zM29 30h1v1h-1zM30 30h1v1h-1zM0 31h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM11 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM16 31h1v1h-1zM17 31h1v1h-1zM21 31h1v1h-1zM25 31h1v1h-1zM26 31h1v1h-1zM28 31h1v1h-1zM29 31h1v1h-1zM30 31h1v1h-1zM0 32h1v1h-1zM1 32h1v1h-1zM2 32h1v1h-1zM3 32h1v1h-1zM4 32h1v1h-1zM5 32h1v1h-1zM6 32h1v1h-1zM9 32h1v1h-1zM15 32h1v1h-1zM17 32h1v1h-1zM22 32h1v1h-1zM23 32h1v1h-1zM24 32h1v1h-1zM25 32h1v1h-1zM26 32h1v1h-1zM27 32h1v1h-1zM31 32h1v1h-1z" fill="var(--ink)"/></svg><!--/QR-->
+      <span class="qr-cap">Scan to book</span>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p><strong>Disclosure.</strong> Some card links may be affiliate links and a commission may be earned on approval; recommendations are made on the merits of your situation and are never contingent on that. Nothing here is financial, credit or tax advice. Award availability, transfer ratios and fare rules change without notice, and no specific redemption or saving is guaranteed.</p>
+    <span class="field">Award Desk &middot; 2026</span>
+  </footer>
+
+</article>
+
+<div class="toolbar">
+  <button type="button" onclick="window.print()">Save as PDF</button>
+</div>
+
+</body>
+</html>
