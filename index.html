@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Award Desk</title>
+<title>SavvyAviator</title>
 <meta name="description" content="A one-stop shop for points, miles and mistake fares — the system, a live deal room, and a human who plans and books the trip with you.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,7 +110,7 @@ section[id],header[id]{scroll-margin-top:5.5rem}
 .brand{display:flex; align-items:baseline; gap:.5rem; text-decoration:none; margin-right:auto}
 .brand-mark{
   font-family:var(--display); font-weight:900; font-stretch:122%;
-  font-size:1.06rem; letter-spacing:-.01em; text-transform:uppercase;
+  font-size:1.12rem; letter-spacing:-.015em;
 }
 .brand-code{
   font-family:var(--mono); font-size:.62rem; letter-spacing:.18em;
@@ -316,6 +316,13 @@ label{display:flex; flex-direction:column; gap:.4rem}
 .foot-in{display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap}
 .disclose{max-width:58ch; font-size:.8rem; color:var(--ink-3); line-height:1.6}
 
+/* narrow nav: the longer wordmark needs the room the code chip was using */
+@media (max-width:560px){
+  .nav-in{gap:1rem}
+  .brand-code{display:none}
+  .nav .btn{padding:.85rem 1.05rem; font-size:.7rem}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::after{transition:none !important; animation:none !important}
   .fare-row{opacity:1; transform:none}
@@ -330,8 +337,8 @@ label{display:flex; flex-direction:column; gap:.4rem}
 <nav class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="#top">
-      <span class="brand-mark">Award Desk</span>
-      <span class="brand-code">AWD</span>
+      <span class="brand-mark">SavvyAviator</span>
+      <span class="brand-code">SAV</span>
     </a>
     <div class="nav-links">
       <a href="#system">The system</a>
@@ -351,7 +358,7 @@ label{display:flex; flex-direction:column; gap:.4rem}
     <div class="stack g-24">
       <span class="field field-b">Points &middot; Miles &middot; Mistake fares</span>
       <h1>Business class isn't expensive. It's just <em>priced for people who pay cash.</em></h1>
-      <p class="lede">Award Desk is the one-stop shop for flying long-haul for a fraction of retail &mdash; or for nothing but the taxes. You get the full system, a live room where fares get called the hour they break, and a human who will sit down and plan the actual trip with you.</p>
+      <p class="lede">SavvyAviator is the one-stop shop for flying long-haul for a fraction of retail &mdash; or for nothing but the taxes. You get the full system, a live room where fares get called the hour they break, and a human who will sit down and plan the actual trip with you.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#book">Start a flight plan</a>
         <a class="btn btn-ghost" href="#estimator">See what you'd save</a>
@@ -638,7 +645,7 @@ label{display:flex; flex-direction:column; gap:.4rem}
 
     <div class="coupon tier tier-featured">
       <div class="tier-top">
-        <div class="stack g-8"><span class="field field-b">Tier 02 &middot; Most popular</span><h3>The Desk</h3></div>
+        <div class="stack g-8"><span class="field field-b">Tier 02 &middot; Most popular</span><h3>The Flight Deck</h3></div>
         <div class="price">$29<small>Per month</small></div>
       </div>
       <p class="note">The live room. Deals get called here first and they don't last.</p>
@@ -649,7 +656,7 @@ label{display:flex; flex-direction:column; gap:.4rem}
         <li>Monthly live Q&amp;A and a devaluation early-warning brief</li>
         <li>The full playbook library, kept current</li>
       </ul>
-      <a class="btn btn-primary" href="#book">Join the desk</a>
+      <a class="btn btn-primary" href="#book">Join the flight deck</a>
     </div>
 
     <div class="coupon tier">
@@ -810,10 +817,10 @@ label{display:flex; flex-direction:column; gap:.4rem}
   <div class="wrap foot-in">
     <div class="stack g-12">
       <a class="brand" href="#top">
-        <span class="brand-mark">Award Desk</span>
-        <span class="brand-code">AWD</span>
+        <span class="brand-mark">SavvyAviator</span>
+        <span class="brand-code">SAV</span>
       </a>
-      <span class="field">The fare desk for people who refuse to pay retail</span>
+      <span class="field">For travellers who refuse to pay retail</span>
     </div>
     <p class="disclose">
       <strong>Disclosure.</strong> Some card links on this site may be affiliate links, and a commission may be earned when a card is approved. Recommendations on a call are made on the merits of your situation and are never contingent on that. Nothing here is financial, credit or tax advice. Award availability, transfer ratios and fare rules change without notice, and no specific redemption or saving is guaranteed.
@@ -830,7 +837,7 @@ label{display:flex; flex-direction:column; gap:.4rem}
   var root = document.documentElement;
   try{
     if(!root.getAttribute("data-theme")){
-      var saved = localStorage.getItem("awd-theme");
+      var saved = localStorage.getItem("sav-theme");
       if(saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
     }
   }catch(e){}
@@ -844,7 +851,7 @@ label{display:flex; flex-direction:column; gap:.4rem}
       }
       var next = cur === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      try{ localStorage.setItem("awd-theme", next); }catch(e){}
+      try{ localStorage.setItem("sav-theme", next); }catch(e){}
     });
   }
 

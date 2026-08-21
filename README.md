@@ -1,4 +1,4 @@
-# Award Desk — landing page
+# SavvyAviator — landing page
 
 A single self-contained `index.html` for a travel-hacking service: points &
 miles, mistake fares, 1:1 consulting, a paid deal room, and done-for-you
@@ -9,7 +9,7 @@ host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).
 
 | What | Where |
 | --- | --- |
-| Brand name "Award Desk" / `AWD` | `<title>`, both `.brand` blocks, hero copy |
+| Brand name / `SAV` code | `<title>`, both `.brand` blocks, hero copy |
 | Booking URL | `BOOKING_URL` in the script, near the bottom |
 | Form endpoint | `FORM_ENDPOINT` in the script (empty = forms validate but don't send) |
 | Prices — $249 / $29 / 15% | `#work` section |
@@ -62,7 +62,7 @@ what you can deliver.
 # Teaser one-pager
 
 `teaser.html` is a single-page leave-behind for prospective clients — same
-visual identity, condensed to one A4 sheet. `award-desk-teaser.pdf` is the
+visual identity, condensed to one A4 sheet. `savvyaviator-teaser.pdf` is the
 rendered output, ready to attach to an email.
 
 Send it two ways: attach the PDF, or link the page and let them hit
@@ -75,7 +75,7 @@ right — screen only, never printed). Set margins to *None*; the page carries
 its own. Or headlessly, with Chrome:
 
 ```sh
-chrome --headless --print-to-pdf=award-desk-teaser.pdf \
+chrome --headless --print-to-pdf=savvyaviator-teaser.pdf \
        --no-pdf-header-footer teaser.html
 ```
 
@@ -96,7 +96,7 @@ The script rewrites whatever sits between the `<!--QR-->` markers in
 ## Swap before sending
 
 Same list as the landing page — brand name, prices, ledger rows — plus the
-`awarddesk.com` display URL in the CTA band. The teaser deliberately carries
+`savvyaviator.com` display URL in the CTA band. The teaser deliberately carries
 **no testimonials**: it goes out before you have any. Add a fourth column of
 quotes once the slots on the landing page are filled.
 
