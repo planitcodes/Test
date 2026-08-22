@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 100,000 Points</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EFF2EC; --coupon:#F8FAF5; --ink:#14201A; --ink-2:#47564F; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#A2B2A1; --stamp:#C33A12; --stamp-ink:#FFF7F3;
+  --stamp-wash:rgba(195,58,18,.08); --good:#1B6244; --backdrop:#D8DED6;
+  --display:"Archivo","Archivo Black",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --backdrop:#171C19 } }
+:root[data-theme="dark"]{ --backdrop:#171C19 }
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--backdrop); color:var(--ink); font-family:var(--body); -webkit-font-smoothing:antialiased}
+.doc{display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px 12px}
+
+.page{
+  width:216mm; height:279.4mm; padding:14mm 17mm 11mm; background:var(--paper);
+  display:flex; flex-direction:column; box-shadow:0 20px 50px -30px rgba(0,0,0,.7);
+}
+.pbody{flex:1; display:flex; flex-direction:column; gap:5mm; min-height:0}
+.ph{
+  font-family:var(--mono); font-size:6.4pt; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ink-3); padding-bottom:2.4mm; border-bottom:1px solid var(--rule); margin-bottom:6mm;
+  display:flex; justify-content:space-between; gap:6mm;
+}
+.pf{
+  margin-top:6mm; padding-top:2.4mm; border-top:1px solid var(--rule);
+  display:flex; justify-content:space-between; gap:6mm;
+  font-family:var(--mono); font-size:6.2pt; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+}
+
+h1,h2,h3{font-family:var(--display); margin:0; line-height:1.05; text-wrap:balance; letter-spacing:-.015em}
+h2{font-size:19pt; font-weight:800; font-stretch:114%}
+h3{font-size:11.5pt; font-weight:700; font-stretch:108%; margin-top:1mm}
+p{margin:0; font-size:9.6pt; line-height:1.55; color:var(--ink-2)}
+p strong,li strong{color:var(--ink); font-weight:600}
+.lead{font-size:11pt; line-height:1.5; color:var(--ink)}
+ul,ol{margin:0; padding-left:5mm; display:flex; flex-direction:column; gap:1.8mm}
+li{font-size:9.6pt; line-height:1.5; color:var(--ink-2)}
+li::marker{color:var(--stamp)}
+.eyebrow{font-family:var(--mono); font-size:6.6pt; letter-spacing:.18em; text-transform:uppercase; color:var(--stamp)}
+.sec-n{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:34pt; line-height:.8; color:var(--stamp); font-variant-numeric:tabular-nums}
+.sec-head{display:flex; align-items:flex-start; gap:5mm; margin-bottom:2mm}
+
+.box{background:var(--coupon); border:1px solid var(--rule); border-radius:2px; padding:4mm 4.5mm; display:flex; flex-direction:column; gap:2mm}
+.box-stamp{background:var(--stamp-wash); border-color:var(--stamp)}
+.box h3{font-size:10pt}
+.box p,.box li{font-size:9pt}
+.perf{height:1.6px; background:repeating-linear-gradient(90deg,var(--rule-2) 0 3.5px,transparent 3.5px 9px)}
+
+table{border-collapse:collapse; width:100%; table-layout:fixed}
+th,td{text-align:left; padding:1.7mm 2mm; border-bottom:1px dotted var(--rule-2); vertical-align:top}
+thead th{font-family:var(--mono); font-size:6pt; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); font-weight:500; border-bottom:1px solid var(--rule-2)}
+td{font-size:8.6pt; line-height:1.4; color:var(--ink-2)}
+td.n,th.n{text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap}
+.mono{font-family:var(--mono); font-size:8.4pt; color:var(--ink); font-weight:500}
+.cash{color:var(--ink-3); text-decoration:line-through}
+.saved{color:var(--good); font-weight:600}
+tbody tr:last-child td{border-bottom:0}
+
+/* cover */
+.cover{justify-content:space-between}
+.brand{display:flex; align-items:baseline; gap:2.4mm}
+.brand-mark{font-family:var(--display); font-weight:900; font-stretch:122%; font-size:14pt; letter-spacing:-.015em}
+.brand-code{font-family:var(--mono); font-size:6.2pt; letter-spacing:.18em; background:var(--stamp); color:var(--stamp-ink); padding:.8mm 1.5mm; border-radius:1px}
+.cover h1{font-size:40pt; font-weight:800; font-stretch:116%; margin-top:4mm}
+.cover h1 em{font-style:normal; color:var(--stamp)}
+.cover .sub{font-size:12pt; line-height:1.45; color:var(--ink-2); max-width:135mm; margin-top:6mm}
+.toc{display:flex; flex-direction:column; gap:0; margin-top:9mm}
+.toc a{display:flex; gap:3mm; align-items:baseline; padding:1.9mm 0; border-bottom:1px dotted var(--rule-2); text-decoration:none; color:var(--ink)}
+.toc .tn{font-family:var(--mono); font-size:7.4pt; color:var(--stamp); width:7mm; flex:none}
+.toc .tt{font-size:9.6pt; flex:1}
+.toc .tp{font-family:var(--mono); font-size:7.4pt; color:var(--ink-3)}
+
+.draft-note{border:1.5px dashed var(--stamp); background:var(--stamp-wash); border-radius:2px; padding:4mm 4.5mm; display:flex; flex-direction:column; gap:2mm}
+.draft-note .eyebrow{color:var(--stamp)}
+.draft-note p{font-size:8.6pt; color:var(--ink)}
+
+.two{display:grid; grid-template-columns:1fr 1fr; gap:4mm}
+.tick{display:flex; gap:2.4mm; font-size:9.4pt; line-height:1.45; color:var(--ink-2)}
+.tick::before{content:"→"; color:var(--stamp); font-family:var(--mono); font-size:8.4pt; flex:none}
+.note-sm{font-size:8.2pt; line-height:1.45; color:var(--ink-3)}
+
+@page{ size:Letter; margin:0 }
+@media print{
+  body{background:#fff}
+  .doc{display:block; gap:0; padding:0}   /* flex fragments badly in print */
+  .page{height:278.4mm; box-shadow:none; break-after:page; overflow:hidden;
+        -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .page:last-child{break-after:auto}
+}
+@media screen and (max-width:236mm){
+  .doc{padding:10px 0}
+  .page{width:100%; height:auto; padding:9mm 7mm; box-shadow:none}
+  .two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<article class="doc">
+
+<!-- ══════════ COVER ══════════ -->
+<section class="page cover">
+  <div>
+    <div class="brand"><span class="brand-mark">SavvyAviator</span><span class="brand-code">SAV</span></div>
+    <h1>The First <em>100,000</em> Points</h1>
+    <p class="sub">A field guide to your first business-class seat — and the error-fare kit that catches everything the points can't. Written for travellers based in the United States.</p>
+
+    <div class="toc">
+      <a href="#s1"><span class="tn">01</span><span class="tt">Why you are overpaying, specifically</span><span class="tp">p. 3</span></a>
+      <a href="#s2"><span class="tn">02</span><span class="tt">The four currencies that matter</span><span class="tp">p. 4</span></a>
+      <a href="#s3"><span class="tn">03</span><span class="tt">Where the first 100,000 actually comes from</span><span class="tp">p. 6</span></a>
+      <a href="#s4"><span class="tn">04</span><span class="tt">The order of operations</span><span class="tp">p. 7</span></a>
+      <a href="#s5"><span class="tn">05</span><span class="tt">Minimum spend without buying junk</span><span class="tp">p. 9</span></a>
+      <a href="#s6"><span class="tn">06</span><span class="tt">What 60,000 points actually buys</span><span class="tp">p. 10</span></a>
+      <a href="#s7"><span class="tn">07</span><span class="tt">The mistake that costs the most</span><span class="tp">p. 12</span></a>
+      <a href="#s8"><span class="tn">08</span><span class="tt">Finding the seat</span><span class="tp">p. 13</span></a>
+      <a href="#s9"><span class="tn">09</span><span class="tt">The error-fare starter kit</span><span class="tp">p. 14</span></a>
+      <a href="#s10"><span class="tn">10</span><span class="tt">What to do this week</span><span class="tp">p. 16</span></a>
+    </div>
+  </div>
+
+  <div class="draft-note">
+    <span class="eyebrow">Draft — delete this box before you send it to anyone</span>
+    <p>Every factual claim in this document needs checking against current program terms before it goes out under your name. Bonus sizes, transfer ratios, award pricing and application rules all change without notice, and several changed while this was being written. The accompanying verification checklist lists every claim to confirm, in order.</p>
+  </div>
+</section>
+
+<!-- ══════════ P2 — HOW TO USE ══════════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>Before you start</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">00</span><div><span class="eyebrow">Before you start</span><h2>Read this part, even if you skip the rest.</h2></div></div>
+
+    <p class="lead">This guide gets you from zero to a business-class seat you paid taxes on. It is not a list of hacks. It is one sequence, run in one order, and the order is the part most people get wrong.</p>
+
+    <div class="box">
+      <h3>Three things that are true before anything else</h3>
+      <ul>
+        <li><strong>If you carry a credit card balance, stop reading.</strong> Interest at current rates destroys every cent of points value within months. This entire system assumes you pay in full, every month, without exception. Nothing here is worth going into debt for.</li>
+        <li><strong>You do not need to spend more money.</strong> The overwhelming majority of the points in this guide come from welcome bonuses on spending you already do. Nobody should be buying things they don't need to hit a target.</li>
+        <li><strong>Numbers in this guide move.</strong> Welcome bonuses change monthly, award charts get devalued with no notice, and transfer partners come and go. Treat every specific figure as an illustration of the <em>shape</em> of a deal, then check the current terms before you act.</li>
+      </ul>
+    </div>
+
+    <h3>How the sequence works</h3>
+    <p>There are two engines. <strong>Points and miles</strong> is the reliable one: slow to build, but it produces a specific seat on a date you chose. <strong>Fare intelligence</strong> is the opportunistic one: you can't schedule it, but when a mistake fare fires, the number is absurd. Sections 01–08 build the first engine. Section 09 starts the second.</p>
+
+    <p>Work in order. Applying for cards before you know which airline you're aiming at is the single most common way people burn approvals they'll want later — and approvals, not points, are the genuinely scarce resource.</p>
+
+    <div class="box box-stamp">
+      <h3>The one-sentence version</h3>
+      <p>Earn <strong>transferable</strong> points from welcome bonuses, hold them until you have found a confirmed business-class award seat on a partner airline, transfer only at that moment, and never redeem through a bank's travel portal.</p>
+      <p class="note-sm">If you understand that sentence completely, the rest of this document is detail. If you don't, keep reading — it takes about twenty minutes.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>02</span></div>
+</section>
+
+<!-- ══════════ P3 — S1 ══════════ -->
+<section class="page" id="s1">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>01 · Why you are overpaying</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">01</span><div><span class="eyebrow">Section one</span><h2>Why you are overpaying, specifically.</h2></div></div>
+
+    <p class="lead">Three mistakes account for almost all of it. They are not exotic. Most people reading this are making all three at once.</p>
+
+    <h3>You earn on the wrong things</h3>
+    <p>Most people put every dollar of spending on one card earning roughly one point per dollar. The same spending, split across two or three products chosen to match where the money actually goes — groceries, dining, travel, and whatever your largest recurring bill happens to be — typically earns three to five times as much. That is not a trick. It is reading the earning table before you swipe.</p>
+
+    <h3>You redeem at the worst available rate</h3>
+    <p>Bank travel portals let you spend points like cash at a fixed rate, usually around one cent each. It feels convenient, and it is the single most expensive habit in this hobby. The same points, transferred to the right airline and spent on the right route, are routinely worth four to eight times that. Section 07 covers this in detail because it is where most value is quietly destroyed.</p>
+
+    <h3>You search after you have already decided</h3>
+    <p>The normal way to book travel is to pick dates, then shop. That guarantees you pay whatever the market charges that week. The system in this guide inverts it: you hold flexible, transferable points, watch continuously, and let availability decide which week you fly. Flexibility is the asset. Points are just how you spend it.</p>
+
+    <div class="box">
+      <h3>What this costs in practice</h3>
+      <table>
+        <thead><tr><th>Approach</th><th class="n">Typical value per point</th><th class="n">A 60,000-point balance is worth</th></tr></thead>
+        <tbody>
+          <tr><td>Cash back at 1¢</td><td class="n">1.0¢</td><td class="n">$600</td></tr>
+          <tr><td>Bank travel portal</td><td class="n">1.0 – 1.5¢</td><td class="n">$600 – $900</td></tr>
+          <tr><td>Economy award, transferred</td><td class="n">1.5 – 2.5¢</td><td class="n">$900 – $1,500</td></tr>
+          <tr><td>Business award, transferred</td><td class="n">5 – 12¢</td><td class="n">$3,000 – $7,200</td></tr>
+        </tbody>
+      </table>
+      <p class="note-sm">Same balance. The only variable is what you did with it. Section 06 shows four real bookings at the bottom of that range and above it.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>03</span></div>
+</section>
+
+<!-- ══════════ P4 — S2a ══════════ -->
+<section class="page" id="s2">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>02 · The four currencies</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">02</span><div><span class="eyebrow">Section two</span><h2>The four currencies that matter.</h2></div></div>
+
+    <p class="lead">In the United States, four banks issue points that can be moved to airlines. These are called <strong>transferable currencies</strong>, and they are the only kind worth accumulating deliberately.</p>
+
+    <table>
+      <thead><tr><th style="width:34%">Currency</th><th>What it is good for</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">American Express<br>Membership Rewards</td><td>The deepest partner list, particularly strong for European and Middle Eastern carriers. Frequent transfer bonuses.</td></tr>
+        <tr><td class="mono">Chase<br>Ultimate Rewards</td><td>Excellent all-round partner list and the most beginner-friendly cards. Constrained by the strictest application rule — see section 04.</td></tr>
+        <tr><td class="mono">Citi<br>ThankYou Points</td><td>Smaller but useful partner list, with some partners the others don't reach.</td></tr>
+        <tr><td class="mono">Capital One<br>Miles</td><td>Broad partner list, simple earning, and generally the easiest approvals of the four.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Why transferable beats airline-locked</h3>
+    <p>Miles earned directly into a single airline's programme can only be spent with that airline and its partners. If that airline devalues its award chart — and they all do, without warning — your balance loses value overnight and you have no recourse.</p>
+    <p>Transferable points are optionality. You hold them at the bank, watch several airline programmes at once, and commit only when you have found a seat. A devaluation at one airline costs you nothing, because you simply transfer somewhere else.</p>
+
+    <div class="box box-stamp">
+      <h3>The rule that follows from this</h3>
+      <p><strong>Never transfer points speculatively.</strong> Transfers are one-way and effectively irreversible: once your points are sitting in an airline account, they are that airline's currency and subject to that airline's decisions. Find the seat first, confirm it is bookable, then transfer.</p>
+      <p class="note-sm">Most transfers complete in minutes, but some take days. Section 08 covers how to handle the ones that don't.</p>
+    </div>
+
+    <h3>Hotel points are a different thing</h3>
+    <p>Hotel programmes also sell transferable-ish points, but they generally transfer to airlines at poor ratios. Earn them for hotels; do not treat them as a route to a flight. There are exceptions, and they are narrow enough that they are not worth learning until much later.</p>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>04</span></div>
+</section>
+
+<!-- ══════════ P5 — S2b ══════════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>02 · The four currencies</span></div>
+  <div class="pbody">
+    <h2 style="font-size:15pt">Transfer partners: how to read them.</h2>
+    <p class="lead">A transfer partner is an airline programme a bank will move your points into. What matters is not how many partners a bank has, but whether it reaches the <em>alliance</em> that flies where you want to go.</p>
+
+    <table>
+      <thead><tr><th style="width:26%">Alliance</th><th>Carriers you would actually want</th><th style="width:22%">Reached via</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Star Alliance</td><td>Lufthansa, Swiss, Austrian, ANA, Singapore, United, Air Canada, Turkish</td><td>Air Canada Aeroplan is the usual door</td></tr>
+        <tr><td class="mono">oneworld</td><td>Qatar, British Airways, Japan Airlines, Cathay Pacific, Iberia, American</td><td>Avios programmes; Alaska Mileage Plan</td></tr>
+        <tr><td class="mono">SkyTeam</td><td>Air France, KLM, Korean Air, Virgin Atlantic, Delta</td><td>Flying Blue; Virgin Atlantic</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box">
+      <h3>The three programmes worth learning first</h3>
+      <ul>
+        <li><strong>Air Canada Aeroplan.</strong> Reaches the whole of Star Alliance, and — critically — does not add fuel surcharges on most partners. This is why a Geneva–New York business seat in section 06 cost five dollars in cash.</li>
+        <li><strong>Avios</strong> (the shared currency of British Airways, Iberia, Qatar and Aer Lingus). Reaches oneworld, and lets you move points between those four programmes to find the cheapest pricing for the same seat.</li>
+        <li><strong>Air France–KLM Flying Blue.</strong> Reaches SkyTeam, and runs monthly promotional awards at steep discounts on rotating routes.</li>
+      </ul>
+      <p class="note-sm">Each of these is a transfer partner of more than one US bank, which is exactly what makes them worth learning. You are not betting on a single card.</p>
+    </div>
+
+    <h3>Fuel surcharges: the detail that decides everything</h3>
+    <p>Some airline programmes pass the operating carrier's fuel surcharges through to award tickets and some do not. The same seat, on the same plane, on the same day, can cost $5 in taxes booked through one programme and $700 booked through another. This single variable does more damage to first-time redemptions than any other.</p>
+    <p>Before you transfer anywhere, price the seat in every programme that can book it. The difference is not marginal.</p>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>05</span></div>
+</section>
+
+<!-- ══════════ P6 — S3 ══════════ -->
+<section class="page" id="s3">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>03 · Where the points come from</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">03</span><div><span class="eyebrow">Section three</span><h2>Where the first 100,000 actually comes from.</h2></div></div>
+
+    <p class="lead">Not from spending. From welcome bonuses. Understanding this ratio is the difference between reaching a business-class seat this year and reaching one in nine years.</p>
+
+    <div class="two">
+      <div class="box">
+        <h3>Earning it by spending</h3>
+        <p>At an average of 2 points per dollar, 100,000 points requires <strong>$50,000</strong> of spending. For most households that is somewhere between one and three years.</p>
+      </div>
+      <div class="box box-stamp">
+        <h3>Earning it by bonuses</h3>
+        <p>Two well-chosen welcome bonuses, each requiring a few thousand dollars of spending inside three months, get you there in <strong>under six months</strong> — on money you were spending anyway.</p>
+      </div>
+    </div>
+
+    <p>This is the whole reason card strategy exists. The spending multipliers are a rounding error next to the bonuses. People who obsess over which card earns 3x on groceries while never opening a new account are optimising the wrong variable by an order of magnitude.</p>
+
+    <h3>What a realistic first year looks like</h3>
+    <table>
+      <thead><tr><th>Month</th><th>Action</th><th class="n">Running balance</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td>Open card one. Route all normal spending to it.</td><td class="n">—</td></tr>
+        <tr><td class="mono">4</td><td>Minimum spend met, bonus posts.</td><td class="n">~60,000</td></tr>
+        <tr><td class="mono">5</td><td>Open card two, different bank.</td><td class="n">~62,000</td></tr>
+        <tr><td class="mono">8</td><td>Minimum spend met, bonus posts.</td><td class="n">~125,000</td></tr>
+        <tr><td class="mono">9</td><td>Start hunting seats. Transfer only when one is found.</td><td class="n">~130,000</td></tr>
+      </tbody>
+    </table>
+    <p class="note-sm">Illustrative. Bonus sizes vary widely by card and by offer, and the right two cards depend entirely on where you want to fly — which is why section 04 comes before you apply for anything.</p>
+
+    <div class="box">
+      <h3>Two people, not one</h3>
+      <p>If you have a partner, you have two credit profiles and therefore twice the approvals. Applying in sequence across two people roughly doubles the annual earn rate and is how most households reach premium-cabin balances inside a year. Many programmes also let household members pool or transfer points to a shared destination — check the specific rules, as they vary sharply.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>06</span></div>
+</section>
+
+<!-- ══════════ P7 — S4a ══════════ -->
+<section class="page" id="s4">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>04 · Order of operations</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">04</span><div><span class="eyebrow">Section four</span><h2>The order of operations.</h2></div></div>
+
+    <p class="lead">Approvals are scarcer than points. Every bank limits how many new accounts it will approve, and some of those limits are triggered by cards from <em>other</em> banks. Applying in the wrong order can lock you out of the best products for years.</p>
+
+    <div class="box box-stamp">
+      <h3>The rule that constrains everything else</h3>
+      <p>Chase will generally decline applicants who have opened <strong>five or more personal credit cards across all issuers</strong> in the previous 24 months. This is universally known as <strong>5/24</strong>, and it is not published by Chase — it is inferred from many thousands of data points.</p>
+      <p>The practical consequence: <strong>apply for the Chase cards you want first</strong>, while your count is low. People who open several cards elsewhere and then discover this rule typically wait two years to get back under it.</p>
+    </div>
+
+    <h3>The sequence</h3>
+    <ol>
+      <li><strong>Count your last 24 months.</strong> Every new personal card counts, including store cards and cards where you were added as an authorised user. Business cards from most issuers do not count toward the total, though they can still be affected by it.</li>
+      <li><strong>Decide the destination first.</strong> Which alliance flies where you want to go? That determines the airline programme, which determines which banks are useful to you. Working the other way round is how people end up with 200,000 points they cannot use.</li>
+      <li><strong>Take the constrained approvals first.</strong> Chase before the others, while you are under 5/24.</li>
+      <li><strong>Then the once-per-lifetime bonuses.</strong> American Express generally pays a given card's welcome bonus once per lifetime, per person. These are irreplaceable — do not burn one on a mediocre offer when the same card periodically runs a far better one.</li>
+      <li><strong>Then everything else,</strong> spacing applications a few months apart.</li>
+    </ol>
+
+    <div class="box">
+      <h3>Before you click apply</h3>
+      <ul>
+        <li>Check whether a better public offer exists. The same card's welcome bonus routinely swings by 40,000 points or more depending on when and where you apply.</li>
+        <li>Check whether you are targeted for an elevated offer in your existing bank account or by mail — these are frequently better than anything public.</li>
+        <li>Check the annual fee and whether it is waived the first year. Then check what the card's ongoing credits are actually worth <em>to you</em>, not in the marketing copy.</li>
+        <li>Never apply for two cards from the same bank on the same day unless you have specifically researched that bank's tolerance for it.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>07</span></div>
+</section>
+
+<!-- ══════════ P8 — S4b ══════════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>04 · Order of operations</span></div>
+  <div class="pbody">
+    <h2 style="font-size:15pt">What this does to your credit.</h2>
+    <p class="lead">This is the question everyone asks, and it deserves a straight answer rather than reassurance.</p>
+
+    <table>
+      <thead><tr><th style="width:36%">Effect</th><th>What actually happens</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Hard inquiry</td><td>A small dip, typically a handful of points, fading over several months and dropping off entirely after two years.</td></tr>
+        <tr><td class="mono">Average account age</td><td>Falls when you open a new account. This is the most durable negative, and it recovers as the accounts age. Do not close old cards casually.</td></tr>
+        <tr><td class="mono">Total available credit</td><td>Rises, which lowers your utilisation ratio. For most people this is a <em>positive</em> and it is the largest single factor after payment history.</td></tr>
+        <tr><td class="mono">Payment history</td><td>Unaffected, provided you pay in full. This is the factor that matters most, and it is entirely within your control.</td></tr>
+      </tbody>
+    </table>
+
+    <p>The honest summary: for someone with established credit who pays in full, the net effect of a measured card strategy is small and often mildly positive over time. The dips are real but shallow and temporary.</p>
+
+    <div class="box box-stamp">
+      <h3>When to stop, or not start</h3>
+      <ul>
+        <li><strong>You are applying for a mortgage within the next 12 months.</strong> Do nothing until it closes. A mortgage is worth vastly more than any redemption in this guide, and lenders scrutinise recent credit activity closely.</li>
+        <li><strong>You carry a balance, ever.</strong> Interest swamps every gain here. Fix that first; the points will still be there.</li>
+        <li><strong>You are not confident you will pay on time.</strong> A single missed payment costs more in credit damage than several business-class seats are worth.</li>
+      </ul>
+    </div>
+
+    <h3>Annual fees are a subscription, not a purchase</h3>
+    <p>A card with a $550 annual fee is not expensive if you genuinely use $700 of its credits. It is very expensive if you use none of them. Every year, before the fee posts, ask whether you used the card enough to justify it. If not, call and ask to downgrade to a no-fee version in the same family — this preserves your account age and your points, which closing does not.</p>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>08</span></div>
+</section>
+
+<!-- ══════════ P9 — S5 ══════════ -->
+<section class="page" id="s5">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>05 · Minimum spend</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">05</span><div><span class="eyebrow">Section five</span><h2>Minimum spend without buying junk.</h2></div></div>
+
+    <p class="lead">A welcome bonus requires you to spend a set amount within a set window, usually three months. The entire skill here is routing money you were already going to spend. If you find yourself buying things to hit a target, you have already lost more than the bonus is worth.</p>
+
+    <h3>Where the money already is</h3>
+    <div class="two">
+      <div class="box">
+        <h3>Usually straightforward</h3>
+        <ul>
+          <li>Groceries and everyday shopping</li>
+          <li>Dining and delivery</li>
+          <li>Fuel and transport</li>
+          <li>Utilities, phone, internet, streaming</li>
+          <li>Insurance premiums — often payable annually in one lump</li>
+          <li>Medical and dental bills</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Larger, if the timing works</h3>
+        <ul>
+          <li>Annual insurance renewals</li>
+          <li>Tuition and school fees (often carry a processing fee — check the maths)</li>
+          <li>Home or car repairs already planned</li>
+          <li>Business expenses, if you have them</li>
+          <li>Tax payments via an approved processor (again, check the fee against the bonus value)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box box-stamp">
+      <h3>Timing is the whole trick</h3>
+      <p>Do not open a card and then look for spending. Look at the next three months first — is there an insurance renewal, a planned repair, an annual subscription? <strong>Open the card immediately before a period when you already know large payments are due.</strong> That single habit turns minimum spend from a stressful chase into something you barely notice.</p>
+    </div>
+
+    <h3>A note on manufactured spend</h3>
+    <p>There is an entire subculture devoted to generating artificial spending through gift cards, money orders and payment apps. It is legal in most of its forms, and it is not part of this system. It consumes a great deal of time, gets accounts shut down without warning, and the returns do not justify either risk for someone with a normal amount of spending. You do not need it to reach a business-class seat.</p>
+
+    <div class="box">
+      <h3>If you are going to miss the deadline</h3>
+      <p>Check the exact wording: most issuers count the transaction date, not the statement date, and the clock usually starts at account opening rather than card activation. If you are genuinely short with a week to go, pre-paying a known upcoming bill — next year's insurance, a utility credit balance — is far better than buying something you will not use.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>09</span></div>
+</section>
+
+<!-- ══════════ P10 — S6a ══════════ -->
+<section class="page" id="s6">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>06 · What 60,000 buys</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">06</span><div><span class="eyebrow">Section six</span><h2>What 60,000 points actually buys.</h2></div></div>
+
+    <p class="lead">These are four confirmed bookings, every one of them in business class, priced against what the same seat was selling for in cash. They are here to show you the <em>shape</em> of a good redemption, not to promise these exact prices — award pricing moves constantly.</p>
+
+    <table>
+      <thead>
+        <tr><th style="width:20%">Route</th><th style="width:24%">Programme used</th><th class="n">Cash price</th><th class="n">Points</th><th class="n">Paid</th><th class="n">Per point</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="mono">JFK → BCN</td><td>Alaska → American</td><td class="n cash">$8,844</td><td class="n">55,000</td><td class="n">$50.00</td><td class="n saved">15.99¢</td></tr>
+        <tr><td class="mono">GVA → JFK</td><td>Aeroplan → Swiss</td><td class="n cash">$6,244</td><td class="n">60,000</td><td class="n">$5.00</td><td class="n saved">10.40¢</td></tr>
+        <tr><td class="mono">HND → SFO</td><td>AAdvantage → JAL</td><td class="n cash">$4,800</td><td class="n">60,000</td><td class="n">$45.00</td><td class="n saved">7.92¢</td></tr>
+        <tr><td class="mono">DOH → SFO</td><td>Qatar Avios → Qatar</td><td class="n cash">$4,113</td><td class="n">53,846</td><td class="n">$93.41</td><td class="n saved">7.46¢</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box box-stamp">
+      <p><strong>Four seats. $24,001 of business class. $193.41 out of pocket.</strong> Total points used: 228,846 — roughly what two people can earn from three or four welcome bonuses in a year.</p>
+    </div>
+
+    <h3>What to notice</h3>
+    <ul>
+      <li><strong>The cash paid varies by twenty times, and the points barely vary at all.</strong> Geneva–New York cost $5. Doha–San Francisco cost $93.41. The difference is not distance or cabin — it is which programme was used and whether it passes through fuel surcharges.</li>
+      <li><strong>Every one of these was booked on an airline other than the one whose points were used.</strong> That is the entire game. Alaska's miles on an American aircraft; Aeroplan's points on a Swiss aircraft; American's miles on a Japan Airlines aircraft.</li>
+      <li><strong>None of these required a large balance.</strong> The biggest is 60,000 points — one good welcome bonus.</li>
+    </ul>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>10</span></div>
+</section>
+
+<!-- ══════════ P11 — S6b ══════════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>06 · What 60,000 buys</span></div>
+  <div class="pbody">
+    <h2 style="font-size:15pt">How to judge a redemption before you make it.</h2>
+    <p class="lead">One number tells you whether a redemption is good: <strong>cents per point</strong>. It is simple arithmetic and it will save you from most bad decisions.</p>
+
+    <div class="box">
+      <h3>The calculation</h3>
+      <p class="mono" style="font-size:10pt; margin:1.5mm 0">( cash price − taxes you pay on the award ) ÷ points used × 100</p>
+      <p>For the Geneva–New York booking above: ($6,244 − $5) ÷ 60,000 × 100 = <strong>10.40¢ per point</strong>.</p>
+      <p class="note-sm">Use the cash price of the cabin you would genuinely have bought. Comparing a business award against a first-class cash fare you would never have paid produces a flattering number and a bad decision.</p>
+    </div>
+
+    <h3>What the number means</h3>
+    <table>
+      <thead><tr><th class="n" style="width:20%">Cents per point</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Under 1.2¢</td><td>Poor. You would be better off taking cash back. This is the range most portal bookings land in.</td></tr>
+        <tr><td class="n">1.2 – 2.0¢</td><td>Acceptable for economy, especially on expensive short-notice routes.</td></tr>
+        <tr><td class="n">2.0 – 5.0¢</td><td>Good. A solid premium-cabin redemption or a well-timed economy one.</td></tr>
+        <tr><td class="n">Above 5.0¢</td><td>Excellent. Almost always long-haul business or first booked through a programme that doesn't pass surcharges.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box box-stamp">
+      <h3>The honesty test</h3>
+      <p>Ask yourself: <em>would I have paid the cash price?</em> If the answer is no, your real saving is the difference between the award and what you would <strong>actually</strong> have booked — probably an economy seat.</p>
+      <p>That does not make the redemption bad. Flying business for the price of economy is exactly the point. But be honest with yourself about the number, because the alternative is a hobby built on imaginary savings.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>11</span></div>
+</section>
+
+<!-- ══════════ P12 — S7 ══════════ -->
+<section class="page" id="s7">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>07 · The expensive mistake</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">07</span><div><span class="eyebrow">Section seven</span><h2>The mistake that costs the most.</h2></div></div>
+
+    <p class="lead">Redeeming through your bank's travel portal. It is presented as the obvious thing to do, it is the default on every bank's website, and it destroys most of the value you spent months building.</p>
+
+    <div class="two">
+      <div class="box">
+        <h3>What the portal offers</h3>
+        <p>Spend points like cash at a fixed rate — typically around 1¢ each, sometimes 1.25 or 1.5¢ on premium cards. Any airline, any seat, no availability restrictions, no learning required.</p>
+      </div>
+      <div class="box box-stamp">
+        <h3>What the same points do transferred</h3>
+        <p>5–12¢ each on a long-haul business award. The same 60,000 points: <strong>$600–900</strong> through the portal, or <strong>$3,000–7,200</strong> transferred.</p>
+      </div>
+    </div>
+
+    <p>Put plainly: the portal is a five-to-tenfold discount you are volunteering for. On a single 60,000-point balance that is a difference of several thousand dollars, and it happens in two clicks because the bank designed it that way.</p>
+
+    <h3>When the portal is genuinely the right answer</h3>
+    <ul>
+      <li><strong>Cheap short-haul flights.</strong> A $120 domestic hop is not worth 25,000 miles. The portal at 1.5¢ is fine.</li>
+      <li><strong>No award availability exists</strong> on your fixed dates and you cannot move them.</li>
+      <li><strong>Your balance is small and stranded</strong> — 8,000 points that will never reach a transfer threshold are better spent than left to rot.</li>
+      <li><strong>You need the certainty.</strong> A funeral, a wedding, a hospital visit. Optimisation is not the priority.</li>
+    </ul>
+
+    <div class="box">
+      <h3>The habit worth building</h3>
+      <p>Before every redemption, spend two minutes calculating cents per point for both options. If the portal wins, use the portal without guilt. If transferring wins by a factor of five, you have just saved yourself several thousand dollars for two minutes of arithmetic.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>12</span></div>
+</section>
+
+<!-- ══════════ P13 — S8 ══════════ -->
+<section class="page" id="s8">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>08 · Finding the seat</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">08</span><div><span class="eyebrow">Section eight</span><h2>Finding the seat.</h2></div></div>
+
+    <p class="lead">Points are the easy part. Award availability is the hard part, and it is where most people give up. Airlines release a limited number of award seats per flight, and the good ones move fast.</p>
+
+    <h3>The two windows that matter</h3>
+    <ul>
+      <li><strong>Schedule open,</strong> roughly 330–360 days before departure. Award inventory is loaded at once and this is when the most premium seats exist. If you know you want a specific route in peak season, this is when to look.</li>
+      <li><strong>The late release,</strong> usually inside the final two weeks. Airlines dump unsold premium seats into award inventory rather than fly them empty. Excellent if you are flexible; useless if you are not.</li>
+    </ul>
+    <p>Between those windows availability is thinner — which is exactly why flexibility matters more than balance size.</p>
+
+    <div class="box">
+      <h3>How to search without losing your mind</h3>
+      <ol>
+        <li><strong>Search the airline programme's own site, not the operating carrier's.</strong> To fly Swiss on Aeroplan points, search Aeroplan.</li>
+        <li><strong>Search one segment at a time.</strong> Multi-city engines routinely fail to show space that exists. If a connection won't price, search each leg separately.</li>
+        <li><strong>Price the same seat in every programme that can book it</strong> before transferring anything. This is where the fuel-surcharge difference shows up.</li>
+        <li><strong>Set alerts rather than searching manually,</strong> and be willing to position — the seat may depart from a city three hours away, and a cheap flight to reach a $6,000 saving is usually worth it.</li>
+      </ol>
+    </div>
+
+    <div class="box box-stamp">
+      <h3>The transfer trap</h3>
+      <p>Find the seat, hold it if the programme allows, <strong>then</strong> transfer. Most transfers are near-instant but some take up to several days, and the seat can vanish while you wait. If a programme is known to be slow, that risk is real and you should decide deliberately whether to accept it.</p>
+      <p class="note-sm">Never transfer on the assumption that space will appear — the most expensive mistake available to someone who has done everything else right.</p>
+    </div>
+
+    <h3>After you book</h3>
+    <p>Booking is the start, not the end. Airlines change schedules constantly, and a meaningful change usually entitles you to be rebooked — sometimes onto a better flight, in a better cabin, at no cost. Check your reservation monthly: it is the best free upgrade lever there is.</p>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>13</span></div>
+</section>
+
+<!-- ══════════ P14 — S9a ══════════ -->
+<section class="page" id="s9">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>09 · Error-fare starter kit</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">09</span><div><span class="eyebrow">Section nine — the second engine</span><h2>The error-fare starter kit.</h2></div></div>
+
+    <p class="lead">Sometimes an airline publishes a price it did not intend: a currency conversion error, a missing fuel surcharge, a fare filed in the wrong bucket. These are mistake fares. They cannot be planned for, they last hours rather than days, and when one fires the price is genuinely absurd.</p>
+
+    <h3>How they surface</h3>
+    <p>They are found by people watching continuously and shared through deal communities and alert services within minutes. By the time a mistake fare reaches a mainstream news article it is almost always dead. Being on the list that gets told first is the entire advantage.</p>
+
+    <div class="box box-stamp">
+      <h3>The five rules. Do not improvise on these.</h3>
+      <ol>
+        <li><strong>Book immediately, think afterwards.</strong> Most fares allow free cancellation within 24 hours of booking for travel originating in the US. Book first, then decide during that window. Hesitating for an hour is how people miss them.</li>
+        <li><strong>Book only the flight.</strong> No hotels, no tours, no connecting tickets on separate reservations, no visa applications — until the ticket is confirmed and settled.</li>
+        <li><strong>Wait for a ticket number.</strong> A confirmation email is not a ticket. Look for a 13-digit ticket number in the reservation. Until that exists, you hold nothing.</li>
+        <li><strong>Do not call the airline to ask if it is real.</strong> You will be alerting them to their own error. Wait.</li>
+        <li><strong>Give it a week</strong> before you book anything non-refundable around it. Most cancellations happen within a few days.</li>
+      </ol>
+    </div>
+
+    <h3>If the airline tries to cancel it</h3>
+    <p>Sometimes they honour mistake fares and sometimes they cancel them; practice varies by carrier and by jurisdiction, and consumer protection rules differ significantly between countries. If it happens, you are generally entitled to a full refund of anything you paid. Be polite, be persistent, and keep every screenshot from the moment you booked.</p>
+    <p>What you should never do is build an expensive, non-refundable trip around a fare that has not settled. Follow rule two and a cancellation costs you nothing but mild disappointment.</p>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>14</span></div>
+</section>
+
+<!-- ══════════ P15 — S9b ══════════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>09 · Error-fare starter kit</span></div>
+  <div class="pbody">
+    <h2 style="font-size:15pt">Positioning, and why the cheap fare is never from your city.</h2>
+    <p class="lead">Fares are filed by route and by origin country, not by convenience. The same seat on the same aircraft can cost wildly different amounts depending on where the itinerary starts.</p>
+
+    <p>This means the best fare you can reach is frequently not from your home airport. A business-class fare originating in Lisbon, Stockholm or Colombo may be a fraction of the same routing originating in the United States — including the same flights you would have taken anyway.</p>
+
+    <div class="box">
+      <h3>How positioning works</h3>
+      <ol>
+        <li>Find the cheap fare, noting its origin city.</li>
+        <li>Price a cheap separate ticket from home to that city.</li>
+        <li>Add the two together and compare with the direct option.</li>
+        <li>Leave a generous buffer — at minimum an overnight — because the two tickets are unconnected. If the positioning flight is delayed, nobody will protect you.</li>
+      </ol>
+      <p class="note-sm">The buffer is not optional. Separate tickets mean separate contracts; missing the second one because the first ran late is entirely your problem.</p>
+    </div>
+
+    <h3>Reading the fare rules before you buy</h3>
+    <ul>
+      <li><strong>Is it refundable, and within what window?</strong> Determines whether rule one applies.</li>
+      <li><strong>What is the change fee, and the fare difference on top?</strong></li>
+      <li><strong>Does it earn miles and status?</strong> Deeply discounted fares often earn little or nothing.</li>
+      <li><strong>Is baggage included?</strong> Frequently not on the cheapest fares, even in premium cabins on some carriers.</li>
+      <li><strong>Who operates each segment?</strong> The marketing airline and the operating airline are often different, and the seat you get belongs to the operator.</li>
+    </ul>
+
+    <div class="box box-stamp">
+      <h3>The 24-hour window is a free option</h3>
+      <p>For most itineraries originating in the United States, you can cancel within 24 hours of booking for a full refund. That means a booking is not a commitment — it is a free one-day hold while you check dates, arrange leave, and talk to whoever you are travelling with. Use it deliberately, on every fare you are unsure about.</p>
+    </div>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>15</span></div>
+</section>
+
+<!-- ══════════ P16 — S10 ══════════ -->
+<section class="page" id="s10">
+  <div class="ph"><span>SavvyAviator — The First 100,000 Points</span><span>10 · What to do this week</span></div>
+  <div class="pbody">
+    <div class="sec-head"><span class="sec-n">10</span><div><span class="eyebrow">Section ten</span><h2>What to do this week.</h2></div></div>
+
+    <p class="lead">Reading this changes nothing. Four hours of actual work, spread across a week, puts you on a business-class seat within the year.</p>
+
+    <div class="two">
+      <div class="box">
+        <h3>Day one — take inventory</h3>
+        <ul>
+          <li>List every points and miles balance you hold, including the forgotten ones. Note the expiry rules for each.</li>
+          <li>List every card opened in the last 24 months, including authorised-user accounts. That is your 5/24 count.</li>
+          <li>Pull your credit report and check your score.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Day two — decide the destination</h3>
+        <ul>
+          <li>Pick one trip you genuinely want in the next 12–18 months.</li>
+          <li>Work out which alliance flies it from your nearest large airport.</li>
+          <li>Identify the one or two programmes that book it without fuel surcharges.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Day three — plan the earn</h3>
+        <ul>
+          <li>Identify which US banks transfer to those programmes.</li>
+          <li>Check current welcome offers, and whether better ones have run recently.</li>
+          <li>Look at your next three months of known spending and pick the month to apply.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Day four — set the traps</h3>
+        <ul>
+          <li>Set award-space alerts for your route in the programmes you identified.</li>
+          <li>Set a cash-fare alert for the same route so you know what retail looks like.</li>
+          <li>Diary a monthly check of any booked reservation for schedule changes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="perf"></div>
+    <div class="box box-stamp">
+      <h3>When you get stuck</h3>
+      <p>Most people get through days one and two without difficulty and then stall on day three, because the answer genuinely depends on your balances, your credit profile, your home airport and your dates. That is the conversation I have on a Flight Plan call — a 75-minute working session that ends with the application order and the route strategy written out for your specific situation.</p>
+      <p><strong>savvyaviator.com</strong> — the questionnaire takes about a minute, and there is no charge to find out whether this works for you.</p>
+    </div>
+
+    <p class="note-sm">This guide is educational and is not financial, credit or tax advice. Award availability, transfer ratios, welcome bonuses and fare rules change without notice. Verify current terms with the relevant programme before acting. Some card links on savvyaviator.com may be affiliate links; recommendations are made on the merits of your situation and are never contingent on that.</p>
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>16</span></div>
+</section>
+
+</article>
+</body>
+</html>

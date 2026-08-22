@@ -134,3 +134,46 @@ The teaser commits to the light ticket-stock palette in both themes, on
 purpose — it is a printed object, and a dark-mode variant would waste toner and
 look wrong on paper. Only the backdrop behind the sheet follows the viewer's
 theme.
+
+---
+
+# The playbook
+
+`playbook.html` is the lead magnet delivered at step 01 — a 16-page field guide
+taking a reader from zero points to a first business-class redemption, written
+for a US audience. Two exports are built from it:
+
+- `savvyaviator-playbook.pdf` — 16 pages, US Letter, the file you send.
+- `savvyaviator-playbook.docx` — upload to Google Drive and it opens as a fully
+  editable Google Doc.
+
+## Before you send it
+
+**Read `PLAYBOOK-VERIFY.md` first.** It lists every factual claim the draft makes,
+in priority order, with the answer the draft assumes. Card application rules,
+transfer ratios and award pricing change constantly — this is material readers
+act on with their credit, so none of it should go out unverified.
+
+Then delete the dashed **"Draft"** panel from the cover (search `draft-note` in
+`playbook.html`, and near the top of the `.docx`) and re-export.
+
+## Re-exporting the PDF
+
+Open `playbook.html` in a browser and print to PDF with margins set to **None** —
+the page carries its own. It is sized in millimetres against a fixed
+216 × 279.4mm sheet, so what you see is what prints, and each of the 16 sections
+occupies exactly one page.
+
+If you edit the content, check nothing overflows its page: each section's
+`.pbody` must not scroll. Content that overruns is silently clipped in print.
+
+## The two documents diverge on purpose
+
+The PDF is the designed artefact — fixed pages, running headers, the ticket-stock
+identity. The `.docx` is the *editable* one: semantic headings (so the Google Docs
+outline pane works), real tables, real bullet lists, and fonts that exist
+everywhere (Arial body, Archivo headings, Courier New for data). It is built for
+editing, not for pixel-matching the PDF.
+
+Edit whichever suits the task, but keep them in sync — `PLAYBOOK-VERIFY.md`
+assumes changes land in both.

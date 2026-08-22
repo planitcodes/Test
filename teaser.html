@@ -43,7 +43,7 @@ body{
   display:flex; flex-direction:column; gap:6mm;
   box-shadow:0 24px 60px -28px rgba(0,0,0,.6);
 }
-@media (max-width:230mm){
+@media screen and (max-width:230mm){
   body{padding:12px 0}
   .sheet{width:100%; height:auto; padding:8mm 6mm; box-shadow:none; overflow:visible}
 }
@@ -154,7 +154,7 @@ tfoot td{font-family:var(--mono); font-size:8pt; font-weight:600; font-variant-n
 .toolbar button:hover{background:var(--stamp); border-color:var(--stamp)}
 :focus-visible{outline:2px solid var(--stamp); outline-offset:3px}
 
-@media (max-width:760px){
+@media screen and (max-width:760px){
   .hero,.tiers,.cta{grid-template-columns:1fr}
   .cta{gap:5mm}
   .qr-wrap{align-items:flex-start}
