@@ -292,6 +292,10 @@ tfoot td{
 .tier-featured{border-color:var(--stamp); border-width:2px}
 .tier-top{display:flex; justify-content:space-between; align-items:flex-start; gap:.8rem}
 .price{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:2rem; line-height:.9; font-variant-numeric:tabular-nums}
+.price .was{
+  font-size:1.1rem; font-weight:700; color:var(--ink-3); margin-right:.4rem;
+  text-decoration:line-through; text-decoration-color:var(--stamp); text-decoration-thickness:2px;
+}
 .price small{font-family:var(--mono); font-size:.68rem; font-weight:500; letter-spacing:.1em; color:var(--ink-3); display:block; margin-top:.4rem; text-transform:uppercase}
 .tier ul{margin:0; padding-left:1.05rem; display:flex; flex-direction:column; gap:.5rem; font-size:.93rem; color:var(--ink-2); flex:1}
 .tier li::marker{color:var(--stamp)}
@@ -643,9 +647,10 @@ tfoot td{
     <div class="coupon tier">
       <div class="tier-top">
         <div class="stack g-8"><span class="field">Tier 01</span><h3>Flight Plan</h3></div>
-        <div class="price">$300<small>One call</small></div>
+        <div class="price"><s class="was">$300</s>$150<small>One call</small></div>
       </div>
       <p class="note">A 75-minute working session, recorded, plus a written plan you keep.</p>
+      <p class="flag"><span><strong>Founding rate.</strong> The first ten clients pay $150, in exchange for a testimonial once your trip is booked. After that it goes to $300.</span></p>
       <ul>
         <li>Full audit of balances, cards and credit profile</li>
         <li>A route and cabin strategy for the trip you actually want</li>

@@ -46,12 +46,12 @@ body{
 
 /* the sheet — exact A4 so print and screen agree */
 .sheet{
-  width:210mm; height:297mm; padding:11mm 12mm 9mm;
+  width:216mm; height:279.4mm; padding:9.5mm 12mm 8mm;
   background:var(--paper);
   display:flex; flex-direction:column; gap:6mm;
   box-shadow:0 24px 60px -28px rgba(0,0,0,.6);
 }
-@media screen and (max-width:230mm){
+@media screen and (max-width:236mm){
   body{padding:12px 0}
   .sheet{width:100%; height:auto; padding:8mm 6mm; box-shadow:none; overflow:visible}
 }
@@ -77,11 +77,11 @@ p{margin:0}
 
 /* ── hero ── */
 .hero{display:grid; grid-template-columns:1.06fr .94fr; gap:7mm; align-items:start}
-.hero h1{font-size:22.5pt; font-weight:800; font-stretch:116%}
+.hero h1{font-size:21.5pt; font-weight:800; font-stretch:116%}
 .hero h1 em{font-style:normal; color:var(--stamp)}
-.lede{font-size:9pt; line-height:1.45; color:var(--ink-2); margin-top:3mm}
-.ticks{display:flex; flex-direction:column; gap:1.3mm; margin-top:3.2mm}
-.tick{display:flex; gap:2.2mm; font-size:8.8pt; line-height:1.35; color:var(--ink)}
+.lede{font-size:8.8pt; line-height:1.42; color:var(--ink-2); margin-top:3mm}
+.ticks{display:flex; flex-direction:column; gap:1.1mm; margin-top:2.8mm}
+.tick{display:flex; gap:2.2mm; font-size:8.5pt; line-height:1.32; color:var(--ink)}
 .tick::before{content:"→"; color:var(--stamp); font-family:var(--mono); font-size:8pt; flex:none}
 
 /* receipt */
@@ -107,7 +107,7 @@ p{margin:0}
 /* ── ledger ── */
 .block{display:flex; flex-direction:column; gap:2.6mm; min-width:0}
 table{border-collapse:collapse; width:100%; table-layout:fixed}
-th,td{text-align:right; padding:1.35mm 2mm; border-bottom:1px dotted var(--rule-2); white-space:nowrap}
+th,td{text-align:right; padding:1.2mm 2mm; border-bottom:1px dotted var(--rule-2); white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
 thead th{
   font-family:var(--mono); font-size:6pt; letter-spacing:.14em; text-transform:uppercase;
@@ -124,18 +124,19 @@ tfoot td{font-family:var(--mono); font-size:8pt; font-weight:600; font-variant-n
 .tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:3mm}
 .tier{
   background:var(--coupon); border:1px solid var(--rule); border-radius:2px;
-  padding:3mm; display:flex; flex-direction:column; gap:2.2mm;
+  padding:2.7mm; display:flex; flex-direction:column; gap:1.9mm;
 }
 .tier-feat{border:1.6px solid var(--stamp)}
 .tier h3{font-size:10.5pt; font-weight:800; font-stretch:110%}
 .price{font-family:var(--display); font-weight:900; font-stretch:120%; font-size:15pt; line-height:.9; font-variant-numeric:tabular-nums}
+.price .was{font-size:9pt; font-weight:700; color:var(--ink-3); margin-right:1mm; text-decoration:line-through; text-decoration-color:var(--stamp); text-decoration-thickness:1.4px}
 .price span{font-family:var(--mono); font-size:6pt; font-weight:500; letter-spacing:.1em; color:var(--ink-3); display:block; margin-top:1.2mm; text-transform:uppercase}
 .tier p{font-size:8.2pt; line-height:1.4; color:var(--ink-2)}
 
 /* ── cta ── */
 .cta{
   margin-top:auto; background:var(--ink); color:var(--paper); border-radius:2px;
-  padding:4.2mm 5mm; display:grid; grid-template-columns:1fr auto; gap:6mm; align-items:center;
+  padding:3.8mm 5mm; display:grid; grid-template-columns:1fr auto; gap:6mm; align-items:center;
 }
 .cta h2{font-size:14pt; font-weight:800; font-stretch:114%; color:var(--paper)}
 .cta p{font-size:8.6pt; line-height:1.45; color:#B9C6BC; margin-top:2mm; max-width:105mm}
@@ -173,10 +174,10 @@ tfoot td{font-family:var(--mono); font-size:8pt; font-weight:600; font-variant-n
   .foot p{max-width:none}
 }
 
-@page{ size:A4; margin:0 }
+@page{ size:Letter; margin:0 }
 @media print{
   body{background:#fff; padding:0; display:block}
-  .sheet{width:auto; height:296mm; box-shadow:none; padding:11mm 12mm 9mm; overflow:hidden}
+  .sheet{width:auto; height:278.4mm; box-shadow:none; padding:9.5mm 12mm 8mm; overflow:hidden}
   .toolbar{display:none}
   .cta{-webkit-print-color-adjust:exact; print-color-adjust:exact}
 }
@@ -267,9 +268,9 @@ tfoot td{font-family:var(--mono); font-size:8pt; font-weight:600; font-variant-n
       <div class="tier">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:2mm">
           <div><span class="field">Tier 01</span><h3 style="margin-top:1.4mm">Flight Plan</h3></div>
-          <div class="price">$300<span>One call</span></div>
+          <div class="price"><s class="was">$300</s>$150<span>Founding rate</span></div>
         </div>
-        <p>A 75-minute working session. Full audit of your balances, cards and credit profile, then a route and cabin strategy for the trip you actually want &mdash; written up, recorded, yours to keep.</p>
+        <p>A 75-minute working session. Full audit of your balances, cards and credit profile, then a route and cabin strategy for the trip you actually want &mdash; written up, recorded, yours to keep. <strong>First ten clients only.</strong></p>
       </div>
       <div class="tier tier-feat">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:2mm">
