@@ -48,7 +48,10 @@ a{color:var(--stamp)}
 .meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase}
 .draft{border:1.5px dashed var(--stamp); background:var(--stamp-wash); border-radius:3px; padding:1.1rem 1.2rem; display:flex; flex-direction:column; gap:.5rem}
 .draft p{margin:0; color:var(--ink); font-size:.9rem}
-.fill{font-family:var(--mono); font-size:.88rem; background:var(--stamp-wash); border:1px solid var(--stamp); border-radius:2px; padding:.05rem .3rem; color:var(--ink); white-space:nowrap}
+.fill{font-family:var(--mono); font-size:.88rem; background:var(--stamp-wash); border:1px solid var(--stamp);
+      border-radius:2px; padding:.05rem .3rem; color:var(--ink);
+      /* long placeholders must wrap, or they push narrow screens sideways */
+      overflow-wrap:anywhere; word-break:break-word}
 footer{border-top:1px solid var(--rule); padding-block:1.6rem; display:flex; gap:1.2rem; flex-wrap:wrap}
 footer a,footer span{font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); text-decoration:none}
 footer a:hover{color:var(--stamp)}
