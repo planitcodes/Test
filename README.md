@@ -14,7 +14,7 @@ host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).
 | Booking link | `BOOKING_URL` in the script (your Cal.com link) |
 | Prices — $249 / $29 / 15% | `#work` section |
 | Domain | `savvyaviator.com` — in the teaser CTA band, and in the four absolute URLs in `index.html`'s social tags |
-| Legal pages | `privacy.html` and `terms.html` — fill every bracketed field, delete both draft boxes |
+| Legal pages | `privacy.html` and `terms.html` — fill the remaining bracketed fields, delete both draft boxes |
 | Affiliate disclosure | footer — edit to match your actual arrangements |
 
 ## Wiring up the three steps
@@ -287,3 +287,17 @@ recommend", which persuades nobody.
 FTC civil penalties per violation, and this site's whole claim rests on a ledger
 someone could verify. Invented quotes next to verifiable numbers poisons the
 numbers.
+
+
+---
+
+# Contact address
+
+`savvyaviator.travels@gmail.com` appears in the landing page footer, both legal
+pages, the playbook's closing section, and the Flight Plan template footer. To
+change it, search for it across `*.html` — and remember the two `.docx` files
+carry their own copy, so they need rebuilding or patching separately.
+
+If you later own the domain, point `hello@savvyaviator.com` at this inbox as a
+forwarder and set Gmail to **send as** that address. Free, nothing to migrate,
+and it looks like a business.
