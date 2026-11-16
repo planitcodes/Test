@@ -12,7 +12,7 @@ import pathlib
 
 import segno
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "https://savvyaviator.com"
+URL = sys.argv[1] if len(sys.argv) > 1 else "https://savvyaviator.com/#book"
 TEASER = pathlib.Path(__file__).resolve().parent.parent / "teaser.html"
 
 qr = segno.make(URL, error="m")

@@ -109,8 +109,10 @@ chrome --headless --print-to-pdf=savvyaviator-teaser.pdf \
 
 ## The QR code
 
-The QR in the call-to-action band encodes your site URL, so a scan lands on
-the full page and the reader picks a step from there. It's inline SVG —
+The QR in the call-to-action band encodes `/#book`, so a scan lands directly
+on the three steps rather than the top of the page — the caption says "scan to
+book", and it should be true. The reader can still scroll up for the proof and
+the FAQ. It's inline SVG —
 no external assets, prints crisp at any size. Regenerate it whenever that URL
 changes:
 
