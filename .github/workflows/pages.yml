@@ -1,0 +1,45 @@
+name: Deploy site
+
+# Publishes the public site to GitHub Pages on every push to main.
+# Enable once in the repo: Settings → Pages → Source → "GitHub Actions".
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Only these files go public. Everything else in the repo — the playbook
+      # source, the .docx, the README, the verification checklist — stays private.
+      - name: Assemble site
+        run: |
+          mkdir -p _site/d
+          cp index.html teaser.html privacy.html terms.html og-image.png _site/
+          cp savvyaviator-teaser.pdf _site/
+          # Delivered via the playbook form's confirmation link, not linked from the site.
+          cp savvyaviator-playbook.pdf _site/d/
+          touch _site/.nojekyll
+          echo "Assembled:" && find _site -type f | sort
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -13,7 +13,8 @@ host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).
 | Questionnaire form | `QUALIFIER_FORM` in the script (the six-question Google Form) |
 | Booking link | `BOOKING_URL` in the script (your Cal.com link) |
 | Prices — $249 / $29 / 15% | `#work` section |
-| Domain | `savvyaviator.com` in the teaser CTA band — confirm you own it |
+| Domain | `savvyaviator.com` — in the teaser CTA band, and in the four absolute URLs in `index.html`'s social tags |
+| Legal pages | `privacy.html` and `terms.html` — fill every bracketed field, delete both draft boxes |
 | Testimonials | `#proof` — three slots marked with a dashed `PLACEHOLDER` chip |
 | Affiliate disclosure | footer — edit to match your actual arrangements |
 
@@ -177,3 +178,46 @@ editing, not for pixel-matching the PDF.
 
 Edit whichever suits the task, but keep them in sync — `PLAYBOOK-VERIFY.md`
 assumes changes land in both.
+
+
+---
+
+# Deploying
+
+`.github/workflows/pages.yml` publishes to GitHub Pages on every push to `main`.
+Enable it once: **Settings → Pages → Source → "GitHub Actions"**.
+
+It does not publish the whole repo. Only these go public:
+
+```
+index.html  teaser.html  privacy.html  terms.html
+og-image.png  savvyaviator-teaser.pdf
+d/savvyaviator-playbook.pdf
+```
+
+Everything else — `playbook.html`, the `.docx`, this README, the verification
+checklist — stays private in the repo.
+
+The playbook PDF is served from `/d/` rather than linked from the site, so you can
+point your Google Form's confirmation message at
+`https://yourdomain/d/savvyaviator-playbook.pdf`. That is light gating: anyone with
+the link can read it, but nobody finds it by browsing. Good enough for a lead
+magnet; if you want it properly gated, deliver it from your email platform instead
+and drop that line from the workflow.
+
+## A custom domain
+
+Add a `CNAME` file at the repo root containing just the domain, point the DNS at
+GitHub, and set it under Settings → Pages. Without one you get
+`<username>.github.io/<repo>` — which is why the repo name matters.
+
+## Social previews
+
+`og-image.png` is 1200×630 and regenerates from `scripts/og.html` if you want to
+change it. The Open Graph tags in `index.html` use **absolute** URLs because most
+scrapers will not resolve relative ones — if your domain is not
+`savvyaviator.com`, change it in all four places or shares show no image.
+
+After deploying, test a share with Facebook's Sharing Debugger or
+`opengraph.xyz`; both force a re-scrape, which matters because the big platforms
+cache the first result they see.

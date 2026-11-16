@@ -1,0 +1,61 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#0E1411; --coupon:#161F1A; --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#2A3630; --rule-2:#3C4C43; --stamp:#FF6B3D; --stamp-ink:#190A04;
+  --display:"Archivo",sans-serif; --body:"Instrument Sans",sans-serif; --mono:"IBM Plex Mono",monospace;
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{width:1200px;height:630px;background:var(--paper);color:var(--ink);font-family:var(--body);overflow:hidden}
+.wrap{height:100%;padding:58px 64px;display:grid;grid-template-columns:1.08fr .92fr;gap:52px;align-items:center}
+.brand{display:flex;align-items:baseline;gap:12px;margin-bottom:26px}
+.bm{font-family:var(--display);font-weight:900;font-stretch:122%;font-size:30px;letter-spacing:-.015em}
+.bc{font-family:var(--mono);font-size:14px;letter-spacing:.18em;background:var(--stamp);color:var(--stamp-ink);padding:4px 8px;border-radius:3px}
+h1{font-family:var(--display);font-weight:800;font-stretch:116%;font-size:62px;line-height:1.0;letter-spacing:-.02em;margin:0}
+h1 em{font-style:normal;color:var(--stamp)}
+.eye{font-family:var(--mono);font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--stamp);margin-bottom:18px}
+.sub{font-family:var(--mono);font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:30px}
+.rc{background:var(--coupon);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.rh{display:flex;justify-content:space-between;padding:16px 22px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.rh b{color:var(--stamp);font-weight:500}
+.perf{height:3px;background:repeating-linear-gradient(90deg,var(--rule-2) 0 6px,transparent 6px 15px)}
+.rb{padding:22px}
+.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.g span{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.g b{font-family:var(--mono);font-size:18px;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px dotted var(--rule-2);font-family:var(--mono)}
+.row .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.row .v{font-size:17px;font-weight:600}
+.st{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--stamp);text-decoration-thickness:2px}
+.tot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:18px}
+.tot span{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px}
+.tot b{font-family:var(--display);font-weight:900;font-stretch:120%;font-size:54px;line-height:.85}
+.badge{border:2px solid var(--stamp);color:var(--stamp);transform:rotate(-7deg);font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.1em;padding:7px 11px;border-radius:3px;text-transform:uppercase;white-space:nowrap}
+</style></head><body>
+<div class="wrap">
+  <div>
+    <div class="brand"><span class="bm">SavvyAviator</span><span class="bc">SAV</span></div>
+    <div class="eye">Points · Miles · Mistake fares</div>
+    <h1>Business class isn't expensive. It's just <em>priced for people who pay cash.</em></h1>
+    <div class="sub">$24,001 of business class for $193</div>
+  </div>
+  <div class="rc">
+    <div class="rh"><span>Passenger coupon</span><b>LX 22 · Aeroplan</b></div>
+    <div class="perf"></div>
+    <div class="rb">
+      <div class="g">
+        <div><span>From</span><b>GVA</b></div>
+        <div><span>To</span><b>JFK</b></div>
+        <div><span>Cabin</span><b>Business</b></div>
+      </div>
+      <div class="row"><span class="k">Retail, one way</span><span class="v st">$6,244.00</span></div>
+      <div class="row"><span class="k">Aeroplan points</span><span class="v">60,000</span></div>
+      <div class="tot">
+        <div><span>Cash out of pocket</span><b>$5.00</b></div>
+        <div class="badge">Saved 99.9%</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

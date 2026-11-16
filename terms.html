@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Terms — SavvyAviator</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%23C33A12%22%2F%3E%3Cpath%20d%3D%22M21%203v26%22%20stroke%3D%22%23FFF7F3%22%20stroke-width%3D%222.4%22%20stroke-dasharray%3D%223.2%203.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2211%22%20width%3D%2210%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23FFF7F3%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2217.4%22%20width%3D%226.5%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23FFF7F3%22%20opacity%3D%22.75%22%2F%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#C33A12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#E9EEE7; --coupon:#F6F9F3; --ink:#14201A; --ink-2:#4A5A52; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#9FB09E; --stamp:#C33A12; --stamp-ink:#FFF7F3; --stamp-wash:rgba(195,58,18,.09);
+  --display:"Archivo",system-ui,sans-serif; --body:"Instrument Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0E1411; --coupon:#151E19; --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43; --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.12);
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1411; --coupon:#151E19; --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43; --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.12);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.wrap{width:min(100% - 2.6rem, 760px); margin-inline:auto}
+header.top{border-bottom:1px solid var(--rule)}
+.top-in{display:flex; align-items:center; gap:1rem; padding-block:1rem}
+.brand{display:flex; align-items:baseline; gap:.5rem; text-decoration:none; margin-right:auto; color:var(--ink)}
+.bm{font-family:var(--display); font-weight:900; font-stretch:122%; font-size:1.12rem; letter-spacing:-.015em}
+.bc{font-family:var(--mono); font-size:.62rem; letter-spacing:.18em; background:var(--stamp); color:var(--stamp-ink); padding:.16rem .38rem; border-radius:2px}
+.back{font-family:var(--mono); font-size:.7rem; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2); text-decoration:none}
+.back:hover{color:var(--stamp)}
+main{padding-block:3.2rem 4.5rem; display:flex; flex-direction:column; gap:1.5rem}
+.field{font-family:var(--mono); font-size:.66rem; letter-spacing:.17em; text-transform:uppercase; color:var(--stamp)}
+h1{font-family:var(--display); font-weight:800; font-stretch:114%; font-size:clamp(1.9rem,4vw,2.6rem); line-height:1.04; margin:0; letter-spacing:-.015em; text-wrap:balance}
+h2{font-family:var(--display); font-weight:700; font-stretch:108%; font-size:1.18rem; margin:1.8rem 0 0; line-height:1.25}
+p,li{color:var(--ink-2); font-size:.98rem}
+p{margin:.7rem 0 0}
+ul{margin:.7rem 0 0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.45rem}
+li::marker{color:var(--stamp)}
+strong{color:var(--ink); font-weight:600}
+a{color:var(--stamp)}
+.meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase}
+.draft{border:1.5px dashed var(--stamp); background:var(--stamp-wash); border-radius:3px; padding:1.1rem 1.2rem; display:flex; flex-direction:column; gap:.5rem}
+.draft p{margin:0; color:var(--ink); font-size:.9rem}
+.fill{font-family:var(--mono); font-size:.88rem; background:var(--stamp-wash); border:1px solid var(--stamp); border-radius:2px; padding:.05rem .3rem; color:var(--ink); white-space:nowrap}
+footer{border-top:1px solid var(--rule); padding-block:1.6rem; display:flex; gap:1.2rem; flex-wrap:wrap}
+footer a,footer span{font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); text-decoration:none}
+footer a:hover{color:var(--stamp)}
+:focus-visible{outline:2px solid var(--stamp); outline-offset:3px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-in">
+  <a class="brand" href="index.html"><span class="bm">SavvyAviator</span><span class="bc">SAV</span></a>
+  <a class="back" href="index.html">← Back to site</a>
+</div></header>
+
+<div class="wrap"><main>
+  <div class="draft">
+    <span class="field">Draft — fill the bracketed fields and delete this box before publishing</span>
+    <p>This is a starting point, not legal advice. You are taking money for advice that affects people's credit, so have a lawyer review it — particularly the liability, refund and fee-definition sections.</p>
+  </div>
+
+  <div>
+    <span class="field">Terms</span>
+    <h1>Terms of service</h1>
+    <p class="meta" style="margin-top:.8rem">Last updated <span class="fill">[DATE]</span></p>
+  </div>
+
+  <p>These terms govern the services provided by <span class="fill">[LEGAL ENTITY NAME]</span> (&ldquo;SavvyAviator&rdquo;, &ldquo;we&rdquo;) to you. By booking a call, joining the membership or engaging us to book travel, you agree to them.</p>
+
+  <h2>What we do</h2>
+  <ul>
+    <li><strong>Flight Plan</strong> — a one-off consultation reviewing your points, cards and goals, ending in a written strategy document.</li>
+    <li><strong>The Flight Deck</strong> — a monthly membership giving access to deal alerts, award-space alerts and a private community.</li>
+    <li><strong>Booked For You</strong> — we research award space and routing for a specific trip and, with your approval, ticket it.</li>
+  </ul>
+
+  <h2>What we are not</h2>
+  <p>This matters more than anything else here, so it is stated plainly:</p>
+  <ul>
+    <li>We are <strong>not a travel agency</strong> and not an agent of any airline, bank or loyalty programme. Your ticket is a contract between you and the airline.</li>
+    <li>We do <strong>not give financial, credit, legal or tax advice.</strong> Information about credit cards is educational. Every application and every borrowing decision is yours.</li>
+    <li>We <strong>cannot guarantee award availability, pricing, approval for any card, or that any airline will honour any fare.</strong> Programmes change their rules and pricing without notice and we have no control over it.</li>
+  </ul>
+
+  <h2>Your side of it</h2>
+  <ul>
+    <li>Give us accurate information. The plan is only as good as what you tell us.</li>
+    <li>Make your own decisions about credit. Do not apply for anything you cannot repay in full.</li>
+    <li>Review every booking before it is ticketed, and check names, dates and routing against your documents.</li>
+    <li>Keep your own account credentials private. We will never ask for a password.</li>
+  </ul>
+
+  <h2>Fees and payment</h2>
+  <p><strong>Flight Plan</strong> is <span class="fill">[$300]</span>, payable at booking. <strong>The Flight Deck</strong> is <span class="fill">[$15]</span> per month, billed monthly and cancellable at any time, effective at the end of the current period; we do not refund part-months.</p>
+  <p><strong>Booked For You</strong> is billed at <span class="fill">[10%]</span> of verified savings. &ldquo;Verified savings&rdquo; means the difference between the lowest cash fare reasonably available for a <strong>comparable cabin on the same dates</strong>, as agreed with you in writing before anything is ticketed, and the total you actually pay including taxes, fees and any positioning flights we recommend. If we cannot beat what you would otherwise have paid, there is no fee. <span class="fill">[OPTIONAL: FEE CAPPED AT $___ PER BOOKING]</span></p>
+
+  <h2>Refunds</h2>
+  <p>If a Flight Plan call has not happened yet, you can cancel and be refunded in full up to <span class="fill">[48 HOURS]</span> beforehand. Once the call has taken place it is not refundable, because the work has been delivered. If we have to reschedule, you can take a new time or a full refund.</p>
+
+  <h2>Mistake fares</h2>
+  <p>Fares published in error are sometimes honoured by airlines and sometimes cancelled. If you book one, you accept that risk. Do not make non-refundable arrangements around a ticket that has not settled. We are not liable for an airline cancelling a fare, nor for any cost you incur relying on one.</p>
+
+  <h2>Affiliate relationships</h2>
+  <p>Some card links on this site may be affiliate links and may pay us a commission if you are approved. This is disclosed on the page. Recommendations are made on the merits of your situation and are never contingent on a commission. You are free to apply through any channel you prefer.</p>
+
+  <h2>Limitation of liability</h2>
+  <p>To the fullest extent the law allows, our total liability arising out of these services is limited to the amount you paid us for the service in question. We are not liable for indirect or consequential losses, including missed flights, cancelled awards, devalued points, denied applications, or the cost of replacement travel.</p>
+  <p>Nothing here limits liability for fraud or anything else that cannot lawfully be limited.</p>
+
+  <h2>Ending it</h2>
+  <p>You can cancel a membership at any time. We may decline or end an engagement — refunding anything you have paid for work not yet delivered — if the relationship is abusive, if you ask us to do something we consider dishonest, or if we believe a card strategy would do you financial harm.</p>
+
+  <h2>Governing law</h2>
+  <p>These terms are governed by the laws of <span class="fill">[STATE]</span>, United States, and disputes will be handled in the courts of <span class="fill">[COUNTY, STATE]</span>.</p>
+
+  <h2>Changes</h2>
+  <p>We may update these terms. The version in force is the one published when you booked or when your current membership period began.</p>
+
+  <p style="margin-top:1.6rem">Questions: <span class="fill">[CONTACT EMAIL]</span>.</p>
+</main>
+
+<footer>
+  <span>SavvyAviator</span>
+  <a href="index.html">Home</a>
+  <a href="privacy.html">Privacy</a>
+  <span>&copy; <span class="fill">[YEAR]</span></span>
+</footer></div>
+</body>
+</html>
