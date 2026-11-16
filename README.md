@@ -221,3 +221,7 @@ scrapers will not resolve relative ones — if your domain is not
 After deploying, test a share with Facebook's Sharing Debugger or
 `opengraph.xyz`; both force a re-scrape, which matters because the big platforms
 cache the first result they see.
+
+`savvyaviator-teaser.png` is the teaser as an image, for pasting into a message,
+a slide or a social post where a PDF will not embed. Regenerate it by
+screenshotting the `.sheet` element at `deviceScaleFactor: 2`.
