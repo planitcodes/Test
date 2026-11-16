@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flight Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EFF2EC; --coupon:#F8FAF5; --ink:#14201A; --ink-2:#47564F; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#A2B2A1; --stamp:#C33A12; --stamp-ink:#FFF7F3;
+  --stamp-wash:rgba(195,58,18,.08); --good:#1B6244; --backdrop:#D8DED6;
+  --display:"Archivo",system-ui,sans-serif; --body:"Instrument Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --backdrop:#171C19 } }
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--backdrop); color:var(--ink); font-family:var(--body); -webkit-font-smoothing:antialiased}
+.doc{display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px 12px}
+.page{width:216mm; height:279.4mm; padding:13mm 16mm 10mm; background:var(--paper);
+      display:flex; flex-direction:column; box-shadow:0 20px 50px -30px rgba(0,0,0,.7)}
+.pbody{flex:1; display:flex; flex-direction:column; gap:4.5mm; min-height:0}
+.ph{font-family:var(--mono); font-size:6.4pt; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+    padding-bottom:2.2mm; border-bottom:1px solid var(--rule); margin-bottom:5mm; display:flex; justify-content:space-between; gap:6mm}
+.pf{margin-top:5mm; padding-top:2.2mm; border-top:1px solid var(--rule); display:flex; justify-content:space-between;
+    font-family:var(--mono); font-size:6.2pt; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+
+h1,h2,h3{font-family:var(--display); margin:0; line-height:1.05; letter-spacing:-.015em; text-wrap:balance}
+h2{font-size:15pt; font-weight:800; font-stretch:114%}
+h3{font-size:10pt; font-weight:700; font-stretch:108%}
+p{margin:0; font-size:9pt; line-height:1.5; color:var(--ink-2)}
+.eyebrow{font-family:var(--mono); font-size:6.4pt; letter-spacing:.18em; text-transform:uppercase; color:var(--stamp)}
+.sec{display:flex; flex-direction:column; gap:2.6mm}
+.sec-head{display:flex; align-items:baseline; gap:3mm; border-bottom:1.5px solid var(--ink); padding-bottom:1.6mm}
+.sec-n{font-family:var(--mono); font-size:8pt; font-weight:600; color:var(--stamp)}
+.hint{font-size:7.6pt; line-height:1.4; color:var(--ink-3); font-style:italic}
+
+/* a labelled line to write on */
+.fields{display:grid; gap:3mm 5mm}
+.c2{grid-template-columns:1fr 1fr} .c3{grid-template-columns:repeat(3,1fr)} .c4{grid-template-columns:repeat(4,1fr)}
+.f{display:flex; flex-direction:column; gap:1.2mm; min-width:0}
+.f label{font-family:var(--mono); font-size:6.2pt; letter-spacing:.15em; text-transform:uppercase; color:var(--ink-3)}
+.f .line{border-bottom:1px solid var(--rule-2); min-height:6mm; font-family:var(--mono); font-size:8.6pt; color:var(--ink); padding-bottom:.8mm}
+.f .line.tall{min-height:12mm}
+
+table{border-collapse:collapse; width:100%; table-layout:fixed}
+th,td{text-align:left; padding:1.6mm 2mm; border:1px solid var(--rule-2); vertical-align:top}
+th{font-family:var(--mono); font-size:6pt; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3);
+   font-weight:500; background:var(--coupon)}
+td{height:9mm; font-family:var(--mono); font-size:8.2pt; color:var(--ink)}
+
+.box{background:var(--coupon); border:1px solid var(--rule); border-radius:2px; padding:3.4mm 4mm; display:flex; flex-direction:column; gap:1.8mm}
+.box-stamp{background:var(--stamp-wash); border-color:var(--stamp)}
+.box p,.box li{font-size:8.4pt}
+ul,ol{margin:0; padding-left:4.5mm; display:flex; flex-direction:column; gap:1.4mm}
+li{font-size:8.6pt; line-height:1.45; color:var(--ink-2)}
+li::marker{color:var(--stamp)}
+.check{display:flex; flex-direction:column; gap:2mm}
+.check div{display:flex; gap:2.5mm; align-items:flex-start; font-size:8.8pt; color:var(--ink-2); line-height:1.4}
+.check div::before{content:""; width:3.4mm; height:3.4mm; border:1.2px solid var(--rule-2); border-radius:1px; flex:none; margin-top:.6mm}
+
+/* cover */
+.cover{justify-content:space-between}
+.brand{display:flex; align-items:baseline; gap:2.4mm}
+.bm{font-family:var(--display); font-weight:900; font-stretch:122%; font-size:13.5pt; letter-spacing:-.015em}
+.bc{font-family:var(--mono); font-size:6pt; letter-spacing:.18em; background:var(--stamp); color:var(--stamp-ink); padding:.8mm 1.5mm; border-radius:1px}
+.cover h1{font-size:34pt; font-weight:800; font-stretch:116%; margin-top:5mm}
+.cover .sub{font-size:10.5pt; line-height:1.45; color:var(--ink-2); max-width:120mm; margin-top:4mm}
+.draft{border:1.5px dashed var(--stamp); background:var(--stamp-wash); border-radius:2px; padding:3.4mm 4mm; display:flex; flex-direction:column; gap:1.6mm}
+.draft p{font-size:8.2pt; color:var(--ink)}
+
+@page{ size:Letter; margin:0 }
+@media print{
+  body{background:#fff} .doc{display:block; gap:0; padding:0}
+  .page{height:278.4mm; box-shadow:none; break-after:page; overflow:hidden; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .page:last-child{break-after:auto}
+}
+@media screen and (max-width:236mm){
+  .doc{padding:10px 0} .page{width:100%; height:auto; padding:9mm 7mm; box-shadow:none}
+  .c2,.c3,.c4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<article class="doc">
+
+<!-- ═════ PAGE 1 ═════ -->
+<section class="page cover">
+  <div>
+    <div class="brand"><span class="bm">SavvyAviator</span><span class="bc">SAV</span></div>
+    <h1>Flight Plan</h1>
+    <p class="sub">Your route, your cards, and the order to do them in. Prepared after our call and yours to keep.</p>
+
+    <div class="fields c4" style="margin-top:9mm">
+      <div class="f"><label>Prepared for</label><div class="line"></div></div>
+      <div class="f"><label>Date</label><div class="line"></div></div>
+      <div class="f"><label>Home airport</label><div class="line"></div></div>
+      <div class="f"><label>Plan valid until</label><div class="line"></div></div>
+    </div>
+    <div class="fields" style="margin-top:4mm">
+      <div class="f"><label>Call recording</label><div class="line"></div></div>
+    </div>
+
+    <div class="sec" style="margin-top:9mm">
+      <div class="sec-head"><span class="sec-n">01</span><h2>The trip we are aiming at</h2></div>
+      <p class="hint">One specific trip. A plan built for "somewhere nice next year" is a plan for nothing.</p>
+      <div class="fields c3" style="margin-top:2mm">
+        <div class="f"><label>From → to</label><div class="line"></div></div>
+        <div class="f"><label>Cabin</label><div class="line"></div></div>
+        <div class="f"><label>Travellers</label><div class="line"></div></div>
+      </div>
+      <div class="fields c2">
+        <div class="f"><label>Target window</label><div class="line"></div></div>
+        <div class="f"><label>How flexible, honestly</label><div class="line"></div></div>
+      </div>
+      <div class="fields">
+        <div class="f"><label>Anything fixed — dates that cannot move, people who must come</label><div class="line tall"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-top:8mm">
+    <div class="sec-head"><span class="sec-n">&#9733;</span><h2>The short version</h2></div>
+    <p class="hint">Fill this last, once the rest is done. Most clients read this box and skim everything else — make it the answer, not a summary of the headings.</p>
+    <div class="fields" style="margin-top:2mm">
+      <div class="f"><label>The plan in one sentence</label><div class="line tall"></div></div>
+    </div>
+    <div class="fields c4">
+      <div class="f"><label>Points you need</label><div class="line"></div></div>
+      <div class="f"><label>Realistic timeline</label><div class="line"></div></div>
+      <div class="f"><label>Cash fare we are beating</label><div class="line"></div></div>
+      <div class="f"><label>Est. you will pay</label><div class="line"></div></div>
+    </div>
+  </div>
+
+  <div class="draft">
+    <span class="eyebrow">Delete this box before you send a filled plan to a client</span>
+    <p>Fill this during or right after the call, while it is fresh. The italic hints under each heading are prompts for you, not for the client — delete them as you go. Anything you cannot answer on the call becomes a line in section 08.</p>
+  </div>
+</section>
+
+<!-- ═════ PAGE 2 ═════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — Flight Plan</span><span>02–03 · What you hold</span></div>
+  <div class="pbody">
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">02</span><h2>What you already hold</h2></div>
+      <p class="hint">Balances first. Almost everyone has more usable value than they think, and at least one balance quietly about to expire.</p>
+      <table>
+        <thead><tr><th style="width:30%">Programme</th><th style="width:18%">Balance</th><th style="width:22%">Expires / activity rule</th><th>Notes</th></tr></thead>
+        <tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">03</span><h2>Cards and credit position</h2></div>
+      <p class="hint">Count every personal card opened in 24 months, authorised-user accounts included. That is the 5/24 number.</p>
+      <table>
+        <thead><tr><th style="width:34%">Card</th><th style="width:16%">Opened</th><th style="width:16%">Annual fee</th><th>Fee posts / action</th></tr></thead>
+        <tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody>
+      </table>
+      <div class="fields c4" style="margin-top:1mm">
+        <div class="f"><label>5/24 count</label><div class="line"></div></div>
+        <div class="f"><label>Approx. credit score</label><div class="line"></div></div>
+        <div class="f"><label>Mortgage in 12 months?</label><div class="line"></div></div>
+        <div class="f"><label>Two-player household?</label><div class="line"></div></div>
+      </div>
+      <div class="fields" style="margin-top:1mm">
+        <div class="f"><label>Anything else from the call worth recording</label><div class="line tall"></div></div>
+      </div>
+      <div class="box box-stamp" style="margin-top:1mm">
+        <p><strong>Stop condition.</strong> If a balance is carried month to month, or a mortgage application is coming, nothing below gets actioned until that changes. Note it here and say it out loud on the call.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>02</span></div>
+</section>
+
+<!-- ═════ PAGE 3 ═════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — Flight Plan</span><span>04–05 · Target and route to it</span></div>
+  <div class="pbody">
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">04</span><h2>The target redemption</h2></div>
+      <p class="hint">Name the exact award you are aiming at, and price it in every programme that can book it. The surcharge difference is usually the whole decision.</p>
+      <div class="fields c3">
+        <div class="f"><label>Programme to book through</label><div class="line"></div></div>
+        <div class="f"><label>Operating carrier</label><div class="line"></div></div>
+        <div class="f"><label>Points needed</label><div class="line"></div></div>
+      </div>
+      <div class="fields c3">
+        <div class="f"><label>Est. taxes &amp; fees</label><div class="line"></div></div>
+        <div class="f"><label>Cash fare to beat</label><div class="line"></div></div>
+        <div class="f"><label>Value per point</label><div class="line"></div></div>
+      </div>
+      <div class="fields c2">
+        <div class="f"><label>Backup programme</label><div class="line"></div></div>
+        <div class="f"><label>Backup routing</label><div class="line"></div></div>
+      </div>
+      <div class="fields">
+        <div class="f"><label>The gap — points still needed after what you hold</label><div class="line"></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">05</span><h2>Application order</h2></div>
+      <p class="hint">Constrained approvals first, then once-per-lifetime bonuses, then everything else. Put a real month against each row.</p>
+      <table>
+        <thead><tr><th style="width:7%">#</th><th style="width:30%">Card</th><th style="width:14%">Apply</th><th style="width:16%">Bonus</th><th style="width:16%">Min spend</th><th>Deadline</th></tr></thead>
+        <tbody><tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>4</td><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+      </table>
+      <div class="box" style="margin-top:1mm">
+        <h3>Before each application</h3>
+        <ul>
+          <li>Check for a better public or targeted offer — the same card swings by tens of thousands of points.</li>
+          <li>Confirm the bonus is still available to you, and that this is the right moment to spend a once-per-lifetime one.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>03</span></div>
+</section>
+
+<!-- ═════ PAGE 4 ═════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — Flight Plan</span><span>06–07 · Spend and redemption</span></div>
+  <div class="pbody">
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">06</span><h2>Where the minimum spend comes from</h2></div>
+      <p class="hint">Real, already-planned outflow only. If they have to buy something to hit a target, the timing is wrong — move the application.</p>
+      <table>
+        <thead><tr><th style="width:26%">Month</th><th style="width:40%">What is already being paid</th><th>Approx. amount</th></tr></thead>
+        <tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody>
+      </table>
+      <div class="fields" style="margin-top:1mm">
+        <div class="f"><label>Shortfall, if any — and what we will do about it</label><div class="line"></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">07</span><h2>Finding and taking the seat</h2></div>
+      <p class="hint">The transfer rule is the one thing on this page that costs real money if ignored. Say it twice.</p>
+      <div class="box box-stamp">
+        <p><strong>Do not transfer points until a seat is confirmed bookable.</strong> Transfers are one-way. Find the space, hold it where the programme allows, then move the points.</p>
+      </div>
+      <div class="fields c2" style="margin-top:1mm">
+        <div class="f"><label>Where to search</label><div class="line"></div></div>
+        <div class="f"><label>Transfer time to expect</label><div class="line"></div></div>
+      </div>
+      <div class="fields c2">
+        <div class="f"><label>Dates to watch — schedule open</label><div class="line"></div></div>
+        <div class="f"><label>Dates to watch — late release</label><div class="line"></div></div>
+      </div>
+      <div class="fields">
+        <div class="f"><label>Alerts to set, and on which routes</label><div class="line tall"></div></div>
+        <div class="f"><label>Positioning options worth considering</label><div class="line"></div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pf"><span>savvyaviator.com</span><span>04</span></div>
+</section>
+
+<!-- ═════ PAGE 5 ═════ -->
+<section class="page">
+  <div class="ph"><span>SavvyAviator — Flight Plan</span><span>08–09 · Risks and next actions</span></div>
+  <div class="pbody">
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">08</span><h2>What could go wrong</h2></div>
+      <p class="hint">Write the real ones. A plan that pretends nothing can fail is the one that gets blamed when something does.</p>
+      <table>
+        <thead><tr><th style="width:42%">Risk</th><th style="width:16%">Likelihood</th><th>What we do instead</th></tr></thead>
+        <tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td></tr></tbody>
+      </table>
+      <div class="fields" style="margin-top:1mm">
+        <div class="f"><label>Open questions I am checking and will come back to you on</label><div class="line tall"></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-n">09</span><h2>Your next three actions</h2></div>
+      <p class="hint">Three, with dates. More than three and none of them happen.</p>
+      <table>
+        <thead><tr><th style="width:8%">#</th><th style="width:62%">Action</th><th>By when</th></tr></thead>
+        <tbody><tr><td>1</td><td></td><td></td></tr><tr><td>2</td><td></td><td></td></tr><tr><td>3</td><td></td><td></td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <h3>What happens next</h3>
+      <div class="check">
+        <div>You have two weeks of follow-up questions by email — use them, especially before you transfer anything.</div>
+        <div>Send me the confirmation when you book. I will add it to the ledger, with your name off it.</div>
+        <div>Check your reservation monthly for schedule changes; they are the best free upgrade there is.</div>
+        <div>If the plan stops matching reality — a devaluation, a decline, a change of dates — tell me and we will redo it.</div>
+      </div>
+    </div>
+
+    <div class="box box-stamp">
+      <p><strong>A reminder, because it matters more than anything else here.</strong> Nothing in this plan is financial or credit advice. Every application is your decision. Do not apply for anything you cannot pay off in full, and no points balance is worth paying interest for.</p>
+    </div>
+
+  </div>
+  <div class="pf"><span>savvyaviator.com &middot; prepared by [YOUR NAME]</span><span>05</span></div>
+</section>
+
+</article>
+</body>
+</html>
