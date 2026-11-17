@@ -1,0 +1,8 @@
+# SavvyAviator
+User-agent: *
+Allow: /
+
+# Delivered to people who asked for it, not to crawlers.
+Disallow: /d/
+
+Sitemap: https://savvyaviator.com/sitemap.xml

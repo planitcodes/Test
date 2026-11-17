@@ -30,7 +30,8 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site/d
-          cp index.html teaser.html privacy.html terms.html og-image.png _site/
+          cp index.html teaser.html privacy.html terms.html 404.html og-image.png _site/
+          cp robots.txt sitemap.xml _site/
           cp savvyaviator-teaser.pdf _site/
           # Delivered via the playbook form's confirmation link, not linked from the site.
           cp savvyaviator-playbook.pdf _site/d/
