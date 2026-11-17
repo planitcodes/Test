@@ -1,11 +1,39 @@
-# SavvyAviator — landing page
+# SavvyAviator
+
+A points-and-miles consulting business in a repo: the site, the collateral, the
+client documents, and the process to run it.
+
+**New here? Read [`RUNBOOK.md`](RUNBOOK.md).** It has the launch checklist, the
+client journey, and the operating rhythm. This file is the technical reference
+for the files themselves.
+
+## What's in here
+
+| File | What it is |
+| --- | --- |
+| `index.html` | The landing page — estimator, ledger, tiers, three-step booking |
+| `teaser.html` → `savvyaviator-teaser.pdf` / `.png` | One-page leave-behind to send or print |
+| `playbook.html` → `savvyaviator-playbook.pdf` / `.docx` | The 16-page lead magnet |
+| `flight-plan-template.html` → `.pdf` / `.docx` | What you fill in on a call and hand over |
+| `emails.html` | Eight client emails with copy buttons. Internal |
+| `privacy.html`, `terms.html` | Legal pages. Drafts until the brackets are filled |
+| `404.html`, `robots.txt`, `sitemap.xml`, `og-image.png` | Site furniture |
+| `PLAYBOOK-VERIFY.md` | 19 claims to check before the playbook goes out |
+| `RUNBOOK.md` | How to launch and operate |
+| `tools/`, `scripts/` | QR generator, OG image source |
+
+Everything is static HTML. No build step, no dependencies — open any `.html`
+directly in a browser.
+
 
 A single self-contained `index.html` for a travel-hacking service: points &
 miles, mistake fares, 1:1 consulting, a paid deal room, and done-for-you
 booking. No build step, no dependencies. Open the file or drop it on any static
 host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).
 
-## Before you launch — swap these
+## The landing page
+
+### Before you launch — swap these
 
 | What | Where |
 | --- | --- |
@@ -17,7 +45,7 @@ host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).
 | Legal pages | `privacy.html` and `terms.html` — fill the remaining bracketed fields, delete both draft boxes |
 | Affiliate disclosure | footer — edit to match your actual arrangements |
 
-## Wiring up the three steps
+### Wiring up the three steps
 
 The booking section is three link-outs, configured at the top of the script:
 
@@ -52,7 +80,7 @@ var PREFILL = {
 Leave them empty and the form just opens blank. The questionnaire link rebuilds
 itself whenever someone moves an estimator control.
 
-## The ledger
+### The ledger
 
 The four rows in `#proof` are real confirmed redemptions:
 
@@ -70,23 +98,21 @@ becomes `$340.00 paid / $3,773 saved / 7.01¢` and the totals shift with it.
 Keep evidence for every retail figure — a screenshot of the cash fare at the
 time of booking. The whole page rests on that column.
 
-## The savings estimator
+### The savings estimator
 
 The model in the `MODEL` object holds retail fare, award taxes, and points cost
 per round trip for four cabins. It is deliberately more conservative than the
 ledger: the ledger shows what a good redemption looks like, the estimator shows
 what a client should expect. Raising it to match the ledger would overpromise.
 
-## Notes
+### Notes
 
 - Light and dark themes both ship; the page follows the OS setting and the
   nav's **Theme** button overrides it (persisted to `localStorage`).
 - Fonts load from Google Fonts. Self-host them if you need the page to work offline.
 - Animation is skipped entirely under `prefers-reduced-motion`.
 
----
-
-# Teaser one-pager
+## Teaser one-pager
 
 `teaser.html` is a single-page leave-behind for prospective clients — same
 visual identity, condensed to one A4 sheet. `savvyaviator-teaser.pdf` is the
@@ -95,7 +121,7 @@ rendered output, ready to attach to an email.
 Send it two ways: attach the PDF, or link the page and let them hit
 **Save as PDF** themselves.
 
-## Regenerating the PDF
+### Regenerating the PDF
 
 Open `teaser.html` in a browser and use the **Save as PDF** button (bottom
 right — screen only, never printed). Set margins to *None*; the page carries
@@ -106,7 +132,7 @@ chrome --headless --print-to-pdf=savvyaviator-teaser.pdf \
        --no-pdf-header-footer teaser.html
 ```
 
-## The QR code
+### The QR code
 
 The QR in the call-to-action band encodes `/#book`, so a scan lands directly
 on the three steps rather than the top of the page — the caption says "scan to
@@ -123,23 +149,21 @@ python3 tools/make-qr.py https://your-real-site-url
 The script rewrites whatever sits between the `<!--QR-->` markers in
 `teaser.html`. Re-export the PDF afterwards.
 
-## Swap before sending
+### Swap before sending
 
 Same list as the landing page — prices and the booking URL — plus the
 `savvyaviator.com` display URL in the CTA band. The teaser deliberately carries
 **no testimonials**: it goes out before you have any. Add a fourth column of
 quotes once the slots on the landing page are filled.
 
-## Design note
+### Design note
 
 The teaser commits to the light ticket-stock palette in both themes, on
 purpose — it is a printed object, and a dark-mode variant would waste toner and
 look wrong on paper. Only the backdrop behind the sheet follows the viewer's
 theme.
 
----
-
-# The playbook
+## The playbook
 
 `playbook.html` is the lead magnet delivered at step 01 — a 16-page field guide
 taking a reader from zero points to a first business-class redemption, written
@@ -149,7 +173,7 @@ for a US audience. Two exports are built from it:
 - `savvyaviator-playbook.docx` — upload to Google Drive and it opens as a fully
   editable Google Doc.
 
-## Before you send it
+### Before you send it
 
 **Read `PLAYBOOK-VERIFY.md` first.** It lists every factual claim the draft makes,
 in priority order, with the answer the draft assumes. Card application rules,
@@ -159,7 +183,7 @@ act on with their credit, so none of it should go out unverified.
 Then delete the dashed **"Draft"** panel from the cover (search `draft-note` in
 `playbook.html`, and near the top of the `.docx`) and re-export.
 
-## Re-exporting the PDF
+### Re-exporting the PDF
 
 Open `playbook.html` in a browser and print to PDF with margins set to **None** —
 the page carries its own. It is sized in millimetres against a fixed
@@ -169,7 +193,7 @@ occupies exactly one page.
 If you edit the content, check nothing overflows its page: each section's
 `.pbody` must not scroll. Content that overruns is silently clipped in print.
 
-## The two documents diverge on purpose
+### The two documents diverge on purpose
 
 The PDF is the designed artefact — fixed pages, running headers, the ticket-stock
 identity. The `.docx` is the *editable* one: semantic headings (so the Google Docs
@@ -181,9 +205,7 @@ Edit whichever suits the task, but keep them in sync — `PLAYBOOK-VERIFY.md`
 assumes changes land in both.
 
 
----
-
-# Deploying
+## Deploying
 
 `.github/workflows/pages.yml` publishes to GitHub Pages on every push to `main`.
 Enable it once: **Settings → Pages → Source → "GitHub Actions"**.
@@ -206,13 +228,13 @@ the link can read it, but nobody finds it by browsing. Good enough for a lead
 magnet; if you want it properly gated, deliver it from your email platform instead
 and drop that line from the workflow.
 
-## A custom domain
+### A custom domain
 
 Add a `CNAME` file at the repo root containing just the domain, point the DNS at
 GitHub, and set it under Settings → Pages. Without one you get
 `<username>.github.io/<repo>` — which is why the repo name matters.
 
-## Social previews
+### Social previews
 
 `og-image.png` is 1200×630 and regenerates from `scripts/og.html` if you want to
 change it. The Open Graph tags in `index.html` use **absolute** URLs because most
@@ -228,9 +250,7 @@ a slide or a social post where a PDF will not embed. Regenerate it by
 screenshotting the `.sheet` element at `deviceScaleFactor: 2`.
 
 
----
-
-# The Flight Plan template
+## The Flight Plan template
 
 What you fill in during or right after a Tier 01 call, and hand to the client.
 It is the thing that makes the fee feel fair — without it the call is a nice
@@ -242,7 +262,7 @@ chat they forget in a week.
   hand, or for seeing the designed version.
 - `flight-plan-template.html` — source of the PDF.
 
-## Nine sections
+### Nine sections
 
 `01` the trip · `★` the short version · `02` balances · `03` cards and credit ·
 `04` target redemption · `05` application order · `06` minimum spend ·
@@ -256,16 +276,14 @@ rest, so it should be the answer rather than a list of headings. And **section
 The italic prompts under each heading are notes to you, not the client. Delete
 them as you fill, along with the dashed box on page 1.
 
-## Keeping it in sync
+### Keeping it in sync
 
 The `.docx` and the `.html` are built separately — change one and you must
 change the other. The docx is generated by a script kept out of the repo; if you
 restructure the template, the `.html` is the easier one to edit by hand.
 
 
----
-
-# Testimonials
+## Testimonials
 
 There is no testimonial section, on purpose. A block of empty placeholder cards
 advertises that you have no clients; the ledger is stronger proof than three
@@ -289,9 +307,7 @@ someone could verify. Invented quotes next to verifiable numbers poisons the
 numbers.
 
 
----
-
-# Contact address
+## Contact address
 
 `savvyaviator.travels@gmail.com` appears in the landing page footer, both legal
 pages, the playbook's closing section, and the Flight Plan template footer. To
@@ -301,3 +317,38 @@ carry their own copy, so they need rebuilding or patching separately.
 If you later own the domain, point `hello@savvyaviator.com` at this inbox as a
 forwarder and set Gmail to **send as** that address. Free, nothing to migrate,
 and it looks like a business.
+
+
+## The email kit
+
+`emails.html` holds the eight client emails — delivery, nudge, booking
+confirmation, plan delivery, check-in, testimonial request, the Booked For You
+scope agreement, and turning someone away. Each has a copy button and a note on
+why it is worded that way.
+
+It is `noindex` and excluded from the deploy. Open it locally when you need to
+send something.
+
+Two of them are load-bearing rather than convenient. **07** is the written
+agreement `terms.html` requires, and it fixes the benchmark fare *before* any
+searching starts — afterwards every client remembers a lower number. **08** is
+what makes the FAQ's promise true: the page says you will tell people not to buy,
+so there has to be something to send when that is the honest answer.
+
+
+## Checking your work
+
+`scripts/check.js` runs the whole suite: every page in both themes at desktop and
+phone width looking for horizontal overflow and JavaScript errors, every print
+document for page count and clipped content, the booking buttons' disabled state,
+the estimator, and the presence of every built asset.
+
+```sh
+npm i playwright-core
+node scripts/check.js
+```
+
+Run it after any edit. The failures it catches are the ones that are invisible
+until someone opens the page on a phone — a long unbreakable string pushing the
+layout sideways, or a document quietly clipping its last paragraph in print. Both
+have happened in this repo.
