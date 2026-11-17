@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Email Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#E9EEE7; --coupon:#F6F9F3; --coupon-2:#FDFEFB; --ink:#14201A; --ink-2:#4A5A52; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#9FB09E; --stamp:#C33A12; --stamp-ink:#FFF7F3; --stamp-wash:rgba(195,58,18,.09);
+  --good:#1B6244;
+  --display:"Archivo",system-ui,sans-serif; --body:"Instrument Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace; --r:3px;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0E1411; --coupon:#151E19; --coupon-2:#1B2620; --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43; --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.12); --good:#4FD196;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1411; --coupon:#151E19; --coupon-2:#1B2620; --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43; --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.12); --good:#4FD196;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.wrap{width:min(100% - 2.4rem, 860px); margin-inline:auto}
+header.top{border-bottom:1px solid var(--rule); position:sticky; top:0; z-index:9;
+  background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px)}
+.top-in{display:flex; align-items:center; gap:1rem; padding-block:.9rem; flex-wrap:wrap}
+.brand{display:flex; align-items:baseline; gap:.5rem; text-decoration:none; color:var(--ink); margin-right:auto}
+.bm{font-family:var(--display); font-weight:900; font-stretch:122%; font-size:1.05rem; letter-spacing:-.015em}
+.bc{font-family:var(--mono); font-size:.6rem; letter-spacing:.18em; background:var(--stamp); color:var(--stamp-ink); padding:.16rem .38rem; border-radius:2px}
+.jump{display:flex; gap:.4rem; flex-wrap:wrap}
+.jump a{font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2);
+  text-decoration:none; border:1px solid var(--rule-2); padding:.3rem .45rem; border-radius:2px}
+.jump a:hover{color:var(--stamp); border-color:var(--stamp)}
+
+main{padding-block:2.6rem 5rem; display:flex; flex-direction:column; gap:2.2rem}
+h1{font-family:var(--display); font-weight:800; font-stretch:114%; font-size:clamp(1.9rem,4vw,2.5rem); margin:0; line-height:1.04; letter-spacing:-.015em}
+.field{font-family:var(--mono); font-size:.64rem; letter-spacing:.17em; text-transform:uppercase; color:var(--stamp)}
+.lede{color:var(--ink-2); max-width:62ch; margin:.7rem 0 0}
+.note{font-size:.86rem; color:var(--ink-3); line-height:1.5}
+
+.card{background:var(--coupon); border:1px solid var(--rule); border-radius:var(--r); scroll-margin-top:5rem; overflow:hidden}
+.card-head{display:flex; align-items:flex-start; gap:1rem; padding:1.1rem 1.3rem; border-bottom:1px solid var(--rule); flex-wrap:wrap}
+.card-n{font-family:var(--mono); font-size:.7rem; font-weight:600; color:var(--stamp); flex:none; padding-top:.15rem}
+.card-t{flex:1; min-width:0; display:flex; flex-direction:column; gap:.25rem}
+.card-t h2{font-family:var(--display); font-weight:700; font-stretch:108%; font-size:1.05rem; margin:0; line-height:1.2}
+.when{font-family:var(--mono); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.copy{font-family:var(--mono); font-size:.64rem; letter-spacing:.11em; text-transform:uppercase; cursor:pointer;
+  background:transparent; color:var(--ink-2); border:1px solid var(--rule-2); border-radius:2px; padding:.45rem .65rem; flex:none}
+.copy:hover{border-color:var(--stamp); color:var(--stamp)}
+.copy.done{background:var(--good); border-color:var(--good); color:var(--paper)}
+.subject{padding:.8rem 1.3rem; border-bottom:1px dotted var(--rule-2); display:flex; gap:.7rem; align-items:baseline; flex-wrap:wrap}
+.subject span{font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); flex:none}
+.subject b{font-weight:600; font-size:.95rem}
+.bodytext{padding:1.2rem 1.3rem; white-space:pre-wrap; font-size:.93rem; line-height:1.65; color:var(--ink-2); background:var(--coupon-2)}
+.why{padding:.9rem 1.3rem; background:var(--stamp-wash); border-top:1px solid var(--rule); font-size:.85rem; color:var(--ink)}
+.why strong{font-weight:600}
+code{font-family:var(--mono); font-size:.88em; background:var(--stamp-wash); padding:.08rem .25rem; border-radius:2px; color:var(--ink)}
+
+.legend{background:var(--coupon); border:1px solid var(--rule); border-radius:var(--r); padding:1.2rem 1.3rem; display:flex; flex-direction:column; gap:.6rem}
+.legend h3{font-family:var(--display); font-size:1rem; font-weight:700; margin:0}
+.legend ul{margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.3rem; font-size:.88rem; color:var(--ink-2)}
+.legend li::marker{color:var(--stamp)}
+:focus-visible{outline:2px solid var(--stamp); outline-offset:3px}
+footer{border-top:1px solid var(--rule); padding-block:1.6rem; font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap top-in">
+  <a class="brand" href="index.html"><span class="bm">SavvyAviator</span><span class="bc">SAV</span></a>
+  <nav class="jump">
+    <a href="#e1">01</a><a href="#e2">02</a><a href="#e3">03</a><a href="#e4">04</a>
+    <a href="#e5">05</a><a href="#e6">06</a><a href="#e7">07</a><a href="#e8">08</a>
+  </nav>
+</div></header>
+
+<div class="wrap"><main>
+
+  <div>
+    <span class="field">Internal — not published with the site</span>
+    <h1>Email kit</h1>
+    <p class="lede">Every message a client gets, from the playbook download through to the testimonial ask. Hit copy, paste into Gmail, replace the fields. Written to be sent as-is.</p>
+  </div>
+
+  <div class="legend">
+    <h3>Fields to replace</h3>
+    <ul>
+      <li><code>{{FIRST}}</code> — their first name</li>
+      <li><code>{{ROUTE}}</code> — e.g. JFK → Tokyo</li>
+      <li><code>{{DATE}}</code> / <code>{{TIME}}</code> — of the call</li>
+      <li><code>{{LINK}}</code> — playbook, recording, plan doc, or booking link depending on the email</li>
+      <li><code>{{AMOUNT}}</code>, <code>{{FARE}}</code>, <code>{{POINTS}}</code> — figures specific to them</li>
+    </ul>
+    <p class="note">Keep the subject lines. They are short and specific on purpose — long subjects get skimmed past, and clever ones get ignored.</p>
+  </div>
+
+  <!-- 01 -->
+  <section class="card" id="e1">
+    <div class="card-head">
+      <span class="card-n">01</span>
+      <div class="card-t"><h2>Playbook delivery</h2><span class="when">Automatic · the moment they submit form 01</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Your First 100,000 Points playbook</b></div>
+    <div class="bodytext">Here it is: {{LINK}}
+
+Sixteen pages, and the part most people need is section 06 — four real bookings showing what 60,000 points actually buys. Start there if you only read one thing.
+
+One warning before you do anything in it: if you carry a credit card balance month to month, none of this works. Interest eats every point you earn. Fix that first and the rest will still be here.
+
+If you get stuck, reply to this email. I read them.
+
+— {{YOUR NAME}}
+savvyaviator.com</div>
+    <div class="why"><strong>Why it reads like this.</strong> It delivers, points at the single best section, and leads with the disqualifier rather than a sales pitch. Telling someone not to buy is the fastest way to be believed later.</div>
+  </section>
+
+  <!-- 02 -->
+  <section class="card" id="e2">
+    <div class="card-head">
+      <span class="card-n">02</span>
+      <div class="card-t"><h2>Three-day nudge</h2><span class="when">Day 3 · only if they have not booked</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Did you get to section 06?</b></div>
+    <div class="bodytext">{{FIRST}} — quick one.
+
+The table in section 06 has a Geneva–New York business seat that cost $5.00 in cash against a $6,244 fare. Same cabin, same plane, same day. The only difference was which programme booked it.
+
+That is the whole thing. Everything else in the playbook is detail.
+
+If you want to know whether it works for your situation specifically — your airport, your balances, your dates — that is a short questionnaire and a call: {{LINK}}
+
+And if the answer is "not right now", that is a fine answer. The playbook is yours either way.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> One concrete number does the persuading, not adjectives. The explicit permission to say no is what keeps people on the list instead of unsubscribing.</div>
+  </section>
+
+  <!-- 03 -->
+  <section class="card" id="e3">
+    <div class="card-head">
+      <span class="card-n">03</span>
+      <div class="card-t"><h2>Booking confirmation</h2><span class="when">Immediately after they book the call</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Booked — {{DATE}}, and what to have ready</b></div>
+    <div class="bodytext">{{FIRST}} — we are on for {{DATE}} at {{TIME}}. Calendar invite is separate.
+
+Fifteen minutes of prep doubles what we get out of the call. Before we speak, have these to hand:
+
+1. Every points and miles balance you hold, including the ones you have forgotten about. Logins open if you can.
+2. A list of every credit card you have opened in the last 24 months — including any where you are an authorised user on someone else's account.
+3. Your rough credit score.
+4. The trip, as specifically as you can stand: where, roughly when, which cabin, who is coming.
+
+You do not need to prepare answers. You need the numbers in front of you so we are not guessing.
+
+The call is 75 minutes, recorded, and you get a written plan afterwards. If anything changes, reschedule from the original booking link — no charge, no awkwardness.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> A prepared client is worth twice an unprepared one, and this is the only chance to ask. Pre-authorising a reschedule reduces no-shows — people who feel trapped ghost instead.</div>
+  </section>
+
+  <!-- 04 -->
+  <section class="card" id="e4">
+    <div class="card-head">
+      <span class="card-n">04</span>
+      <div class="card-t"><h2>Plan delivery</h2><span class="when">Within 24 hours of the call</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Your Flight Plan — {{ROUTE}}</b></div>
+    <div class="bodytext">{{FIRST}} — good call. Here is everything.
+
+Plan: {{LINK}}
+Recording: {{LINK}}
+
+The short version is on page one. If you read nothing else, read that box.
+
+Your three actions, with dates:
+1. {{ACTION 1}} — by {{DATE}}
+2. {{ACTION 2}} — by {{DATE}}
+3. {{ACTION 3}} — by {{DATE}}
+
+One rule above all the others: do not transfer points anywhere until you have a confirmed, bookable seat in front of you. Transfers are one-way. This is the single most expensive mistake available to someone who has done everything else right.
+
+You have two weeks of follow-up questions by email — use them, especially before you transfer anything. Reply to this thread and it stays in one place.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> Repeats the three actions in the email body, because attachments go unopened. The transfer rule is restated here even though it is in the document — it is the one error that costs real money.</div>
+  </section>
+
+  <!-- 05 -->
+  <section class="card" id="e5">
+    <div class="card-head">
+      <span class="card-n">05</span>
+      <div class="card-t"><h2>Two-week check-in</h2><span class="when">Day 14 · closes the follow-up window</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Checking in on {{ROUTE}}</b></div>
+    <div class="bodytext">{{FIRST}} — two weeks since we spoke. Where did you get to?
+
+Specifically: did action 1 happen? That is the one everything else waits on.
+
+If you hit something and stopped, tell me what it was. Nine times out of ten it is a five-minute answer and the plan carries on.
+
+Your follow-up window technically closes today, but I am not going to be precious about it — if you are mid-application and something comes up, ask.
+
+When you do book, send me the confirmation. I keep a ledger of redemptions, names off it, and yours would sit well on it.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> Asks about one specific action rather than "how's it going", which gets no reply. Softening the deadline costs nothing and buys goodwill. The ledger line plants the testimonial ask early.</div>
+  </section>
+
+  <!-- 06 -->
+  <section class="card" id="e6">
+    <div class="card-head">
+      <span class="card-n">06</span>
+      <div class="card-t"><h2>Testimonial request</h2><span class="when">The day they tell you the trip is booked — not before</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>{{ROUTE}} — congratulations, and one favour</b></div>
+    <div class="bodytext">{{FIRST}} — {{POINTS}} points and {{AMOUNT}} against a {{FARE}} fare. That is a genuinely good booking and you should feel smug about it.
+
+The favour: a few sentences I can put on the site.
+
+Do not write a review. Just answer whichever of these you have an opinion about, in whatever words come out:
+
+1. What did you think this trip was going to cost, before we spoke?
+2. What had you been getting wrong?
+3. Was there a moment where you thought this would not work for you?
+4. Who would you tell not to bother with this?
+
+Three lines is plenty. I will edit for length only, send you the exact wording before it goes up, and you can veto any of it. First name and route only — no surname, no photo, nothing else.
+
+And if you would rather not, say so and I will never mention it again. It genuinely does not affect anything.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> Timed to the moment the number feels real, which is booking rather than payment. The four questions produce sentences with figures in them; "how was it?" produces "great service". Question 4 is the useful one — the objection they had is the objection your next visitor has. Approval and a clean exit are offered up front, which is both decent and what gets a yes.</div>
+  </section>
+
+  <!-- 07 -->
+  <section class="card" id="e7">
+    <div class="card-head">
+      <span class="card-n">07</span>
+      <div class="card-t"><h2>Booked For You — scope and fee</h2><span class="when">Before any searching starts. This is the written agreement the terms require.</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Scope and fee — {{ROUTE}}</b></div>
+    <div class="bodytext">{{FIRST}} — putting this in writing before I start, so there is no argument at the end.
+
+THE TRIP
+{{ROUTE}}, {{CABIN}}, {{TRAVELLERS}} travelling, departing {{WINDOW}}.
+
+THE BENCHMARK
+The cash fare we are measuring against is {{FARE}} — the lowest I can find today for the same cabin on comparable dates. Screenshot attached. If that number moves materially before we book, I will tell you and we will reset it together.
+
+THE FEE
+10% of verified savings: the benchmark above, minus everything you actually pay — points converted at the taxes you pay, plus fees, plus any positioning flight I recommend.
+
+On today's numbers that is roughly {{AMOUNT}}. If I cannot beat the benchmark, there is no fee and you owe me nothing.
+
+HOW IT RUNS
+1. I search. This can take days — award space is not on demand.
+2. I send you an option. Nothing is ticketed without your explicit yes.
+3. You approve, I ticket. Your points stay in your control throughout; I will tell you exactly when to transfer and not before.
+4. I watch the reservation for schedule changes through to departure.
+
+Reply "agreed" and I will start. Anything in here you want changed, say so now rather than later.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> Your terms promise savings are "agreed with you in writing before anything is ticketed" — this is that document. Fixing the benchmark <em>before</em> searching is the whole point: afterwards, every client remembers a lower number. The screenshot is not optional.</div>
+  </section>
+
+  <!-- 08 -->
+  <section class="card" id="e8">
+    <div class="card-head">
+      <span class="card-n">08</span>
+      <div class="card-t"><h2>Turning someone away</h2><span class="when">When the honest answer is no</span></div>
+      <button class="copy" type="button">Copy</button>
+    </div>
+    <div class="subject"><span>Subject</span><b>Honest answer</b></div>
+    <div class="bodytext">{{FIRST}} — thanks for the questionnaire. I am going to talk you out of booking, at least for now.
+
+{{REASON — pick one and say it plainly:
+ · you are carrying a balance, and interest will outrun anything I can earn you
+ · you have a mortgage application coming, and new accounts are the wrong move right now
+ · your country's card ecosystem will not support this, so engine A is not available to you
+ · four weeks is not enough runway for the cabin you want on that route}}
+
+Here is what I would do instead: {{ALTERNATIVE}}
+
+Come back when {{CONDITION}} and we will do this properly. I will not chase you — but the playbook is still yours, and if you reply to this email in six months I will remember.
+
+— {{YOUR NAME}}</div>
+    <div class="why"><strong>Why it reads like this.</strong> Your FAQ promises you will say this on a call rather than sell. Then you have to actually do it. Turning away a few hundred dollars is cheap next to one person telling everyone you pushed them into cards they could not afford — and a surprising number of these people come back, having told someone else about you first.</div>
+  </section>
+
+  <div class="legend">
+    <h3>Sequencing</h3>
+    <ul>
+      <li><strong>01</strong> fires automatically from the playbook form. <strong>02</strong> three days later, only to people who have not booked.</li>
+      <li><strong>03</strong> on booking, <strong>04</strong> within a day of the call, <strong>05</strong> at day fourteen.</li>
+      <li><strong>06</strong> is not scheduled. It goes the day they tell you a trip is ticketed — which is why 04 and 05 both ask them to send the confirmation.</li>
+      <li><strong>07</strong> only for Booked For You, always before you start searching.</li>
+      <li><strong>08</strong> whenever it is true. It will be more often than you expect.</li>
+    </ul>
+    <p class="note">Until an email platform is set up, 01 and 02 are manual — watch the Sheet behind the form and send them yourself. That is fine for the first fifty people and it means you read every address that comes in.</p>
+  </div>
+
+</main>
+
+<footer class="wrap">SavvyAviator &middot; internal &mdash; do not publish</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var root=document.documentElement;
+  try{
+    if(!root.getAttribute("data-theme")){
+      var s=localStorage.getItem("sav-theme");
+      if(s==="light"||s==="dark") root.setAttribute("data-theme",s);
+    }
+  }catch(e){}
+
+  document.querySelectorAll(".card").forEach(function(card){
+    var btn=card.querySelector(".copy");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      var subject=card.querySelector(".subject b").textContent;
+      var body=card.querySelector(".bodytext").textContent;
+      var text="Subject: "+subject+"\n\n"+body;
+      function done(){
+        btn.textContent="Copied";
+        btn.classList.add("done");
+        setTimeout(function(){ btn.textContent="Copy"; btn.classList.remove("done"); },1600);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+      function fallback(){
+        var ta=document.createElement("textarea");
+        ta.value=text; ta.setAttribute("readonly","");
+        ta.style.position="fixed"; ta.style.top="-9999px";
+        document.body.appendChild(ta); ta.select();
+        try{ document.execCommand("copy"); done(); }
+        catch(e){ btn.textContent="Select it"; setTimeout(function(){btn.textContent="Copy";},1600); }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
