@@ -36,6 +36,17 @@ def ytdlp_json(url, extra=()):
     return json.loads(r.stdout)
 
 
+def whisper_model(size="small"):
+    """Local faster-whisper model dir if one exists (CLIP_DESK_WHISPER or ~/.cache/clipdesk/whisper-<size>),
+    else the model name, which faster-whisper downloads from Hugging Face. scripts/get_whisper.py fills the cache
+    from npm when Hugging Face is blocked."""
+    env = os.environ.get("CLIP_DESK_WHISPER")
+    if env and (Path(env) / "model.bin").exists():
+        return env
+    local = Path.home() / ".cache" / "clipdesk" / f"whisper-{size}"
+    return str(local) if (local / "model.bin").exists() else size
+
+
 def is_url(s):
     return bool(re.match(r"https?://", s))
 

@@ -19,19 +19,31 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-MODEL_URL = "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx"
+_ZOO = "opencv/opencv_zoo/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx"
+# the file lives in Git LFS: media.githubusercontent.com is where github.com/raw redirects to; listing it directly
+# also works behind firewalls that block github.com downloads
+MODEL_URLS = [f"https://media.githubusercontent.com/media/{_ZOO}", "https://github.com/" + _ZOO.replace("/main/", "/raw/main/", 1)]
 MODEL = Path(os.environ.get("LOCALAPPDATA", Path.home() / ".cache")) / "gtavi-claudecode" / "models" / "face_detection_yunet_2023mar.onnx"
 N_FRAMES = 12
 MAX_W = 1280  # analysis width
 
 
 def model_path():
-    if not MODEL.exists() or MODEL.stat().st_size < 100_000:
-        MODEL.parent.mkdir(parents=True, exist_ok=True)
-        tmp = MODEL.with_suffix(".part")
-        urllib.request.urlretrieve(MODEL_URL, tmp)
-        tmp.replace(MODEL)
-    return str(MODEL)
+    """YuNet model path, downloaded once. None if no mirror is reachable (callers fall back to Haar)."""
+    if MODEL.exists() and MODEL.stat().st_size > 100_000:
+        return str(MODEL)
+    MODEL.parent.mkdir(parents=True, exist_ok=True)
+    tmp = MODEL.with_suffix(".part")
+    for url in MODEL_URLS:
+        try:
+            urllib.request.urlretrieve(url, tmp)
+            if tmp.stat().st_size > 100_000:  # an LFS pointer file is ~130 bytes
+                tmp.replace(MODEL)
+                return str(MODEL)
+        except Exception:
+            continue
+    print("facecam: YuNet model not downloadable, using OpenCV's built-in Haar face detector (less accurate)", file=sys.stderr)
+    return None
 
 
 def duration(video):
@@ -63,8 +75,27 @@ def sample_frames(video, start, end, n=N_FRAMES):
     return frames
 
 
+_YUNET = None
+
+
+def detect_faces_haar(frames):
+    cc = cv2.CascadeClassifier(str(Path(cv2.data.haarcascades) / "haarcascade_frontalface_default.xml"))
+    out = []
+    for f in frames:
+        g = cv2.equalizeHist(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY))
+        rects = cc.detectMultiScale(g, scaleFactor=1.1, minNeighbors=6, minSize=(40, 40))
+        out.append([tuple(map(float, r)) + (0.8,) for r in rects])
+    return out
+
+
 def detect_faces(frames):
-    det = cv2.FaceDetectorYN.create(model_path(), "", (320, 320), 0.7, 0.3, 5000)
+    mp = model_path()
+    if mp is None:
+        return detect_faces_haar(frames)
+    global _YUNET
+    if _YUNET is None:
+        _YUNET = cv2.FaceDetectorYN.create(mp, "", (320, 320), 0.7, 0.3, 5000)
+    det = _YUNET
     out = []
     for f in frames:
         h, w = f.shape[:2]
@@ -293,7 +324,6 @@ def track_face(video, start, end, face, fps=2.0):
     n = int(min(240, max(2, round((e - s) * fps) + 1)))
     ts = np.linspace(s, e - min(0.05, (e - s) / 10), n)
     cap = cv2.VideoCapture(str(video))
-    det = cv2.FaceDetectorYN.create(model_path(), "", (320, 320), 0.7, 0.3, 5000)
     fx, fy, fw, fh = face
     raw = []
     W = H = None
@@ -308,8 +338,7 @@ def track_face(video, start, end, face, fps=2.0):
         if sc < 1:
             f = cv2.resize(f, (int(w * sc), int(h * sc)), interpolation=cv2.INTER_AREA); h, w = f.shape[:2]
         W, H = w, h
-        det.setInputSize((w, h))
-        _, fs = det.detect(f)
+        fs = detect_faces([f])[0]
         best = None
         for r in ([] if fs is None else fs):
             cx, cy, hh = r[0] + r[2] / 2, r[1] + r[3] / 2, r[3]

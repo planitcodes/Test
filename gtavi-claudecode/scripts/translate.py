@@ -32,14 +32,18 @@ def translator(lang):
     return GoogleTranslator(source="auto", target=lang)
 
 
+FAILED = [0]  # lines that could not be translated in the current language
+
+
 def tr(t, text):
     text = (text or "").strip()
     if not text:
         return ""
     try:
         return (t.translate(text) or text).strip()
-    except Exception as e:  # network / rate limit: keep original rather than crash the whole batch
-        print(f"warning: translate failed ({e}); keeping original text", file=sys.stderr)
+    except Exception as e:  # network / rate limit: count it, the language is skipped instead of shipping English
+        FAILED[0] += 1
+        print(f"warning: translate failed ({str(e)[:120]})", file=sys.stderr)
         return text
 
 
@@ -136,12 +140,18 @@ def main():
     caps = ["# Captions, one clip in several languages\n",
             f"Source: {meta.get('source_title') or ''} ({meta.get('source_channel') or ''})\n",
             "Translations are machine translated. Read each one before posting.\n"]
+    skipped = []
     for lang in langs:
-        t = translator(lang)
+        t = translator(lang); FAILED[0] = 0
         h = tr(t, hook) if hook else ""
-        tw = translate_words(t, words)
+        tw = translate_words(t, words) if not FAILED[0] else []
+        if FAILED[0]:  # never render an English clip under a foreign-language name
+            print(f"skipped {lang}: translation unavailable (translate.google.com unreachable or rate-limited)", file=sys.stderr)
+            skipped.append(lang)
+            continue
         ass = out / f"clip_{a.pick}_{lang}.ass"
-        ass.write_text(build_ass(tw, s0, e0, h, CAP_Y[layout]), encoding="utf-8")
+        hook_y = {"facecam": int(1920 * 0.38)}.get(layout)
+        ass.write_text(build_ass(tw, s0, e0, h, CAP_Y[layout], hook_y=hook_y), encoding="utf-8")
         mp4 = out / f"clip_{a.pick}_{lang}.mp4"
         mp3 = None
         if a.voice and h:
@@ -149,8 +159,12 @@ def main():
         render(cands["source"], s0, e0, layout, cam, ass, mp4, mp3)
         caps.append(platform_block(lang, h, credit, meta.get("source_url")))
         print(mp4)
+    if len(skipped) == len(langs):
+        sys.exit("no language rendered: translation unavailable. Check the network and run again.")
     (out / f"clip_{a.pick}_captions.md").write_text("\n".join(caps), encoding="utf-8")
     print(out / f"clip_{a.pick}_captions.md")
+    if skipped:
+        print(f"skipped: {', '.join(skipped)}")
 
 
 if __name__ == "__main__":

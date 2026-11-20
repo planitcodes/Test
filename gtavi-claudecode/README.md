@@ -80,6 +80,7 @@ No leaks, no "play early" or "free download" posts, no piracy, no GTA Online mon
 
 ```
 pip install -r requirements.txt
+python scripts/get_whisper.py
 python scripts/trends.py --query "gta 6" --hours 24
 python scripts/streams.py --query "gta 6"
 python scripts/moments.py "https://www.youtube.com/watch?v=..." --top 8
@@ -90,4 +91,13 @@ python scripts/live.py "https://www.youtube.com/watch?v=<live>" --minutes 60
 
 Windows, macOS or Linux, Python 3.10+. An NVIDIA GPU makes transcription faster; on the CPU a 12-minute video takes about 5 minutes.
 
-MIT license.
+## Changes in this copy
+
+- `scripts/get_whisper.py` puts the speech model in `~/.cache/clipdesk/whisper-small`. When Hugging Face is blocked it falls back to an npm mirror of the same model and checks the sha256.
+- `moments.py` cuts on sentence boundaries: a clip ends where the excitement dies down (the payoff) and starts on a full sentence, aiming for `--target` seconds (default 22). Low-energy filler picks (under 30 % of the best score) are dropped.
+- The facecam model downloads from `media.githubusercontent.com` (where the Git LFS file actually lives), and falls back to OpenCV's built-in Haar detector instead of crashing.
+- Captions use the bundled Archivo Black font (`fonts/`, OFL), so clips look the same on Linux, which has no Arial Black.
+- In the facecam layout the hook sits on the seam, not over the streamer's face.
+- `translate.py` skips a language when translation fails, instead of rendering English captions under a foreign-language file name.
+
+MIT license. Archivo Black font: SIL Open Font License (`fonts/OFL.txt`).

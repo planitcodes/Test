@@ -4,13 +4,13 @@ Signals per second: loudness spikes, YouTube "most replayed" heatmap, live-chat 
 (YouTube VOD chat replay or a TwitchDownloader chat.json) and hype words in the transcript.
 Writes jobs/<id>/candidates.md + candidates.json.
 
-usage: python moments.py <url-or-file> [--top 8] [--min 15] [--max 40] [--chat chat.json] [--max-minutes 90]
+usage: python moments.py <url-or-file> [--top 8] [--min 15] [--max 40] [--target 22] [--chat chat.json] [--max-minutes 90]
 """
 import argparse, json, math, re, sys, wave
 from pathlib import Path
 import numpy as np
 sys.path.insert(0, str(Path(__file__).parent))
-from common import ffprobe, is_url, job_dir, load_json, run, save_json, tool, ytdlp_base, ytdlp_json
+from common import ffprobe, is_url, job_dir, load_json, run, save_json, tool, whisper_model, ytdlp_base, ytdlp_json
 
 HYPE = re.compile(r"\b(no way|oh my god|omg|what|wait|bro|let'?s go|holy|insane|crazy|yo+|wtf|dude|look at|nah|run|go go)\b", re.I)
 CHAT_HYPE = re.compile(r"(LMAO|LOL|KEKW|OMEGALUL|W+\b|CLIP|💀|😂|🔥|NO WAY|HOLY)", re.I)
@@ -62,7 +62,7 @@ def transcribe(wav, d):
         pcm = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
 
     def run_on(device):
-        model = WhisperModel("small", device=device, compute_type="float16" if device == "cuda" else "int8")
+        model = WhisperModel(whisper_model("small"), device=device, compute_type="float16" if device == "cuda" else "int8")
         segs, _ = model.transcribe(pcm, word_timestamps=True, vad_filter=True)
         return [{"w": w.word.strip(), "s": round(w.start, 2), "e": round(w.end, 2)} for s in segs for w in (s.words or [])]
     try:
@@ -110,10 +110,55 @@ def smooth(a, k):
     return np.convolve(a, np.ones(k) / k, mode="same")
 
 
+def sentences(words):
+    """Group words into sentences: break after . ? ! or a pause over 0.8 s. -> [(start, end)]"""
+    out, cur = [], None
+    for i, w in enumerate(words):
+        if cur is None:
+            cur = [w["s"], w["e"]]
+        cur[1] = w["e"]
+        nxt = words[i + 1]["s"] if i + 1 < len(words) else None
+        if w["w"][-1:] in ".?!" or nxt is None or nxt - w["e"] > 0.8:
+            out.append(tuple(cur)); cur = None
+    return out
+
+
+def window(p, score, sents, dur, lo, hi, target):
+    """Clip [start, end] for a score peak at second p.
+    End: the end of the sentence where the hot zone (score above 35 % of the peak, gaps up to 3 s) dies down,
+    so the clip ends on the payoff instead of trailing chatter. Start: the sentence start that brings the
+    length closest to `target` within [lo, hi], so the clip opens on a full sentence, not mid-word."""
+    n = len(score); thr = 0.35 * score[p]
+    r, gap = p, 0
+    while r + 1 < n and r + 1 - p < hi * 0.6 and gap <= 3:
+        r += 1
+        gap = 0 if score[r] > thr else gap + 1
+    hot_end = r - gap
+    if not sents:  # no speech: plain window around the peak
+        s0 = max(0.0, p - 0.6 * target); e0 = min(dur, max(hot_end + 1.0, s0 + lo))
+        return round(s0, 2), round(min(e0, s0 + hi), 2)
+    ends = [e for s, e in sents if e >= hot_end - 0.5] or [sents[-1][1]]
+    e0 = min(dur, ends[0] + 0.5)
+    if e0 - p < 1.5 and len(ends) > 1:  # the peak sits in the last word: let the reaction land
+        e0 = min(dur, ends[1] + 0.5)
+    starts = [s for s, e in sents if s < p and lo <= e0 - (s - 0.3) <= hi]
+    if starts:
+        s0 = max(0.0, min(starts, key=lambda s: abs(e0 - s - target)) - 0.3)
+    else:  # sentences too long or too few: fall back to a plain window, snapped to the nearest sentence start
+        s0 = max(0.0, e0 - target)
+        near = [s for s, e in sents if e0 - hi <= s - 0.3 <= e0 - lo]
+        if near:
+            s0 = max(0.0, min(near, key=lambda s: abs(s - s0)) - 0.3)
+    if e0 - s0 < lo:
+        e0 = min(dur, s0 + lo)
+    return round(s0, 2), round(min(e0, s0 + hi), 2)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("src"); ap.add_argument("--top", type=int, default=8)
     ap.add_argument("--min", type=float, default=15); ap.add_argument("--max", type=float, default=40)
+    ap.add_argument("--target", type=float, default=22, help="preferred clip length in seconds")
     ap.add_argument("--chat"); ap.add_argument("--max-minutes", type=int, default=90)
     a = ap.parse_args()
     d = job_dir(a.src)
@@ -137,24 +182,19 @@ def main():
     w_heat = 2.0 if heat.any() else 0
     w_chat = 1.5 if chat.any() else 0
     score = 1.0 * loud + 0.8 * z(hype).clip(0) + w_heat * z(heat).clip(0) + w_chat * chatz
-    # pick non-overlapping windows around peaks
-    starts = [x["s"] for x in words]
+    # pick non-overlapping windows around peaks, cut on sentence boundaries and ending on the payoff
+    sents = sentences(words)
     picks, used = [], np.zeros(n, bool)
     order = np.argsort(-score)
     for p in order:
-        if len(picks) >= a.top or score[p] <= 0:
+        if len(picks) >= a.top or score[p] <= 0 or score[p] < 0.3 * score.max():  # skip filler
             break
-        s0 = max(0, p - 0.55 * a.max); e0 = min(dur, s0 + a.max)
-        # snap start to the first word after s0 and end to a word end, keep length in [min, max]
-        ws = [x for x in words if x["s"] >= s0 and x["e"] <= e0]
-        if ws:
-            s0 = max(0, ws[0]["s"] - 0.3); e0 = min(dur, ws[-1]["e"] + 0.6)
-        if e0 - s0 < a.min:
-            e0 = min(dur, s0 + a.min)
-        e0 = min(e0, s0 + a.max)
-        if used[int(s0):int(e0)].any():
+        if used[p]:
             continue
-        used[int(s0):int(e0)] = True
+        s0, e0 = window(p, score, sents, dur, a.min, a.max, a.target)
+        if used[int(s0):int(math.ceil(e0))].any():
+            continue
+        used[int(s0):int(math.ceil(e0))] = True
         text = " ".join(x["w"] for x in words if s0 <= x["s"] < e0)
         why = []
         if loud[p] > 1: why.append("loudness spike")

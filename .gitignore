@@ -1,2 +1,5 @@
 node_modules/
 *.log
+
+# GTA 6 clip desk working folder (videos, jobs)
+clipdesk/

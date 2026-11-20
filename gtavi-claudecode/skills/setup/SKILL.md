@@ -13,6 +13,7 @@ Check each with `ffmpeg -version`, `yt-dlp --version`, `python -c "import faster
 
 - ffmpeg. Windows: `winget install --id Gyan.FFmpeg -e --source winget`. macOS: `brew install ffmpeg`. Linux: `sudo apt install -y ffmpeg`
 - Python packages, all systems: `python -m pip install -U -r "${CLAUDE_PLUGIN_ROOT}/requirements.txt"` (faster-whisper, numpy, requests and a fresh yt-dlp; the scripts prefer the pip yt-dlp, because an old yt-dlp gets HTTP 403 from YouTube)
+- Speech model, all systems: `python "${CLAUDE_PLUGIN_ROOT}/scripts/get_whisper.py"` (fetches faster-whisper small into `~/.cache/clipdesk/whisper-small`; falls back to an npm mirror with a checksum when Hugging Face is blocked)
 - Re-run the pip line once a week: YouTube changes often and yt-dlp updates follow.
 
 If a winget/brew/apt install needs a new terminal for PATH, say so in one line and re-check. Never spend money or add a card.
