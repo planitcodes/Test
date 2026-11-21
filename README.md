@@ -11,7 +11,8 @@ for the files themselves.
 
 | File | What it is |
 | --- | --- |
-| `index.html` | The landing page — estimator, ledger, tiers, three-step booking |
+| `index.html` | The full landing page — estimator, ledger, tiers, three-step booking |
+| `early.html` | The early-access page — one promise, one email capture |
 | `teaser.html` → `savvyaviator-teaser.pdf` / `.png` | One-page leave-behind to send or print |
 | `playbook.html` → `savvyaviator-playbook.pdf` / `.docx` | The 16-page lead magnet |
 | `flight-plan-template.html` → `.pdf` / `.docx` | What you fill in on a call and hand over |
@@ -352,3 +353,36 @@ Run it after any edit. The failures it catches are the ones that are invisible
 until someone opens the page on a phone — a long unbreakable string pushing the
 layout sideways, or a document quietly clipping its last paragraph in print. Both
 have happened in this repo.
+
+
+## The early-access page
+
+`early.html` is a shorter front door for before you can take money: hero, the
+GVA–JFK coupon, a four-number proof strip, three steps, one closing capture.
+No pricing, no tiers, no FAQ, no booking flow — it has exactly one job, which is
+getting an email address.
+
+Structurally it mirrors a Framer early-access page the owner liked (hero with a
+single CTA, a visual anchor, three numbered steps, a closing CTA) while keeping
+this project's own identity rather than that page's monochrome Inter.
+
+### Wiring it
+
+One constant at the top of its script:
+
+```js
+var EARLY_ACCESS_FORM = "https://forms.gle/...";   // a Google Form asking for an email, nothing else
+```
+
+Empty, both buttons render visibly disabled — so the page is safe to share before
+the form exists. This can be the same form as `PLAYBOOK_FORM` on the main page;
+the copy promises the playbook in return either way.
+
+### Making it the homepage
+
+Uncomment the marked line in `.github/workflows/pages.yml`. The early-access page
+is then served at `/` and the full page stays reachable at `/index-full.html`.
+Reverse it on launch day by re-commenting that line.
+
+Both pages carry the same Open Graph tags and point at the same `og-image.png`,
+so a shared link previews identically whichever is live.

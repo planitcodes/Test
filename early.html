@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SavvyAviator — Early Access</title>
+<meta name="description" content="Fly business class for the price of the taxes. Points, miles and mistake fares, worked into one system. Early access opening soon.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%23C33A12%22%2F%3E%3Cpath%20d%3D%22M21%203v26%22%20stroke%3D%22%23FFF7F3%22%20stroke-width%3D%222.4%22%20stroke-dasharray%3D%223.2%203.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2211%22%20width%3D%2210%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23FFF7F3%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2217.4%22%20width%3D%226.5%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23FFF7F3%22%20opacity%3D%22.75%22%2F%3E%3C%2Fsvg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%23C33A12%22%2F%3E%3Cpath%20d%3D%22M21%203v26%22%20stroke%3D%22%23FFF7F3%22%20stroke-width%3D%222.4%22%20stroke-dasharray%3D%223.2%203.2%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2211%22%20width%3D%2210%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23FFF7F3%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2217.4%22%20width%3D%226.5%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23FFF7F3%22%20opacity%3D%22.75%22%2F%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#C33A12">
+
+<!-- Absolute URLs — change the domain in all four if it is not savvyaviator.com -->
+<link rel="canonical" href="https://savvyaviator.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SavvyAviator">
+<meta property="og:url" content="https://savvyaviator.com/">
+<meta property="og:title" content="SavvyAviator — fly business class for the price of the taxes">
+<meta property="og:description" content="Four confirmed bookings: $24,001 of business class for $193. Early access opening soon.">
+<meta property="og:image" content="https://savvyaviator.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SavvyAviator — fly business class for the price of the taxes">
+<meta name="twitter:description" content="Four confirmed bookings: $24,001 of business class for $193. Early access opening soon.">
+<meta name="twitter:image" content="https://savvyaviator.com/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#E9EEE7; --coupon:#F6F9F3; --coupon-2:#FDFEFB;
+  --ink:#14201A; --ink-2:#4A5A52; --ink-3:#7B8A81;
+  --rule:#C2CFC1; --rule-2:#9FB09E;
+  --stamp:#C33A12; --stamp-ink:#FFF7F3; --stamp-wash:rgba(195,58,18,.10);
+  --good:#1E6F4C;
+  --shadow:0 1px 0 rgba(20,32,26,.05), 0 18px 40px -26px rgba(20,32,26,.45);
+  --display:"Archivo","Archivo Black",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:3px;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0E1411; --coupon:#151E19; --coupon-2:#1B2620;
+  --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43;
+  --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.13);
+  --good:#4FD196;
+  --shadow:0 1px 0 rgba(0,0,0,.4), 0 18px 40px -26px rgba(0,0,0,.9);
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1411; --coupon:#151E19; --coupon-2:#1B2620;
+  --ink:#E6EDE4; --ink-2:#9DACA3; --ink-3:#74837A;
+  --rule:#28352E; --rule-2:#3C4C43;
+  --stamp:#FF6B3D; --stamp-ink:#190A04; --stamp-wash:rgba(255,107,61,.13);
+  --good:#4FD196;
+  --shadow:0 1px 0 rgba(0,0,0,.4), 0 18px 40px -26px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display); margin:0; line-height:1.02; letter-spacing:-.02em; text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--stamp); outline-offset:3px; border-radius:2px}
+.wrap{width:min(100% - 2.6rem, 1060px); margin-inline:auto}
+.field{font-family:var(--mono); font-size:.66rem; font-weight:500; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink-3)}
+.field-b{color:var(--stamp)}
+.perf{height:2px; background:repeating-linear-gradient(90deg,var(--rule-2) 0 4px,transparent 4px 11px)}
+
+/* nav */
+.nav{border-bottom:1px solid var(--rule)}
+.nav-in{display:flex; align-items:center; gap:1rem; padding-block:1rem}
+.brand{display:flex; align-items:baseline; gap:.5rem; text-decoration:none; color:var(--ink); margin-right:auto}
+.bm{font-family:var(--display); font-weight:900; font-stretch:122%; font-size:1.12rem; letter-spacing:-.015em}
+.bc{font-family:var(--mono); font-size:.62rem; letter-spacing:.18em; background:var(--stamp);
+  color:var(--stamp-ink); padding:.16rem .38rem; border-radius:2px}
+.theme-btn{background:none; border:1px solid var(--rule-2); color:var(--ink-2); font-family:var(--mono);
+  font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; padding:.45rem .6rem;
+  border-radius:2px; cursor:pointer}
+.theme-btn:hover{color:var(--ink); border-color:var(--ink)}
+
+/* buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.55rem;
+  font-family:var(--mono); font-size:.76rem; font-weight:600; letter-spacing:.13em;
+  text-transform:uppercase; text-decoration:none; padding:1rem 1.7rem; border-radius:var(--r);
+  border:1px solid transparent; cursor:pointer;
+  transition:transform .16s ease, background .16s ease, border-color .16s ease}
+.btn-primary{background:var(--stamp); color:var(--stamp-ink); border-color:var(--stamp)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn[aria-disabled="true"]{opacity:.4; cursor:not-allowed; transform:none; pointer-events:none}
+
+/* hero */
+.hero{display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(2rem,4.5vw,4rem);
+  align-items:center; padding-block:clamp(3.5rem,7vw,6rem)}
+@media (max-width:940px){.hero{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(2.5rem,5.2vw,4.1rem); font-weight:800; font-stretch:118%}
+.hero h1 em{font-style:normal; color:var(--stamp)}
+.hero .sub{font-size:clamp(1.05rem,1.6vw,1.22rem); color:var(--ink-2); max-width:46ch; margin-top:1.4rem}
+.hero-cta{margin-top:2rem; display:flex; flex-direction:column; gap:.7rem; align-items:flex-start}
+.reassure{font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+
+/* receipt */
+.receipt{background:var(--coupon); border:1px solid var(--rule); border-radius:var(--r);
+  box-shadow:var(--shadow); overflow:hidden}
+.r-head{display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1rem 1.3rem}
+.r-body{padding:1.3rem; display:flex; flex-direction:column; gap:1.3rem}
+.r-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem .6rem}
+.r-grid > div{display:flex; flex-direction:column; gap:.28rem; min-width:0}
+.r-grid strong{font-family:var(--mono); font-size:.98rem; font-weight:600; overflow-wrap:anywhere}
+.r-row{display:flex; justify-content:space-between; align-items:baseline; gap:1rem;
+  padding:.62rem 0; border-bottom:1px dotted var(--rule-2)}
+.r-row .k{font-family:var(--mono); font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-2)}
+.r-row .v{font-family:var(--mono); font-size:1rem; font-weight:600; font-variant-numeric:tabular-nums}
+.struck{color:var(--ink-3); text-decoration:line-through; text-decoration-color:var(--stamp); text-decoration-thickness:2px}
+.r-total{display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; padding-top:.6rem}
+.r-total .v{font-family:var(--display); font-weight:900; font-stretch:120%;
+  font-size:clamp(2rem,4.6vw,2.9rem); line-height:.9; font-variant-numeric:tabular-nums}
+.badge{align-self:flex-end; transform:rotate(-7deg); border:2px solid var(--stamp); color:var(--stamp);
+  font-family:var(--mono); font-size:.72rem; font-weight:600; letter-spacing:.1em;
+  padding:.4rem .7rem; border-radius:2px; text-transform:uppercase; white-space:nowrap}
+.r-foot{padding:.85rem 1.3rem; display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+
+/* proof strip */
+.strip{border-block:1px solid var(--rule); background:var(--coupon)}
+.strip-in{display:flex; gap:clamp(1.5rem,4vw,3.5rem); padding-block:1.8rem; flex-wrap:wrap; align-items:baseline}
+.stat{display:flex; flex-direction:column; gap:.3rem}
+.stat b{font-family:var(--display); font-weight:900; font-stretch:118%; font-size:1.6rem;
+  line-height:1; font-variant-numeric:tabular-nums}
+.stat b.g{color:var(--good)}
+
+/* steps */
+.steps-sec{padding-block:clamp(3.5rem,7vw,6rem) clamp(2rem,4vw,3rem); display:flex; flex-direction:column; gap:2.6rem}
+.steps-sec h2{font-size:clamp(1.8rem,3.2vw,2.5rem); font-weight:800; font-stretch:114%; max-width:20ch}
+.steps{display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+.step{background:var(--coupon); border:1px solid var(--rule); border-radius:var(--r);
+  padding:1.7rem; display:flex; flex-direction:column; gap:.8rem}
+.step .n{font-family:var(--mono); font-size:.68rem; letter-spacing:.16em; color:var(--stamp)}
+.step h3{font-size:1.18rem; font-weight:700; font-stretch:108%; line-height:1.2}
+.step p{color:var(--ink-2); font-size:.95rem}
+
+/* close */
+.close{padding-block:clamp(2rem,4vw,3rem) clamp(3.5rem,7vw,6rem)}
+.close-in{background:var(--ink); color:var(--paper); border-radius:var(--r);
+  padding:clamp(2.2rem,5vw,3.6rem); display:flex; flex-direction:column; gap:1.1rem; align-items:flex-start}
+.close-in h2{font-size:clamp(1.8rem,3.6vw,2.7rem); font-weight:800; font-stretch:114%; color:var(--paper); max-width:18ch}
+.close-in p{color:#B9C6BC; max-width:48ch}
+.close-in .btn-primary{margin-top:.6rem}
+.close-in .reassure{color:#8DA094}
+
+/* footer */
+.foot{border-top:1px solid var(--rule); padding-block:2rem}
+.foot-in{display:flex; justify-content:space-between; gap:1.4rem; flex-wrap:wrap; align-items:center}
+.foot-links a{font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-3); text-decoration:none; overflow-wrap:anywhere}
+.foot-links a:hover{color:var(--stamp)}
+.foot .brand{color:var(--ink)}
+.foot-links{display:flex; gap:1.1rem; flex-wrap:wrap}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="./"><span class="bm">SavvyAviator</span><span class="bc">SAV</span></a>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+</div></nav>
+
+<header class="wrap hero">
+  <div>
+    <p class="field field-b">Less retail. More business class.</p>
+    <h1 style="margin-top:1.2rem">Fly business class for <em>the price of the taxes.</em></h1>
+    <p class="sub">Points, miles and mistake fares, worked into one system — and a human who plans the actual trip with you.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" id="heroCta" href="#early-access" target="_blank" rel="noopener">Get early access</a>
+      <span class="reassure">First ten get the founding rate &middot; no spam, ever</span>
+    </div>
+  </div>
+
+  <div class="receipt">
+    <div class="r-head">
+      <span class="field">Passenger coupon</span>
+      <span class="field field-b">LX 22 &middot; Aeroplan</span>
+    </div>
+    <div class="perf"></div>
+    <div class="r-body">
+      <div class="r-grid">
+        <div><span class="field">From</span><strong>GVA</strong></div>
+        <div><span class="field">To</span><strong>JFK</strong></div>
+        <div><span class="field">Cabin</span><strong>Business</strong></div>
+        <div><span class="field">Carrier</span><strong>Swiss</strong></div>
+      </div>
+      <div>
+        <div class="r-row"><span class="k">Retail fare, one way</span><span class="v struck">$6,244.00</span></div>
+        <div class="r-row"><span class="k">Aeroplan points</span><span class="v">60,000</span></div>
+        <div class="r-row"><span class="k">Taxes &amp; carrier fees</span><span class="v">$5.00</span></div>
+      </div>
+      <div class="r-total">
+        <div>
+          <span class="field">Cash out of pocket</span>
+          <div class="v" style="margin-top:.4rem">$5.00</div>
+        </div>
+        <span class="badge">Saved 99.9%</span>
+      </div>
+    </div>
+    <div class="perf"></div>
+    <div class="r-foot">
+      <span class="field">Value per point &mdash; 10.40&cent;</span>
+      <span class="field">Flown 7 August 2026</span>
+    </div>
+  </div>
+</header>
+
+<section class="strip"><div class="wrap strip-in">
+  <div class="stat"><span class="field">Confirmed bookings</span><b>4</b></div>
+  <div class="stat"><span class="field">Business class bought</span><b>$24,001</b></div>
+  <div class="stat"><span class="field">Actually paid</span><b>$193</b></div>
+  <div class="stat"><span class="field">Saved</span><b class="g">$23,808</b></div>
+</div></section>
+
+<section class="wrap steps-sec">
+  <div>
+    <p class="field field-b">How it works</p>
+    <h2 style="margin-top:1rem">A front-cabin seat, in three steps.</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <span class="n">01 / Audit</span>
+      <h3>Start with what you hold</h3>
+      <p>Balances, cards, credit profile, home airport. Almost everyone is sitting on more usable value than they think — and at least one balance quietly about to expire.</p>
+    </div>
+    <div class="step">
+      <span class="n">02 / Position</span>
+      <h3>Earn in the right order</h3>
+      <p>The right products, applied for in the right sequence, on spending you already do. Approvals are scarcer than points, and the order is what most people get wrong.</p>
+    </div>
+    <div class="step">
+      <span class="n">03 / Ticket</span>
+      <h3>Take the seat</h3>
+      <p>Award space and mistake fares, watched continuously. Transfer only once a seat is confirmed — then book it, and protect it through to departure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap close" id="early-access">
+  <div class="close-in">
+    <p class="field field-b">Early access</p>
+    <h2>Your next trip starts here.</h2>
+    <p>Leave an email and you get the First 100,000 Points playbook straight away — sixteen pages, free, no call required. When the desk opens, you hear first, and the first ten through the door get the founding rate.</p>
+    <a class="btn btn-primary" id="closeCta" href="#early-access" target="_blank" rel="noopener">Get early access</a>
+    <span class="reassure">One email when it opens. Nothing else.</span>
+  </div>
+</section>
+
+<footer class="foot"><div class="wrap foot-in">
+  <a class="brand" href="./"><span class="bm">SavvyAviator</span><span class="bc">SAV</span></a>
+  <div class="foot-links">
+    <a href="mailto:savvyaviator.travels@gmail.com">savvyaviator.travels@gmail.com</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ═══ SWAP THIS BEFORE LAUNCH ═══════════════════════════════
+     A Google Form asking for an email, nothing else. Use the form's
+     Send button, copy the link, paste it here. While it is empty both
+     buttons stay visibly disabled rather than leading nowhere.
+     ═══════════════════════════════════════════════════════════ */
+  var EARLY_ACCESS_FORM = "";
+
+  ["heroCta","closeCta"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    if(EARLY_ACCESS_FORM){
+      el.setAttribute("href", EARLY_ACCESS_FORM);
+      el.removeAttribute("aria-disabled");
+    } else {
+      el.setAttribute("aria-disabled","true");
+      el.removeAttribute("target");
+    }
+  });
+
+  var root = document.documentElement;
+  try{
+    if(!root.getAttribute("data-theme")){
+      var saved = localStorage.getItem("sav-theme");
+      if(saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
+    }
+  }catch(e){}
+  var btn = document.getElementById("themeBtn");
+  if(btn){
+    btn.addEventListener("click", function(){
+      var cur = root.getAttribute("data-theme");
+      if(!cur){
+        cur = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+      }
+      var next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try{ localStorage.setItem("sav-theme", next); }catch(e){}
+    });
+  }
+})();
+</script>
+</body>
+</html>
