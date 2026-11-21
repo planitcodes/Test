@@ -17,7 +17,21 @@ Nothing below needs me. Roughly an afternoon, plus one weekend for the playbook.
 - [ ] Create a repo named `savvyaviator`. Push this branch as `main`.
       The repo name becomes your URL if you ever go without a custom domain.
 - [ ] **Settings → Pages → Source → GitHub Actions.** The workflow is written.
+      It currently publishes the **early-access page** at `/`; the full landing
+      page is deliberately not published until you can take payment.
 - [ ] Add a `CNAME` file containing just `savvyaviator.com`, point DNS at GitHub.
+
+### Shipping early access first
+
+The early-access page needs **one** Google Form asking for an email, and nothing
+else — no Cal.com, no Stripe, no pricing. That makes it shippable today, which the
+full page is not.
+
+- [ ] Google Form **A** (email only) — paste its link into `EARLY_ACCESS_FORM` at
+      the top of `early.html`'s script. Both buttons stay disabled until you do.
+- [ ] Point the form's confirmation message at
+      `https://savvyaviator.com/d/savvyaviator-playbook.pdf`.
+- [ ] That is the whole launch. Everything below is for the full site.
 
 ### Wire up the three steps
 
@@ -100,6 +114,10 @@ free upgrade lever you tell clients about, so use it.
 ---
 
 ## Part 4 — Decisions already made, and when to revisit
+
+**Switch `FRONT_DOOR` to `full` on launch day.** In the Pages workflow. Until
+then the full landing page is not published — it has disabled buttons and
+unfilled legal pages, and showing it to anyone costs more than hiding it.
 
 **The founding rate retires at ten clients.** Not "when it feels right". Delete
 the `<s class="was">$300</s>` and the `.flag` paragraph in `#work`. If you let

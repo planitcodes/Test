@@ -12,7 +12,7 @@ for the files themselves.
 | File | What it is |
 | --- | --- |
 | `index.html` | The full landing page — estimator, ledger, tiers, three-step booking |
-| `early.html` | The early-access page — one promise, one email capture |
+| `early.html` | The early-access page — one promise, one email capture. **Currently live at `/`** |
 | `teaser.html` → `savvyaviator-teaser.pdf` / `.png` | One-page leave-behind to send or print |
 | `playbook.html` → `savvyaviator-playbook.pdf` / `.docx` | The 16-page lead magnet |
 | `flight-plan-template.html` → `.pdf` / `.docx` | What you fill in on a call and hand over |
@@ -378,11 +378,22 @@ Empty, both buttons render visibly disabled — so the page is safe to share bef
 the form exists. This can be the same form as `PLAYBOOK_FORM` on the main page;
 the copy promises the playbook in return either way.
 
-### Making it the homepage
+### Which page is live
 
-Uncomment the marked line in `.github/workflows/pages.yml`. The early-access page
-is then served at `/` and the full page stays reachable at `/index-full.html`.
-Reverse it on launch day by re-commenting that line.
+One line at the top of the Assemble step in `.github/workflows/pages.yml`:
 
-Both pages carry the same Open Graph tags and point at the same `og-image.png`,
-so a shared link previews identically whichever is live.
+```sh
+FRONT_DOOR=early     # or: full
+```
+
+**`early`** (current) serves the early-access page at `/`. **The full landing page
+is not published at all** — not even at a parked URL. That is deliberate: it has
+three disabled buttons and bracketed legal text, and a visitor who stumbles on it
+is worse off than one who never finds it.
+
+**`full`** serves the full landing page at `/` instead. Switch on launch day, once
+the two Google Forms, Cal.com and Stripe are live and the legal pages are filled
+in. Any other value fails the build rather than deploying something ambiguous.
+
+Both pages carry the same Open Graph tags and the same `og-image.png`, so a shared
+link previews identically whichever is live.

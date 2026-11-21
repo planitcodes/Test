@@ -29,19 +29,32 @@ jobs:
       # source, the .docx, the README, the verification checklist — stays private.
       - name: Assemble site
         run: |
-          mkdir -p _site/d
-          cp index.html early.html teaser.html privacy.html terms.html 404.html og-image.png _site/
+          # ─── FRONT_DOOR decides which page is served at / ───────────────
+          #   early  the early-access page. The full landing page is NOT published.
+          #   full   the full landing page, with pricing and the booking flow.
+          #
+          # Switch to "full" on launch day, once the two Google Forms, Cal.com
+          # and Stripe are live and the legal pages have been filled in.
+          FRONT_DOOR=early
 
-          # ─── Which page is the front door? ───
-          # Default: the full landing page. While you cannot take payment yet,
-          # uncomment the next line to serve the early-access page at / instead.
-          # The full page stays reachable at /index-full.html.
-          # cp index.html _site/index-full.html && cp early.html _site/index.html
+          mkdir -p _site/d
+          cp teaser.html privacy.html terms.html 404.html og-image.png _site/
           cp robots.txt sitemap.xml _site/
           cp savvyaviator-teaser.pdf _site/
-          # Delivered via the playbook form's confirmation link, not linked from the site.
+          # Delivered via the signup form's confirmation link, not linked from the site.
           cp savvyaviator-playbook.pdf _site/d/
+
+          if [ "$FRONT_DOOR" = "early" ]; then
+            cp early.html _site/index.html
+          elif [ "$FRONT_DOOR" = "full" ]; then
+            cp index.html _site/index.html
+          else
+            echo "FRONT_DOOR must be 'early' or 'full', got '$FRONT_DOOR'" >&2
+            exit 1
+          fi
+
           touch _site/.nojekyll
+          echo "Front door: $FRONT_DOOR"
           echo "Assembled:" && find _site -type f | sort
 
       - uses: actions/configure-pages@v5
